@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="VEYAORA — Eaglercraft. Minecraft playable in your browser. Play beyond what’s next.">
+  <meta name="theme-color" content="#050814">
+  <title>VEYAORA — Eaglercraft</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Ambient background -->
+  <div class="bg-grid" aria-hidden="true"></div>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <!-- ========== HOME VIEW ========== -->
+  <div id="home-view" class="view active">
+    <header class="top-bar">
+      <div class="logo" aria-label="VEYAORA">
+        <span class="logo-mark">V</span>
+        <span class="logo-text">VEYAORA</span>
+      </div>
+      <div class="status-chip">
+        <span class="status-dot"></span>
+        <span id="status-text">Ready</span>
+      </div>
+    </header>
+
+    <main class="hero">
+      <div class="hero-content glass-panel">
+        <p class="eyebrow">VEYAORA GAME PORTAL</p>
+        <h1 class="title">EAGLERCRAFT</h1>
+        <p class="subtitle">Minecraft, fully playable in your browser. No downloads. No installs. Just play.</p>
+
+        <button id="play-btn" class="play-btn" type="button">
+          <span class="play-btn-glow"></span>
+          <span class="play-btn-text">PLAY EAGLERCRAFT</span>
+          <svg class="play-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+        </button>
+
+        <div class="meta-row">
+          <div class="meta-item">
+            <span class="meta-label">Version</span>
+            <span class="meta-value" id="game-version">1.8.8</span>
+          </div>
+          <div class="meta-divider"></div>
+          <div class="meta-item">
+            <span class="meta-label">Platform</span>
+            <span class="meta-value">Browser</span>
+          </div>
+          <div class="meta-divider"></div>
+          <div class="meta-item">
+            <span class="meta-label">Status</span>
+            <span class="meta-value online">Online</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="preview-panel glass-panel">
+        <div class="preview-header">
+          <span>Game Preview</span>
+          <span class="preview-badge">Live Ready</span>
+        </div>
+        <div class="preview-frame">
+          <div class="preview-placeholder">
+            <div class="preview-grid"></div>
+            <div class="preview-content">
+              <svg class="preview-icon" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                <rect x="8" y="8" width="48" height="48" rx="6" stroke="currentColor" stroke-width="2"/>
+                <path d="M24 22v20l18-10-18-10z" fill="currentColor" opacity="0.7"/>
+              </svg>
+              <p>Eaglercraft will launch here</p>
+              <p class="preview-hint">Click PLAY to enter the full game view</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p class="slogan">PLAY BEYOND WHAT’S NEXT.</p>
+      <p class="brand-line">© VEYAORA · Eaglercraft Portal</p>
+    </footer>
+  </div>
+
+  <!-- ========== GAME VIEW ========== -->
+  <div id="game-view" class="view">
+    <div class="game-chrome">
+      <button id="back-btn" class="chrome-btn" type="button" title="Back to VEYAORA">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        <span>Back to VEYAORA</span>
+      </button>
+      <div class="chrome-title">
+        <span class="logo-mark small">V</span>
+        <span>EAGLERCRAFT</span>
+      </div>
+      <button id="fullscreen-btn" class="chrome-btn" type="button" title="Toggle fullscreen">
+        <svg id="fs-icon-enter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
+        </svg>
+        <svg id="fs-icon-exit" class="hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/>
+        </svg>
+        <span id="fs-label">Fullscreen</span>
+      </button>
+    </div>
+
+    <div id="game-container" class="game-container">
+      <!-- Loading overlay -->
+      <div id="game-loader" class="game-loader">
+        <div class="loader-ring"></div>
+        <p class="loader-text">Loading Eaglercraft…</p>
+        <p class="loader-sub">Preparing browser runtime</p>
+      </div>
+
+      <!-- Actual game iframe / embed target.
+           Place your Eaglercraft build at eaglercraft/index.html
+           (or update GAME_SRC in script.js). -->
+      <iframe
+        id="game-frame"
+        class="game-frame"
+        title="Eaglercraft"
+        allow="fullscreen; autoplay; gamepad; clipboard-write"
+        allowfullscreen
+        sandbox="allow-scripts allow-same-origin allow-pointer-lock allow-popups allow-forms"
+      ></iframe>
+    </div>
+  </div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
