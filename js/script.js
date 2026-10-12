@@ -17,6 +17,11 @@
   // Optional: set a version string shown on the homepage
   const GAME_VERSION = "1.8.8";
 
+  // Live presence is powered by Firebase Realtime Database.
+  // Add your Firebase web-app config below and enable Realtime Database.
+  // Until configured, the menu clearly reports that live count setup is needed.
+  const FIREBASE_CONFIG = null; // Replace null with your Firebase config object.
+
   // ── Elements ────────────────────────────────────────────
   const homeView = document.getElementById("home-view");
   const gameView = document.getElementById("game-view");
@@ -30,6 +35,8 @@
   const fsIconEnter = document.getElementById("fs-icon-enter");
   const fsIconExit = document.getElementById("fs-icon-exit");
   const fsLabel = document.getElementById("fs-label");
+  const liveVisitorsEl = document.getElementById("live-visitors");
+  const visitorStatusEl = document.getElementById("visitor-status");
 
   let gameLoaded = false;
   let isFullscreen = false;
@@ -38,6 +45,39 @@
   if (gameVersionEl) {
     gameVersionEl.textContent = GAME_VERSION;
   }
+
+  // ── Optional real-time visitor presence ─────────────────
+  // Uses Firebase's onDisconnect cleanup, so counts fall when tabs disconnect.
+  function setupLiveVisitors() {
+    if (!FIREBASE_CONFIG || !window.firebase) {
+      if (visitorStatusEl) visitorStatusEl.textContent = "Live count setup needed";
+      return;
+    }
+    try {
+      if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+      const db = firebase.database();
+      const connectedRef = db.ref(".info/connected");
+      const presenceRef = db.ref("presence/veyaora");
+      const clientId = db.ref("presence/veyaora").push().key;
+      const myPresence = presenceRef.child(clientId);
+      connectedRef.on("value", (snapshot) => {
+        if (snapshot.val() !== true) {
+          if (visitorStatusEl) visitorStatusEl.textContent = "Connecting…";
+          return;
+        }
+        myPresence.onDisconnect().remove();
+        myPresence.set({ since: firebase.database.ServerValue.TIMESTAMP });
+        if (visitorStatusEl) visitorStatusEl.textContent = "live right now";
+      });
+      presenceRef.on("value", (snapshot) => {
+        if (liveVisitorsEl) liveVisitorsEl.textContent = snapshot.numChildren();
+      });
+    } catch (error) {
+      if (visitorStatusEl) visitorStatusEl.textContent = "Counter unavailable";
+      console.warn("VEYAORA live visitor counter:", error);
+    }
+  }
+  setupLiveVisitors();
 
   // ── View switching ──────────────────────────────────────
   function showView(view) {
