@@ -90,10 +90,33 @@
     gameFrame.src = GAME_SRC;
   }
   function toggleFullscreen() {
-    if (!document.fullscreenElement) {
-      const target = gameView;
-      if (target.requestFullscreen) target.requestFullscreen().catch(() => {});
-    } else if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+    if (document.fullscreenElement) {
+      if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+      return;
+    }
+
+    // Fullscreen the game iframe itself so the browser gives keyboard and
+    // pointer-lock input to the game rather than to the surrounding launcher.
+    const target = gameFrame && gameFrame.requestFullscreen
+      ? gameFrame
+      : gameView;
+
+    if (target && target.requestFullscreen) {
+      target.requestFullscreen().then(() => {
+        // Focus the game after the fullscreen transition; pointer lock still
+        // requires a click inside the game, as required by the browser.
+        try { gameFrame.focus({ preventScroll: true }); }
+        catch (_) { gameFrame.focus(); }
+      }).catch(() => {
+        // Some browsers only permit the containing element to go fullscreen.
+        if (target !== gameView && gameView.requestFullscreen) {
+          gameView.requestFullscreen().then(() => {
+            try { gameFrame.focus({ preventScroll: true }); }
+            catch (_) { gameFrame.focus(); }
+          }).catch(() => {});
+        }
+      });
+    }
   }
   function updateFullscreenLabel() {
     if (fsLabel) fsLabel.textContent = document.fullscreenElement ? "⛶ EXIT FULLSCREEN" : "⛶ FULLSCREEN";
