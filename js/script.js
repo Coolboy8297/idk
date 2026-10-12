@@ -14,8 +14,13 @@
   // { version: "1.8.8", file: "1.8.8.html" }
   // The main index.html above stays unchanged.
   const EXTRA_VERSIONS = [
-    // { version: "1.8.8", file: "1.8.8.html" },
-    // { version: "1.5.2", file: "1.5.2.html" },
+    { version: "1.8.8", file: "1.8.8.html" },
+    { version: "1.12.2", file: "1.12.2.html" },
+    { version: "1.5.1", file: "1.5.1.html" },
+    { version: "Beta 1.7.3", file: "b1.7.3.html" },
+    { version: "Beta 1.3", file: "b1.3.html" },
+    { version: "Alpha 1.2.6", file: "a1.2.6.html" },
+    { version: "Indev", file: "indev.html" },
   ];
   // Configure a Firebase web app + Realtime Database to enable live presence.
   const FIREBASE_CONFIG = null;
