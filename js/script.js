@@ -4,8 +4,19 @@
  */
 (function () {
   "use strict";
+  // MAIN VERSION: keep the current build at eaglercraft/index.html.
   const GAME_SRC = "eaglercraft/index.html";
   const GAME_VERSION = "26.2";
+
+  // ADD EXTRA VERSIONS HERE.
+  // Put each extra HTML file in the eaglercraft folder and name it by version,
+  // for example eaglercraft/1.8.8.html, then add:
+  // { version: "1.8.8", file: "1.8.8.html" }
+  // The main index.html above stays unchanged.
+  const EXTRA_VERSIONS = [
+    // { version: "1.8.8", file: "1.8.8.html" },
+    // { version: "1.5.2", file: "1.5.2.html" },
+  ];
   // Configure a Firebase web app + Realtime Database to enable live presence.
   const FIREBASE_CONFIG = null;
 
@@ -22,10 +33,87 @@
   const fsLabel = document.getElementById("fs-label");
   const liveVisitorsEl = document.getElementById("live-visitors");
   const visitorStatusEl = document.getElementById("visitor-status");
+  const otherVersionsSection = document.getElementById("other-versions-section");
+  const otherVersionsGrid = document.getElementById("other-versions-grid");
   let gameLoaded = false;
+  let selectedGameSrc = GAME_SRC;
+  let selectedGameVersion = GAME_VERSION;
 
   if (gameVersionEl) gameVersionEl.textContent = GAME_VERSION;
   if (gameFrame) gameFrame.title = "Eaglercraft " + GAME_VERSION;
+
+  function renderExtraVersions() {
+    if (!otherVersionsSection || !otherVersionsGrid) return;
+    otherVersionsGrid.replaceChildren();
+
+    EXTRA_VERSIONS.forEach((entry, index) => {
+      if (!entry || !entry.version || !entry.file) return;
+
+      const card = document.createElement("article");
+      card.className = "game-card game-card-featured extra-version-card";
+
+      const art = document.createElement("div");
+      art.className = "card-art art-262";
+      const artLabel = document.createElement("span");
+      artLabel.className = "art-label";
+      artLabel.textContent = "EXTRA BUILD";
+      const artGrid = document.createElement("div");
+      artGrid.className = "art-grid";
+      const artNumber = document.createElement("div");
+      artNumber.className = "art-number";
+      artNumber.textContent = entry.version;
+      const artFooter = document.createElement("span");
+      artFooter.className = "art-bottom-label";
+      artFooter.textContent = "EAGLERCRAFT / " + entry.version;
+      art.append(artLabel, artGrid, artNumber, artFooter);
+
+      const body = document.createElement("div");
+      body.className = "card-body";
+      const tags = document.createElement("div");
+      tags.className = "card-tags";
+      const available = document.createElement("span");
+      available.className = "tag-available";
+      available.textContent = "CONFIGURED BUILD";
+      const code = document.createElement("span");
+      code.className = "card-code";
+      code.textContent = "EG / " + String(index + 1).padStart(3, "0");
+      tags.append(available, code);
+
+      const heading = document.createElement("h3");
+      heading.textContent = "Eaglercraft " + entry.version;
+      const description = document.createElement("p");
+      description.textContent = "Launch this version from your VEYAORA library.";
+      const launch = document.createElement("button");
+      launch.type = "button";
+      launch.className = "card-launch";
+      launch.textContent = "LAUNCH VERSION ";
+      const arrow = document.createElement("span");
+      arrow.textContent = "↗";
+      launch.appendChild(arrow);
+      launch.addEventListener("click", () => launchVersion(entry));
+
+      body.append(tags, heading, description, launch);
+      card.append(art, body);
+      otherVersionsGrid.appendChild(card);
+    });
+
+    otherVersionsSection.hidden = EXTRA_VERSIONS.length === 0;
+  }
+
+  function launchVersion(entry) {
+    selectedGameSrc = "eaglercraft/" + entry.file;
+    selectedGameVersion = entry.version;
+    gameLoaded = false;
+    if (gameFrame) {
+      gameFrame.classList.remove("loaded");
+      gameFrame.title = "Eaglercraft " + selectedGameVersion;
+    }
+    const loaderText = document.querySelector(".loader-text");
+    if (loaderText) loaderText.textContent = "BOOTING EAGLERCRAFT " + selectedGameVersion;
+    showGame();
+  }
+
+  renderExtraVersions();
 
   function setupLiveVisitors() {
     if (!FIREBASE_CONFIG || !window.firebase) {
@@ -58,6 +146,19 @@
   }
   setupLiveVisitors();
 
+  function showDefaultGame() {
+    selectedGameSrc = GAME_SRC;
+    selectedGameVersion = GAME_VERSION;
+    gameLoaded = false;
+    if (gameFrame) {
+      gameFrame.classList.remove("loaded");
+      gameFrame.title = "Eaglercraft " + GAME_VERSION;
+    }
+    const loaderText = document.querySelector(".loader-text");
+    if (loaderText) loaderText.textContent = "BOOTING EAGLERCRAFT " + GAME_VERSION;
+    showGame();
+  }
+
   function showGame() {
     homeView.classList.remove("active");
     gameView.classList.add("active");
@@ -72,7 +173,7 @@
     if (statusText) statusText.textContent = "SYSTEM READY";
   }
   function loadGame() {
-    if (gameLoaded) {
+    if (gameLoaded && gameFrame.src.endsWith(selectedGameSrc)) {
       gameLoader.classList.add("hidden");
       gameFrame.classList.add("loaded");
       if (statusText) statusText.textContent = "GAME ACTIVE";
@@ -87,7 +188,7 @@
       gameFrame.classList.add("loaded");
       if (statusText) statusText.textContent = "GAME ACTIVE";
     };
-    gameFrame.src = GAME_SRC;
+    gameFrame.src = selectedGameSrc;
   }
   function toggleFullscreen() {
     if (document.fullscreenElement) {
@@ -122,8 +223,8 @@
     if (fsLabel) fsLabel.textContent = document.fullscreenElement ? "⛶ EXIT FULLSCREEN" : "⛶ FULLSCREEN";
   }
 
-  playBtn.addEventListener("click", showGame);
-  if (versionCurrent) versionCurrent.addEventListener("click", showGame);
+  playBtn.addEventListener("click", showDefaultGame);
+  if (versionCurrent) versionCurrent.addEventListener("click", showDefaultGame);
   backBtn.addEventListener("click", showHome);
   fullscreenBtn.addEventListener("click", toggleFullscreen);
   document.addEventListener("fullscreenchange", updateFullscreenLabel);
