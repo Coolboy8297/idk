@@ -23,9 +23,17 @@
         <span class="logo-mark">V</span>
         <span class="logo-text">VEYAORA</span>
       </div>
-      <div class="status-chip">
-        <span class="status-dot"></span>
-        <span id="status-text">Ready</span>
+      <div class="top-actions">
+        <div class="visitor-chip" title="Live visitor count requires the realtime counter setup">
+          <span class="visitor-pulse"></span>
+          <span class="visitor-label">VISITORS</span>
+          <strong id="live-visitors">—</strong>
+          <span id="visitor-status">Live count setup needed</span>
+        </div>
+        <div class="status-chip">
+          <span class="status-dot"></span>
+          <span id="status-text">Ready</span>
+        </div>
       </div>
     </header>
 
@@ -81,6 +89,55 @@
         </div>
       </div>
     </main>
+
+    <section class="versions-section" aria-labelledby="versions-title">
+      <div class="versions-heading">
+        <div>
+          <p class="eyebrow">THE LIBRARY</p>
+          <h2 id="versions-title">Choose your version</h2>
+          <p class="versions-description">More worlds are on the way. Pick a version to jump in.</p>
+        </div>
+        <span class="version-count">01 AVAILABLE <span>·</span> 03 IN DEVELOPMENT</span>
+      </div>
+      <div class="version-grid">
+        <button class="version-card version-card-active" id="version-current" type="button">
+          <span class="version-art version-art-current" aria-hidden="true"><span class="voxel voxel-a"></span><span class="voxel voxel-b"></span><span class="voxel voxel-c"></span></span>
+          <span class="version-card-content">
+            <span class="version-tag tag-live"><span class="mini-dot"></span> AVAILABLE NOW</span>
+            <strong>Eaglercraft 1.8.8</strong>
+            <span class="version-card-description">Classic combat. Multiplayer-ready.</span>
+          </span>
+          <span class="version-arrow" aria-hidden="true">↗</span>
+        </button>
+        <div class="version-card version-card-soon">
+          <span class="version-art version-art-soon" aria-hidden="true"><span class="soon-symbol">✦</span></span>
+          <span class="version-card-content">
+            <span class="version-tag">COMING SOON</span>
+            <strong>Beta / Classic</strong>
+            <span class="version-card-description">A little old-school nostalgia.</span>
+          </span>
+          <span class="lock-symbol" aria-hidden="true">⌁</span>
+        </div>
+        <div class="version-card version-card-soon">
+          <span class="version-art version-art-soon art-purple" aria-hidden="true"><span class="soon-symbol">◈</span></span>
+          <span class="version-card-content">
+            <span class="version-tag">COMING SOON</span>
+            <strong>Eaglercraft 1.5.2</strong>
+            <span class="version-card-description">An older adventure, rebuilt for the web.</span>
+          </span>
+          <span class="lock-symbol" aria-hidden="true">⌁</span>
+        </div>
+        <div class="version-card version-card-soon">
+          <span class="version-art version-art-soon art-cyan" aria-hidden="true"><span class="soon-symbol">⌘</span></span>
+          <span class="version-card-content">
+            <span class="version-tag">COMING SOON</span>
+            <strong>More versions</strong>
+            <span class="version-card-description">More choices will appear here.</span>
+          </span>
+          <span class="lock-symbol" aria-hidden="true">⌁</span>
+        </div>
+      </div>
+    </section>
 
     <footer class="site-footer">
       <p class="slogan">PLAY BEYOND WHAT’S NEXT.</p>
