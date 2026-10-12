@@ -20,8 +20,8 @@
     { version: "Beta 1.3", file: "b1.3.html" },
     { version: "Indev", file: "indev.html" },
   ];
-  // Configure a Firebase web app + Realtime Database to enable live presence.
-  const FIREBASE_CONFIG = null;
+  // Public Firebase web-app configuration is kept in js/firebase-config.js.
+  const FIREBASE_CONFIG = window.VEYAORA_FIREBASE_CONFIG || null;
 
   const homeView = document.getElementById("home-view");
   const gameView = document.getElementById("game-view");
@@ -119,28 +119,61 @@
   renderExtraVersions();
 
   function setupLiveVisitors() {
-    if (!FIREBASE_CONFIG || !window.firebase) {
-      if (visitorStatusEl) visitorStatusEl.textContent = "COUNTER NOT CONFIGURED";
+    const hasPlaceholderConfig = !FIREBASE_CONFIG ||
+      !FIREBASE_CONFIG.apiKey ||
+      String(FIREBASE_CONFIG.apiKey).includes("PASTE_") ||
+      !FIREBASE_CONFIG.databaseURL ||
+      String(FIREBASE_CONFIG.databaseURL).includes("PASTE_") ||
+      !FIREBASE_CONFIG.projectId ||
+      String(FIREBASE_CONFIG.projectId).includes("PASTE_") ||
+      !FIREBASE_CONFIG.appId ||
+      String(FIREBASE_CONFIG.appId).includes("PASTE_");
+
+    if (hasPlaceholderConfig || !window.firebase || !firebase.auth || !firebase.database) {
+      if (liveVisitorsEl) liveVisitorsEl.textContent = "—";
+      if (visitorStatusEl) visitorStatusEl.textContent = "FIREBASE SETUP REQUIRED";
       return;
     }
+
     try {
       if (!firebase.apps.length) firebase.initializeApp(FIREBASE_CONFIG);
+      const auth = firebase.auth();
       const db = firebase.database();
-      const connected = db.ref(".info/connected");
       const presence = db.ref("presence/veyaora");
-      const id = presence.push().key;
-      const mine = presence.child(id);
-      connected.on("value", snapshot => {
-        if (snapshot.val() !== true) {
-          if (visitorStatusEl) visitorStatusEl.textContent = "CONNECTING…";
-          return;
-        }
-        mine.onDisconnect().remove();
-        mine.set({ since: firebase.database.ServerValue.TIMESTAMP });
-        if (visitorStatusEl) visitorStatusEl.textContent = "LIVE RIGHT NOW";
-      });
-      presence.on("value", snapshot => {
-        if (liveVisitorsEl) liveVisitorsEl.textContent = String(snapshot.numChildren());
+
+      auth.signInAnonymously().then(() => {
+        const uid = auth.currentUser && auth.currentUser.uid;
+        if (!uid) throw new Error("Anonymous sign-in returned no user ID");
+
+        const connected = db.ref(".info/connected");
+        const mine = presence.child(uid);
+
+        connected.on("value", snapshot => {
+          if (snapshot.val() !== true) {
+            if (visitorStatusEl) visitorStatusEl.textContent = "CONNECTING…";
+            return;
+          }
+
+          mine.onDisconnect().remove()
+            .then(() => mine.set({ since: firebase.database.ServerValue.TIMESTAMP }))
+            .then(() => {
+              if (visitorStatusEl) visitorStatusEl.textContent = "LIVE RIGHT NOW";
+            })
+            .catch(error => {
+              if (visitorStatusEl) visitorStatusEl.textContent = "DATABASE RULES NEED SETUP";
+              console.warn("VEYAORA presence write:", error);
+            });
+        });
+
+        presence.on("value", snapshot => {
+          if (liveVisitorsEl) liveVisitorsEl.textContent = String(snapshot.numChildren());
+        }, error => {
+          if (visitorStatusEl) visitorStatusEl.textContent = "DATABASE RULES NEED SETUP";
+          console.warn("VEYAORA presence read:", error);
+        });
+      }).catch(error => {
+        if (visitorStatusEl) visitorStatusEl.textContent = "AUTH SETUP REQUIRED";
+        console.warn("VEYAORA anonymous authentication:", error);
       });
     } catch (error) {
       if (visitorStatusEl) visitorStatusEl.textContent = "COUNTER UNAVAILABLE";
