@@ -19,6 +19,7 @@
     { version: "Beta 1.7.3", file: "b1.7.3.html" },
     { version: "Beta 1.3", file: "b1.3.html" },
     { version: "Indev", file: "indev.html" },
+    { version: "Ultimate Modpack (1.6.4)", file: "", externalUrl: "https://eaglercraft.com/play?version=modpack-ultimate", description: "The Ultimate modded 1.6.4 pack. Opens in a separate tab so the external game can run properly." },
   ];
   // Public Firebase web-app configuration is kept in js/firebase-config.js.
   const FIREBASE_CONFIG = window.VEYAORA_FIREBASE_CONFIG || null;
@@ -50,7 +51,7 @@
     otherVersionsGrid.replaceChildren();
 
     EXTRA_VERSIONS.forEach((entry, index) => {
-      if (!entry || !entry.version || !entry.file) return;
+      if (!entry || !entry.version || (!entry.file && !entry.externalUrl)) return;
 
       const card = document.createElement("article");
       card.className = "game-card game-card-featured extra-version-card";
@@ -59,7 +60,7 @@
       art.className = "card-art art-262";
       const artLabel = document.createElement("span");
       artLabel.className = "art-label";
-      artLabel.textContent = "EXTRA BUILD";
+      artLabel.textContent = entry.externalUrl ? "MODPACK" : "EXTRA BUILD";
       const artGrid = document.createElement("div");
       artGrid.className = "art-grid";
       const artNumber = document.createElement("div");
@@ -104,6 +105,10 @@
   }
 
   function launchVersion(entry) {
+    if (entry.externalUrl) {
+      window.open(entry.externalUrl, "_blank", "noopener,noreferrer");
+      return;
+    }
     selectedGameSrc = "eaglercraft/" + entry.file;
     selectedGameVersion = entry.version;
     gameLoaded = false;
