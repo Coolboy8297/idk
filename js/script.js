@@ -86,7 +86,7 @@
       const heading = document.createElement("h3");
       heading.textContent = "Eaglercraft " + entry.version;
       const description = document.createElement("p");
-      description.textContent = "Launch this version from your VEYAORA library.";
+      description.textContent = entry.description || "Launch this version from your VEYAORA library.";
       const launch = document.createElement("button");
       launch.type = "button";
       launch.className = "card-launch";
