@@ -77,3 +77,52 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--green);outline-offs
 @media(max-width:900px){.sidebar{gap:18px;padding:0 20px}.nav-item{padding:0 8px}.main-shell{padding:0 22px}.library-grid,.other-versions-section .library-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.feature-content{max-width:680px}.featured-card{min-height:370px}.visitor-pill{display:none}}
 @media(max-width:600px){.sidebar{height:auto;min-height:68px;padding:12px 16px;flex-wrap:wrap;gap:12px}.brand{padding:0}.brand-symbol{font-size:27px}.brand-name{font-size:10px}.nav-item{font-size:10px;padding:8px 7px;align-self:auto}.main-shell{padding:0 14px}.topbar{height:48px}.topbar-right{gap:0}.online-pill{font-size:8px}.welcome-row{padding:25px 0 19px}.welcome-row h1{font-size:30px;letter-spacing:-1.2px}.welcome-copy{font-size:11px}.date-stamp{display:none}.featured-card{min-height:400px}.feature-content{padding:20px 17px 18px}.feature-title-line{margin-top:26px;gap:13px;align-items:flex-start}.feature-title-line h2{font-size:37px;letter-spacing:-2px}.version-stamp{padding-left:10px}.version-stamp strong{font-size:23px}.feature-description{max-width:310px;font-size:11px}.feature-actions{align-items:stretch;flex-direction:column;max-width:260px}.primary-button,.secondary-button{width:100%;min-width:0}.feature-foot{gap:10px;margin-top:17px}.feature-foot>span{font-size:7px}.quick-stats{grid-template-columns:1fr;margin-bottom:34px}.quick-stat+.quick-stat{border-left:0;border-top:1px solid #27313a}.section-heading h2{font-size:25px}.library-count{display:none}.library-grid,.other-versions-section .library-grid{grid-template-columns:1fr;gap:13px}.card-art{height:180px}.card-body p{min-height:0}.footer{flex-wrap:wrap;font-size:7px;line-height:1.8}.footer>span:nth-child(2){display:none}.game-overlay-controls{padding:12px}.feature-watermark{font-size:220px;bottom:-45px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+
+/* CONSOLE DASHBOARD V2 — visibly different home-screen layout */
+body{background:#070a0e!important;color:#f5f7f9}
+.sidebar{height:84px!important;min-height:84px!important;padding:0 4.5vw!important;gap:clamp(20px,3vw,48px)!important;background:#090d12f5!important;border-bottom:1px solid #2c3741!important;box-shadow:0 8px 30px #0004}
+.brand-symbol{font-size:34px!important}
+.nav-item{font-size:11px!important;letter-spacing:.6px!important;padding:0 17px!important;color:#aab4bd!important}
+.nav-active{color:#f7fff1!important;border-bottom:3px solid #b8ff61!important}
+.main-shell{max-width:none!important;padding:0 4.5vw!important}
+.topbar{height:57px!important}
+.breadcrumb{color:#697681!important}
+.online-pill{padding:9px 12px;border:1px solid #2c3a35;background:#101a16;color:#c8f4b0!important}
+.welcome-row{padding:27px 0 22px!important}
+.welcome-row .overline{color:#a8b7a8!important}
+.welcome-row h1{font-size:clamp(32px,3.5vw,48px)!important}
+.welcome-row h1 span{color:#b8ff61!important}
+.welcome-copy{font-size:13px!important;color:#a2adb7!important}
+.featured-card{min-height:clamp(390px,43vw,540px)!important;border:1px solid #344b3b!important;border-radius:5px!important;box-shadow:0 25px 80px #0006!important}
+.feature-backdrop{background:radial-gradient(ellipse at 78% 38%,#426b43 0,#253f32 23%,#152820 43%,#0b1219 75%)!important}
+.feature-backdrop:after{background:linear-gradient(90deg,#0b1219 0%,#0b1219f5 25%,#0b1219c9 47%,#0b121950 75%,transparent 100%),linear-gradient(0deg,#0b1219 0%,transparent 38%)!important}
+.feature-sun{width:290px!important;height:290px!important;right:13%!important;top:2%!important;opacity:.22!important}
+.pixel-moon{width:110px!important;height:110px!important;right:21%!important;top:15%!important;box-shadow:0 0 90px #b8ff6180!important}
+.mountain-back{height:68%!important;right:0!important}
+.mountain-front{height:58%!important}
+.feature-content{max-width:800px!important;padding:clamp(25px,3.2vw,46px)!important}
+.feature-title-line{margin-top:clamp(35px,4vw,55px)!important}
+.feature-title-line h2{font-size:clamp(45px,5.7vw,76px)!important}
+.feature-description{font-size:13px!important;max-width:460px!important}
+.primary-button{height:51px!important;min-width:245px!important;font-size:10px!important;box-shadow:0 0 28px #b8ff6122!important}
+.secondary-button{height:51px!important;font-size:10px!important}
+.quick-stats{margin:16px 0 50px!important;border-radius:4px!important;background:#0e141b!important}
+.quick-stat{padding:17px 20px!important}
+.stat-symbol{width:38px!important;height:38px!important;font-size:19px!important}
+.quick-stat small{font-size:9px!important}
+.quick-stat strong{font-size:12px!important}
+.section-heading h2{font-size:clamp(28px,3vw,36px)!important}
+.section-copy{font-size:12px!important}
+.library-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:18px!important}
+.game-card{border-radius:5px!important;background:#101720!important;border-color:#293744!important;box-shadow:0 10px 28px #0002!important}
+.card-art{height:clamp(190px,22vw,285px)!important}
+.card-body{padding:18px!important}
+.card-body h3{font-size:18px!important}
+.card-body p{font-size:12px!important;line-height:1.7!important}
+.card-launch{height:43px!important;padding:0 13px!important;font-size:9px!important}
+.art-number{font-size:clamp(70px,8vw,108px)!important}
+.footer{margin-top:55px!important}
+@media(min-width:1200px){.library-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
+@media(max-width:800px){.sidebar{padding:0 18px!important;gap:12px!important}.nav-item{padding:0 8px!important}.main-shell{padding:0 18px!important}.library-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.card-art{height:190px!important}}
+@media(max-width:560px){.sidebar{height:auto!important;min-height:70px!important;padding:12px 14px!important}.main-shell{padding:0 12px!important}.welcome-row{padding:22px 0 18px!important}.featured-card{min-height:430px!important}.feature-content{padding:20px 16px!important}.feature-title-line h2{font-size:38px!important}.feature-description{font-size:11px!important}.library-grid{grid-template-columns:1fr!important}.card-art{height:220px!important}.quick-stat{padding:13px!important}}
