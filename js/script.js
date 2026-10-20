@@ -6,7 +6,7 @@
   "use strict";
   // MAIN VERSION: Eaglercraft 26.2.
   // The local Eaglercraft client is served from this repository.
-  const GAME_URL = "eaglercraft/index.html";
+  const GAME_URL = "eaglercraft/index.html?v=26.2-restored-20261020";
   const GAME_VERSION = "26.2";
 
   // ADD EXTRA VERSIONS HERE.
