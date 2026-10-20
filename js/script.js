@@ -1,13 +1,13 @@
 /**
- * VEYAORA ARCADE — Eaglercraft 26.3 launcher
+ * VEYAORA ARCADE — Eaglercraft 26.2 launcher
  * Main build: eaglercraft/index.html
  */
 (function () {
   "use strict";
-  // MAIN VERSION: Eaglercraft 26.3.
+  // MAIN VERSION: Eaglercraft 26.2.
   // The local Eaglercraft client is served from this repository.
   const GAME_URL = "eaglercraft/index.html";
-  const GAME_VERSION = "26.3";
+  const GAME_VERSION = "26.2";
 
   // ADD EXTRA VERSIONS HERE.
   // Put each extra HTML file in the eaglercraft folder and name it by version,
@@ -41,7 +41,7 @@
   const otherVersionsGrid = document.getElementById("other-versions-grid");
   let gameLoaded = false;
   let activeGameUrl = GAME_URL;
-  let activeGameTitle = "Eaglercraft 26.3";
+  let activeGameTitle = "Eaglercraft 26.2";
 
   if (gameVersionEl) gameVersionEl.textContent = GAME_VERSION;
 
@@ -178,10 +178,10 @@
   setupLiveVisitors();
 
   function showDefaultGame() {
-    showGame(GAME_URL, "Eaglercraft 26.3");
+    showGame(GAME_URL, "Eaglercraft 26.2");
   }
 
-  function showGame(url = GAME_URL, title = "Eaglercraft 26.3") {
+  function showGame(url = GAME_URL, title = "Eaglercraft 26.2") {
     activeGameUrl = url;
     activeGameTitle = title;
     gameFrame.title = title;
