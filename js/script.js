@@ -5,8 +5,8 @@
 (function () {
   "use strict";
   // MAIN VERSION: Eaglercraft 26.3.
-  // The hosted client opens in its own tab so its browser features work correctly.
-  const GAME_URL = "https://client.goldhq.net/";
+  // The local Eaglercraft client is served from this repository.
+  const GAME_URL = "eaglercraft/index.html";
   const GAME_VERSION = "26.3";
 
   // ADD EXTRA VERSIONS HERE.
