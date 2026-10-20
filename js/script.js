@@ -1,12 +1,13 @@
 /**
- * VEYAORA ARCADE — Eaglercraft 26.2 launcher
+ * VEYAORA ARCADE — Eaglercraft 26.3 launcher
  * Main build: eaglercraft/index.html
  */
 (function () {
   "use strict";
-  // MAIN VERSION: keep the current build at eaglercraft/index.html.
-  const GAME_SRC = "eaglercraft/index.html";
-  const GAME_VERSION = "26.2";
+  // MAIN VERSION: Eaglercraft 26.3.
+  // The hosted client opens in its own tab so its browser features work correctly.
+  const GAME_URL = "https://client.goldhq.net/";
+  const GAME_VERSION = "26.3";
 
   // ADD EXTRA VERSIONS HERE.
   // Put each extra HTML file in the eaglercraft folder and name it by version,
@@ -19,7 +20,6 @@
     { version: "Beta 1.7.3", file: "b1.7.3.html" },
     { version: "Beta 1.3", file: "b1.3.html" },
     { version: "Indev", file: "indev.html" },
-    { version: "Ultimate Modpack (1.6.4)", file: "", externalUrl: "https://eaglercraft.com/play?version=modpack-ultimate", description: "The Ultimate modded 1.6.4 pack. Opens in a separate tab so the external game can run properly." },
   ];
   // Public Firebase web-app configuration is kept in js/firebase-config.js.
   const FIREBASE_CONFIG = window.VEYAORA_FIREBASE_CONFIG || null;
@@ -40,11 +40,8 @@
   const otherVersionsSection = document.getElementById("other-versions-section");
   const otherVersionsGrid = document.getElementById("other-versions-grid");
   let gameLoaded = false;
-  let selectedGameSrc = GAME_SRC;
-  let selectedGameVersion = GAME_VERSION;
 
   if (gameVersionEl) gameVersionEl.textContent = GAME_VERSION;
-  if (gameFrame) gameFrame.title = "Eaglercraft " + GAME_VERSION;
 
   function renderExtraVersions() {
     if (!otherVersionsSection || !otherVersionsGrid) return;
@@ -109,16 +106,7 @@
       window.open(entry.externalUrl, "_blank", "noopener,noreferrer");
       return;
     }
-    selectedGameSrc = "eaglercraft/" + entry.file;
-    selectedGameVersion = entry.version;
-    gameLoaded = false;
-    if (gameFrame) {
-      gameFrame.classList.remove("loaded");
-      gameFrame.title = "Eaglercraft " + selectedGameVersion;
-    }
-    const loaderText = document.querySelector(".loader-text");
-    if (loaderText) loaderText.textContent = "BOOTING EAGLERCRAFT " + selectedGameVersion;
-    showGame();
+    window.open("eaglercraft/" + entry.file, "_blank", "noopener,noreferrer");
   }
 
   renderExtraVersions();
@@ -188,16 +176,7 @@
   setupLiveVisitors();
 
   function showDefaultGame() {
-    selectedGameSrc = GAME_SRC;
-    selectedGameVersion = GAME_VERSION;
-    gameLoaded = false;
-    if (gameFrame) {
-      gameFrame.classList.remove("loaded");
-      gameFrame.title = "Eaglercraft " + GAME_VERSION;
-    }
-    const loaderText = document.querySelector(".loader-text");
-    if (loaderText) loaderText.textContent = "BOOTING EAGLERCRAFT " + GAME_VERSION;
-    showGame();
+    window.open(GAME_URL, "_blank", "noopener,noreferrer");
   }
 
   function showGame() {
