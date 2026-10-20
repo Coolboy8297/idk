@@ -176,7 +176,7 @@
   setupLiveVisitors();
 
   function showDefaultGame() {
-    window.open(GAME_URL, "_blank", "noopener,noreferrer");
+    showGame();
   }
 
   function showGame() {
@@ -193,7 +193,7 @@
     if (statusText) statusText.textContent = "SYSTEM READY";
   }
   function loadGame() {
-    if (gameLoaded && gameFrame.src.endsWith(selectedGameSrc)) {
+    if (gameLoaded && gameFrame.src.endsWith(GAME_URL)) {
       gameLoader.classList.add("hidden");
       gameFrame.classList.add("loaded");
       if (statusText) statusText.textContent = "GAME ACTIVE";
@@ -208,7 +208,7 @@
       gameFrame.classList.add("loaded");
       if (statusText) statusText.textContent = "GAME ACTIVE";
     };
-    gameFrame.src = selectedGameSrc;
+    gameFrame.src = GAME_URL;
   }
   function toggleFullscreen() {
     if (document.fullscreenElement) {
