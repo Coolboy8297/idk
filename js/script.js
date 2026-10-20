@@ -40,6 +40,8 @@
   const otherVersionsSection = document.getElementById("other-versions-section");
   const otherVersionsGrid = document.getElementById("other-versions-grid");
   let gameLoaded = false;
+  let activeGameUrl = GAME_URL;
+  let activeGameTitle = "Eaglercraft 26.3";
 
   if (gameVersionEl) gameVersionEl.textContent = GAME_VERSION;
 
@@ -176,10 +178,13 @@
   setupLiveVisitors();
 
   function showDefaultGame() {
-    showGame();
+    showGame(GAME_URL, "Eaglercraft 26.3");
   }
 
-  function showGame() {
+  function showGame(url = GAME_URL, title = "Eaglercraft 26.3") {
+    activeGameUrl = url;
+    activeGameTitle = title;
+    gameFrame.title = title;
     homeView.classList.remove("active");
     gameView.classList.add("active");
     document.body.style.overflow = "hidden";
@@ -193,7 +198,7 @@
     if (statusText) statusText.textContent = "SYSTEM READY";
   }
   function loadGame() {
-    if (gameLoaded && gameFrame.src.endsWith(GAME_URL)) {
+    if (gameLoaded && gameFrame.src.endsWith(activeGameUrl)) {
       gameLoader.classList.add("hidden");
       gameFrame.classList.add("loaded");
       if (statusText) statusText.textContent = "GAME ACTIVE";
@@ -202,13 +207,15 @@
     gameLoader.classList.remove("hidden");
     gameFrame.classList.remove("loaded");
     if (statusText) statusText.textContent = "BOOTING GAME";
+    const loaderText = gameLoader.querySelector(".loader-text");
+    if (loaderText) loaderText.textContent = "BOOTING " + activeGameTitle.toUpperCase();
     gameFrame.onload = () => {
       gameLoaded = true;
       gameLoader.classList.add("hidden");
       gameFrame.classList.add("loaded");
       if (statusText) statusText.textContent = "GAME ACTIVE";
     };
-    gameFrame.src = GAME_URL;
+    gameFrame.src = activeGameUrl;
   }
   function toggleFullscreen() {
     if (document.fullscreenElement) {
@@ -245,6 +252,8 @@
 
   playBtn.addEventListener("click", showDefaultGame);
   if (versionCurrent) versionCurrent.addEventListener("click", showDefaultGame);
+  const neonRunButton = document.getElementById("launch-neon-run");
+  if (neonRunButton) neonRunButton.addEventListener("click", () => showGame("neon-run/GoodLookinggGm.html", "Neon Run"));
   backBtn.addEventListener("click", showHome);
   fullscreenBtn.addEventListener("click", toggleFullscreen);
   document.addEventListener("fullscreenchange", updateFullscreenLabel);
