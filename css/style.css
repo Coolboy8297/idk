@@ -126,3 +126,6 @@ body{background:#070a0e!important;color:#f5f7f9}
 @media(min-width:1200px){.library-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}}
 @media(max-width:800px){.sidebar{padding:0 18px!important;gap:12px!important}.nav-item{padding:0 8px!important}.main-shell{padding:0 18px!important}.library-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.card-art{height:190px!important}}
 @media(max-width:560px){.sidebar{height:auto!important;min-height:70px!important;padding:12px 14px!important}.main-shell{padding:0 12px!important}.welcome-row{padding:22px 0 18px!important}.featured-card{min-height:430px!important}.feature-content{padding:20px 16px!important}.feature-title-line h2{font-size:38px!important}.feature-description{font-size:11px!important}.library-grid{grid-template-columns:1fr!important}.card-art{height:220px!important}.quick-stat{padding:13px!important}}
+
+/* Clean gameplay view: no launcher controls or branding over the game. */
+.game-overlay-controls,.back-button,.fullscreen-button,.game-loader{display:none!important;visibility:hidden!important;pointer-events:none!important;}
