@@ -90,8 +90,12 @@
 
   <div id="game-view" class="view game-view">
     <div id="game-container" class="game-container">
-      
-      
+      <div id="game-loader" class="game-loader" role="status" aria-live="polite">
+        <div class="loader-mark">V<span>.</span></div>
+        <div class="loader-track"><span></span></div>
+        <p id="loader-text" class="loader-text">INITIALIZING GAME</p>
+        <p class="loader-sub">PLEASE WAIT WHILE YOUR WORLD STARTS</p>
+      </div>
       <iframe id="game-frame" class="game-frame" title="Eaglercraft 26.2" allow="fullscreen; autoplay; gamepad; clipboard-write; cross-origin-isolated" allowfullscreen></iframe>
     </div>
   </div>
