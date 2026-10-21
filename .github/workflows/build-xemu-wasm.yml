@@ -80,26 +80,25 @@ jobs:
           LDFLAGS: "-pthread -sWASM_BIGINT -sASYNCIFY=1 -sALLOW_TABLE_GROWTH -sTOTAL_MEMORY=2GB"
         run: |
           set -o pipefail
-          # Configure Meson directly with the project's Emscripten cross file.
-          # QEMU's legacy configure wrapper adds native host checks (including
-          # -lutil and sizeof(void*) assumptions) that are invalid for wasm.
-          meson setup build \
-            --cross-file configs/meson/emscripten.txt \
-            --native-file configs/meson/native.txt \
-            --buildtype=release \
-            -Dhexagon_idef_parser=false \
-            -Dgtk=disabled \
-            -Dvnc=disabled \
-            -Dcurl=disabled \
-            -Dslirp=disabled \
-            -Ddocs=disabled \
-            -Dtools=disabled 2>&1 | tee ../../xemu-wasm-configure.log
+          # Use xemu's configure wrapper so it translates its supported options
+          # into the correct Meson target list and machine files.
+          emconfigure ./configure \
+            --target-list=i386-softmmu \
+            --enable-tcg-interpreter \
+            --disable-werror \
+            --disable-gtk \
+            --disable-vnc \
+            --disable-curl \
+            --disable-slirp \
+            --disable-docs \
+            --disable-tools \
+            -Dhexagon_idef_parser=false 2>&1 | tee ../../xemu-wasm-configure.log
 
       - name: Compile probe
         working-directory: _work/xemu
         run: |
           set -o pipefail
-          meson compile -C build -j2 2>&1 | tee ../../xemu-wasm-build.log
+          emmake make -j2 2>&1 | tee ../../xemu-wasm-build.log
 
       - name: Preserve build logs even if the probe fails
         if: always()
