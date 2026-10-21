@@ -59,6 +59,7 @@ jobs:
           set -o pipefail
           emconfigure ./configure \
             --target-list=i386-softmmu \
+            --enable-tcg-interpreter \
             --disable-werror \
             --disable-gtk \
             --disable-vnc \
