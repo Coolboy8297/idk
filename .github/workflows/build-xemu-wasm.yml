@@ -45,6 +45,24 @@ jobs:
           echo "Upstream contains Emscripten support code."
           emcc --version
 
+      - name: Disable native-only Hexagon parser for WebAssembly
+        working-directory: _work/xemu
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path("configs/meson/emscripten.txt")
+          text = p.read_text()
+          option = "hexagon_idef_parser = false"
+          if option not in text:
+              if "[project options]" in text:
+                  text = text.replace("[project options]", "[project options]\n" + option, 1)
+              else:
+                  text += "\n[project options]\n" + option + "\n"
+              p.write_text(text)
+          print("Emscripten Meson options:")
+          print(p.read_text())
+          PY
+
       - name: Attempt original Xbox target configuration
         working-directory: _work/xemu
         env:
