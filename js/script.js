@@ -188,23 +188,29 @@
     loadGame();
   }
   function loadGame() {
+    // The custom loader was removed to keep the gameplay screen clean.
+    // Do not access a gameLoader element that no longer exists.
     if (gameLoaded && gameFrame.src.endsWith(activeGameUrl)) {
-      gameLoader.classList.add("hidden");
       gameFrame.classList.add("loaded");
       if (statusText) statusText.textContent = "GAME ACTIVE";
       return;
     }
-    gameLoader.classList.remove("hidden");
+
     gameFrame.classList.remove("loaded");
     if (statusText) statusText.textContent = "BOOTING GAME";
-    const loaderText = gameLoader.querySelector(".loader-text");
-    if (loaderText) loaderText.textContent = "BOOTING " + activeGameTitle.toUpperCase();
+
     gameFrame.onload = () => {
       gameLoaded = true;
-      gameLoader.classList.add("hidden");
       gameFrame.classList.add("loaded");
       if (statusText) statusText.textContent = "GAME ACTIVE";
     };
+
+    gameFrame.onerror = () => {
+      gameLoaded = false;
+      if (statusText) statusText.textContent = "GAME FAILED TO LOAD";
+      console.error("VEYAORA Arcade could not load:", activeGameUrl);
+    };
+
     gameFrame.src = activeGameUrl;
   }
 
