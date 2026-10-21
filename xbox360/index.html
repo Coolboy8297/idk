@@ -35,6 +35,7 @@
 <div class="controls" style="align-items:center">
 <input id="isoFile" type="file" accept=".iso,.xiso,application/octet-stream" style="max-width:100%;border:1px solid #34465a;background:#0a1019;color:var(--text);padding:10px;border-radius:9px">
 <button id="inspectIso" class="primary" disabled>Inspect image</button>
+<button id="readIsoDir" disabled>Read disc directory</button>
 <button id="clearIso">Clear</button>
 </div>
 <div class="metrics">
@@ -43,6 +44,7 @@
 <div class="metric"><small>Image check</small><strong id="isoResult" style="font-size:14px">Waiting</strong></div>
 </div>
 <div class="console" id="isoConsole" style="margin-top:12px">Select a disc image to begin. This prototype only checks for a known Xbox disc filesystem signature; it does not boot the game.</div>
+<h2 style="margin-top:20px">Disc contents</h2><div class="console" id="isoDirectory" style="max-height:360px;overflow:auto">No directory loaded.</div>
 </section><footer>VEYAORA 360 · Experimental prototype · No streaming · No game files are uploaded anywhere.</footer></main>
 <script>
 const $=id=>document.getElementById(id),regRoot=$("registers");for(let i=0;i<32;i++){const n=document.createElement("div");n.className="reg";n.innerHTML="<span>R"+i+"</span><b id='r"+i+"'>00000000</b>";regRoot.appendChild(n)}
@@ -107,7 +109,7 @@ document.addEventListener("mouseup",e=>{held.delete(e.button===0?"mouse0":"mouse
 $("resetMapping").addEventListener("click",()=>{inputMap={...inputDefaults};remapping=null;renderMappings();updateInput();$("inputLog").textContent="Default keyboard mappings restored.";});
 renderMappings();updateInput();
 
-let selectedIso=null;
+let selectedIso=null, isoVolumeOffset=0x10000, isoRoot=null;
 const isoMagic=new TextEncoder().encode("MICROSOFT*XBOX*MEDIA");
 function formatBytes(n){
  if(n<1024)return n+" B";
@@ -117,10 +119,10 @@ function formatBytes(n){
 }
 $("isoFile").addEventListener("change",()=>{
  selectedIso=$("isoFile").files&&$("isoFile").files[0]||null;
- $("inspectIso").disabled=!selectedIso;
+ $("inspectIso").disabled=!selectedIso;$("readIsoDir").disabled=!selectedIso;
  $("isoName").textContent=selectedIso?selectedIso.name:"None";
  $("isoSize").textContent=selectedIso?formatBytes(selectedIso.size):"—";
- $("isoResult").textContent="Not checked";
+ $("isoResult").textContent="Not checked";$("isoDirectory").textContent="No directory loaded.";
  $("isoConsole").textContent=selectedIso?"Ready to inspect locally: "+selectedIso.name:"Select a disc image to begin.";
 });
 function bytesMatch(bytes,offset){
@@ -147,6 +149,7 @@ $("inspectIso").addEventListener("click",async()=>{
    if(bytesMatch(sample,0)&&bytesMatch(sample,0x7EC)){found=candidate;break;}
   }
   if(found){
+   isoVolumeOffset=found.offset;
    $("isoResult").textContent="Signature found";
    $("isoConsole").textContent="Recognized Xbox disc filesystem signature.\nCandidate: "+found.label+"\nHeader offset: 0x"+found.offset.toString(16).toUpperCase()+"\n\nThis is only a basic signature check, not a full ISO validation. The CPU prototype cannot boot or execute the game yet.";
   }else{
@@ -159,9 +162,57 @@ $("inspectIso").addEventListener("click",async()=>{
  }finally{$("inspectIso").disabled=!selectedIso}
 });
 $("clearIso").addEventListener("click",()=>{
- $("isoFile").value="";selectedIso=null;$("inspectIso").disabled=true;
+ $("isoFile").value="";selectedIso=null;isoRoot=null;$("inspectIso").disabled=true;$("readIsoDir").disabled=true;$("isoDirectory").textContent="No directory loaded.";
  $("isoName").textContent="None";$("isoSize").textContent="—";$("isoResult").textContent="Waiting";
  $("isoConsole").textContent="Select a disc image to begin. The file stays on your device.";
+});
+
+function readU16LE(v,o){return v.getUint16(o,true)}
+function readU32LE(v,o){return v.getUint32(o,true)}
+async function readIsoRange(offset,length){
+ if(!selectedIso||offset<0||length<0||offset+length>selectedIso.size)throw new Error("Disc image read would go beyond the selected file.");
+ return new Uint8Array(await selectedIso.slice(offset,offset+length).arrayBuffer());
+}
+function parseXdvdfsEntries(bytes){
+ const view=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength), nodes=[];
+ function walk(pos,seen){
+  if(pos===0xffff||pos+14>bytes.length||seen.has(pos)||nodes.length>10000)return;
+  seen.add(pos);
+  const left=readU16LE(view,pos),right=readU16LE(view,pos+2),sector=readU32LE(view,pos+4),size=readU32LE(view,pos+8),attrs=view.getUint8(pos+12),nameLen=view.getUint8(pos+13);
+  if(pos+14+nameLen>bytes.length)return;
+  const name=new TextDecoder("ascii").decode(bytes.slice(pos+14,pos+14+nameLen));
+  if(name&&name!=="."&&name!=="..")nodes.push({name,sector,size,dir:!!(attrs&0x10),depth:0});
+  if(left!==0xffff)walk(left,seen);
+  if(right!==0xffff)walk(right,seen);
+ }
+ walk(0,new Set());
+ return nodes;
+}
+$("readIsoDir").addEventListener("click",async()=>{
+ if(!selectedIso)return;
+ $("readIsoDir").disabled=true;$("isoDirectory").textContent="Reading XDVDFS volume descriptor and root directory…";
+ try{
+  const vd=await readIsoRange(isoVolumeOffset,0x800);
+  if(!bytesMatch(vd,0))throw new Error("Xbox filesystem signature not found at the selected volume offset. Click Inspect image first.");
+  const vv=new DataView(vd.buffer,vd.byteOffset,vd.byteLength);
+  const rootSector=readU32LE(vv,0x14),rootSize=readU32LE(vv,0x18);
+  const rootOffset=rootSector*2048;
+  if(!rootSize||rootSize>64*1024*1024||rootOffset+rootSize>selectedIso.size)throw new Error("Root directory location or size looks invalid (sector "+rootSector+", size "+rootSize+").");
+  const rootBytes=await readIsoRange(rootOffset,rootSize);
+  const entries=parseXdvdfsEntries(rootBytes);
+  if(!entries.length)throw new Error("No directory entries could be parsed. This image may use a different layout or the directory format may need more work.");
+  isoRoot={sector:rootSector,size:rootSize};
+  let lines=["Root directory sector: "+rootSector,"Root directory size: "+formatBytes(rootSize),"", "Entries found: "+entries.length,""];
+  for(const e of entries.slice(0,500)){
+   lines.push((e.dir?"[DIR] ":"[FILE] ")+e.name+(e.dir?"": "  ("+formatBytes(e.size)+")")+"  @ sector "+e.sector);
+  }
+  if(entries.length>500)lines.push("… showing first 500 entries.");
+  lines.push("","Note: this first pass lists the root directory only. Nested folders are not expanded yet; no game files are executed.");
+  $("isoDirectory").textContent=lines.join("\n");
+  $("isoConsole").textContent+="\n\nRoot directory parsed successfully. Found "+entries.length+" root entries.";
+ }catch(err){
+  $("isoDirectory").textContent="Directory read failed: "+(err&&err.message?err.message:String(err));
+ }finally{$("readIsoDir").disabled=!selectedIso}
 });
 </script><script src="./cpu.js" onerror="document.getElementById('buildStatus').textContent='Build pending: cpu.js has not been generated yet';document.getElementById('console').textContent='The C++ source is here, but the WebAssembly build must finish before the prototype can run.'"></script>
 </body></html>
