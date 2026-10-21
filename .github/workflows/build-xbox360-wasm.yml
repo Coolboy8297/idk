@@ -1,0 +1,46 @@
+name: Build VEYAORA 360 CPU prototype
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "xbox360/cpu.cpp"
+      - ".github/workflows/build-xbox360-wasm.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Emscripten
+        uses: mymindstorm/setup-emsdk@v14
+        with:
+          version: latest
+      - name: Compile CPU core to WebAssembly
+        run: |
+          emcc xbox360/cpu.cpp \
+            -O2 \
+            -std=c++17 \
+            -s WASM=1 \
+            -s MODULARIZE=0 \
+            -s EXPORT_NAME=Module \
+            -s EXPORTED_FUNCTIONS='["_cpu_reset","_cpu_load_demo","_cpu_step","_cpu_run","_cpu_get_pc","_cpu_get_reg","_cpu_get_steps","_cpu_get_last_opcode","_cpu_get_memory_word","_cpu_is_halted","_cpu_get_status"]' \
+            -s EXPORTED_RUNTIME_METHODS='["UTF8ToString"]' \
+            -s ALLOW_MEMORY_GROWTH=1 \
+            -o xbox360/cpu.js
+      - name: Commit generated WebAssembly files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add xbox360/cpu.js xbox360/cpu.wasm
+          if git diff --cached --quiet; then
+            echo "Generated files are already up to date."
+          else
+            git commit -m "Build VEYAORA 360 WebAssembly CPU prototype [skip ci]"
+            git push
+          fi
