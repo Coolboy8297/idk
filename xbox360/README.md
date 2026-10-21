@@ -1,35 +1,35 @@
-# VEYAORA 360 — CPU Lab (Phase 01)
+# VEYAORA Xbox Lab
 
-This folder is separate from the existing VEYAORA Arcade launcher.
+This folder is the experimental browser frontend for original Xbox and Xbox 360 work.
 
-## What this prototype does
+## What works here now
 
-- Implements a tiny, incomplete PowerPC-style instruction interpreter in C++.
-- Compiles the C++ core to WebAssembly with Emscripten.
-- Includes a browser UI to load and step through a built-in test program.
-- Uses 64 KiB of emulated memory and 32 general-purpose 32-bit registers.
-- Runs locally in the browser after the page and WebAssembly files load. It does not stream gameplay.
+- Local selection and basic signature inspection of an ISO/XISO file. The file is not uploaded by this page.
+- First-pass XDVDFS root-directory listing for supported original Xbox XISO images.
+- Keyboard remapping and mouse-capture input test.
+- A tiny PowerPC instruction interpreter used only as a diagnostic. It is **not** an Xbox 360 CPU emulator.
+- A link from the page to [FractumSeraph/OpenCE](https://github.com/FractumSeraph/OpenCE), which publishes a WebAssembly browser port of Halo: Combat Evolved. This is a port of one game, not a general-purpose Xbox emulator.
 
-The built-in program puts 5 in R3, puts 7 in R4, adds them into R5, and stores 12 at memory address 0x100. The final stop marker is a prototype convention, not an actual PowerPC instruction.
+## Original Xbox
 
-## Important limitation
+The reference full-system emulator is [xemu](https://github.com/xemu-project/xemu), which currently targets desktop operating systems. Porting it to a browser would require adapting its CPU/JIT, graphics, audio, storage, threading, and platform dependencies for WebAssembly and browser APIs.
 
-This is an educational CPU-core proof of concept, not an Xbox 360 emulator. The Xbox 360 Xenon CPU has PowerPC-derived cores plus specialized vector instructions, and a functional console emulator also needs extensive system APIs, memory/peripheral behavior, GPU command translation, audio, storage, and other components. This subset will not boot the Xbox 360 dashboard or run commercial games.
+The OpenCE browser port is a practical browser-playable route for Halo CE specifically. It does not make this page a universal Xbox ISO emulator.
 
-## Build
+## Xbox 360
 
-The workflow at .github/workflows/build-xbox360-wasm.yml compiles cpu.cpp using Emscripten and commits generated cpu.js and cpu.wasm into this folder. Once the workflow succeeds and GitHub Pages publishes the updated repository, open:
+[Xenia](https://github.com/xenia-project/xenia) is the reference Xbox 360 emulator. It is a separate, substantial project and is not a browser-ready module. A browser port would require a major WebAssembly/platform port, including CPU translation, GPU translation, audio, file access, threading, and graphics API changes. Adding a script tag or ISO picker alone cannot make games run.
 
-https://coolboy8297.github.io/idk/xbox360/
+## GitHub Pages limitations
 
-If testing locally, serve the repository over HTTP rather than opening the HTML with file:// so the browser can fetch the WebAssembly binary.
+GitHub Pages serves static files. It does not provide a server process to run a desktop emulator, and this repository currently has no verified WebAssembly build of xemu or Xenia. Do not label the diagnostic interpreter as a playable emulator until a real core has been built, connected to browser graphics/audio/input/storage APIs, and tested with a game.
 
-## Implemented instruction subset
+## Next engineering milestones
 
-- addi, addis
-- ori, oris, andi.
-- lwz, stw
-- b and limited bc condition handling
-- add and subf XO-form operations
+1. Keep disc inspection and input mapping as frontend utilities.
+2. Define a stable browser-core interface for boot, pause, reset, frame output, audio, input, and save data.
+3. Integrate a real browser-compatible core for one target first; test it independently before connecting it to the launcher.
+4. Treat original Xbox and Xbox 360 as separate backends, with separate compatibility and system-file requirements.
+5. Show a clear error when a core or required user-supplied system files are missing.
 
-Anything outside this subset stops with an unsupported-instruction status. This list is intentionally small for the first test.
+No BIOS, firmware, or commercial game data is bundled by this project.
