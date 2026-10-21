@@ -9,12 +9,87 @@
 <div class="metrics"><div class="metric"><small>Program counter</small><strong id="pc">00000000</strong></div><div class="metric"><small>Instructions</small><strong id="steps">0</strong></div><div class="metric"><small>Last opcode</small><strong id="opcode">--------</strong></div></div>
 <h2 style="margin-top:22px">CPU status</h2><div class="console" id="console" role="status">Waiting for WebAssembly module…</div><h2 style="margin-top:22px">Memory check</h2><div class="console" id="memory">Address 0x0100: not read yet</div></section>
 <section class="panel"><h2>General-purpose registers</h2><div class="regs" id="registers"></div><div class="note"><strong>Important:</strong> this is not yet a playable Xbox 360 emulator. It is a CPU-core proof of concept, not a complete Xenon CPU, GPU, or Xbox system implementation. Commercial games will not run at this stage.</div></section></div>
-<footer>VEYAORA 360 · Experimental prototype · No streaming · No game files are uploaded anywhere.</footer></main>
+
+<section class="panel" id="inputPanel" style="margin-top:16px">
+<h2>Keyboard + mouse input prototype</h2>
+<p style="margin-top:-6px">Click the input area to capture the mouse. Press Escape to release it. This tests input mapping only; it does not control Xbox games yet.</p>
+<div id="inputViewport" tabindex="0" aria-label="Input test area" style="height:210px;border:1px solid #31506a;border-radius:12px;background:radial-gradient(ellipse at center,#152a3a,#070c13 70%);display:grid;place-items:center;position:relative;overflow:hidden;cursor:crosshair;user-select:none">
+<div id="reticle" style="font-size:28px;color:var(--accent);pointer-events:none">+</div>
+<div style="position:absolute;left:12px;bottom:10px;color:var(--muted);font:12px ui-monospace,monospace">CLICK TO CAPTURE MOUSE</div>
+<div id="lockStatus" style="position:absolute;right:12px;top:10px;color:var(--accent);font-size:12px">MOUSE RELEASED</div>
+</div>
+<div class="metrics">
+<div class="metric"><small>Left stick X / Y</small><strong id="leftAxes">0.00 / 0.00</strong></div>
+<div class="metric"><small>Right stick X / Y</small><strong id="rightAxes">0.00 / 0.00</strong></div>
+<div class="metric"><small>Buttons held</small><strong id="heldButtons">None</strong></div>
+</div>
+<h2 style="margin-top:20px">Remap controls</h2>
+<p style="margin-top:-8px">Select a button, then press the key you want to assign. Mouse buttons are fixed for now.</p>
+<div id="mappingGrid" class="controls"></div>
+<div class="controls" style="margin-top:12px"><button id="resetMapping">Reset default keys</button></div>
+<div class="console" id="inputLog" style="margin-top:12px">Input system ready. WASD = left stick; mouse = right stick.</div>
+</section><footer>VEYAORA 360 · Experimental prototype · No streaming · No game files are uploaded anywhere.</footer></main>
 <script>
 const $=id=>document.getElementById(id),regRoot=$("registers");for(let i=0;i<32;i++){const n=document.createElement("div");n.className="reg";n.innerHTML="<span>R"+i+"</span><b id='r"+i+"'>00000000</b>";regRoot.appendChild(n)}
 let ready=false,loaded=false;function hex(v){return(Number(v)>>>0).toString(16).toUpperCase().padStart(8,"0")}
 function update(){if(!ready)return;$("pc").textContent=hex(Module._cpu_get_pc());$("steps").textContent=String(Module._cpu_get_steps());$("opcode").textContent=hex(Module._cpu_get_last_opcode());for(let i=0;i<32;i++)$("r"+i).textContent=hex(Module._cpu_get_reg(i));$("console").textContent=Module.UTF8ToString(Module._cpu_get_status());$("memory").textContent="Address 0x0100: 0x"+hex(Module._cpu_get_memory_word(0x100))+" (big-endian word)";$("step").disabled=!loaded||Module._cpu_is_halted();$("run").disabled=!loaded||Module._cpu_is_halted();$("reset").disabled=!loaded}
 var Module={onRuntimeInitialized(){ready=true;$("buildStatus").textContent="WebAssembly loaded · CPU core ready";$("console").textContent="Module initialized. Load the built-in test program to begin.";$("load").disabled=false;update()},onAbort(reason){$("buildStatus").textContent="WebAssembly failed to start";$("console").textContent="Startup error: "+reason+". Check that cpu.js and cpu.wasm were built and deployed."},print(t){$("console").textContent=String(t)},printErr(t){console.error(t)}};window.Module=Module;$("load").disabled=true;
 $("load").addEventListener("click",()=>{if(!ready)return;Module._cpu_load_demo();loaded=true;update()});$("step").addEventListener("click",()=>{if(ready&&loaded){Module._cpu_step();update()}});$("run").addEventListener("click",()=>{if(ready&&loaded){Module._cpu_run(100);update()}});$("reset").addEventListener("click",()=>{if(ready){Module._cpu_reset();loaded=false;update()}});
+
+const inputDefaults={"Left stick up":"w","Left stick down":"s","Left stick left":"a","Left stick right":"d","A":" ","B":"f","X":"e","Y":"q","LB":"Shift","RB":"r","Start":"Enter","Back":"Tab"};
+let inputMap={...inputDefaults}, held=new Set(), remapping=null, rx=0, ry=0, mouseSens=0.004;
+const inputViewport=$("inputViewport");
+function keyLabel(k){return k===" "?"Space":k.length===1?k.toUpperCase():k}
+function renderMappings(){
+ const root=$("mappingGrid");root.innerHTML="";
+ for(const [action,key] of Object.entries(inputMap)){
+  const b=document.createElement("button");b.textContent=action+": "+keyLabel(key)+(remapping===action?" · press key…":"");
+  b.addEventListener("click",()=>{remapping=action;renderMappings();$("inputLog").textContent="Press a key to assign "+action+". Press Escape to cancel.";});
+  root.appendChild(b);
+ }
+}
+function activeButtons(){
+ const b=[];
+ for(const [action,key] of Object.entries(inputMap)) if(held.has(key.toLowerCase())) b.push(action);
+ if(held.has("mouse0"))b.push("RT");
+ if(held.has("mouse2"))b.push("LT");
+ return b;
+}
+function updateInput(){
+ let x=0,y=0;
+ if(held.has(inputMap["Left stick left"].toLowerCase()))x-=1;
+ if(held.has(inputMap["Left stick right"].toLowerCase()))x+=1;
+ if(held.has(inputMap["Left stick up"].toLowerCase()))y-=1;
+ if(held.has(inputMap["Left stick down"].toLowerCase()))y+=1;
+ $("leftAxes").textContent=x.toFixed(2)+" / "+y.toFixed(2);
+ $("rightAxes").textContent=rx.toFixed(2)+" / "+ry.toFixed(2);
+ $("heldButtons").textContent=activeButtons().join(", ")||"None";
+}
+inputViewport.addEventListener("click",()=>{if(!remapping&&inputViewport.requestPointerLock)inputViewport.requestPointerLock();});
+document.addEventListener("pointerlockchange",()=>{$("lockStatus").textContent=document.pointerLockElement===inputViewport?"MOUSE CAPTURED":"MOUSE RELEASED";$("inputLog").textContent=document.pointerLockElement===inputViewport?"Mouse captured. Move to test the right stick; Escape releases it.":"Mouse released.";});
+document.addEventListener("mousemove",e=>{
+ if(document.pointerLockElement!==inputViewport)return;
+ rx=Math.max(-1,Math.min(1,rx+e.movementX*mouseSens));
+ ry=Math.max(-1,Math.min(1,ry+e.movementY*mouseSens));
+ $("reticle").style.transform="translate("+Math.round(rx*55)+"px,"+Math.round(ry*45)+"px)";
+ updateInput();
+});
+document.addEventListener("keydown",e=>{
+ const k=e.key.toLowerCase();
+ if(remapping){
+  e.preventDefault();
+  if(k!=="escape")inputMap[remapping]=e.key===" "?" ":k;
+  remapping=null;renderMappings();updateInput();$("inputLog").textContent="Control mapping updated.";
+  return;
+ }
+ if([" ","tab"].includes(k))e.preventDefault();
+ held.add(k);updateInput();
+});
+document.addEventListener("keyup",e=>{held.delete(e.key.toLowerCase());updateInput();});
+inputViewport.addEventListener("contextmenu",e=>e.preventDefault());
+document.addEventListener("mousedown",e=>{if(document.pointerLockElement===inputViewport){held.add(e.button===0?"mouse0":"mouse2");updateInput();}});
+document.addEventListener("mouseup",e=>{held.delete(e.button===0?"mouse0":"mouse2");updateInput();});
+$("resetMapping").addEventListener("click",()=>{inputMap={...inputDefaults};remapping=null;renderMappings();updateInput();$("inputLog").textContent="Default keyboard mappings restored.";});
+renderMappings();updateInput();
 </script><script src="./cpu.js" onerror="document.getElementById('buildStatus').textContent='Build pending: cpu.js has not been generated yet';document.getElementById('console').textContent='The C++ source is here, but the WebAssembly build must finish before the prototype can run.'"></script>
 </body></html>
