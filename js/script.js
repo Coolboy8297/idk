@@ -1,21 +1,20 @@
 /**
- * VEYAORA ARCADE — Eaglercraft 26.3 launcher
+ * VEYAORA ARCADE — Eaglercraft 26.2 launcher
  * Main build: eaglercraft/index.html
  */
 (function () {
   "use strict";
-  // MAIN VERSION: Eaglercraft 26.3.
-  // Eaglercraft 26.3 is the root index.html; 26.2 remains in eaglercraft/index.html.
-  const GAME_URL = "index.html?v=26.3-root-20261021";
-  const GAME_VERSION = "26.3";
+  // MAIN VERSION: Eaglercraft 26.2.
+  // The local Eaglercraft client is served from this repository.
+  const GAME_URL = "eaglercraft/index.html?v=26.2-restored-20261020";
+  const GAME_VERSION = "26.2";
 
   // ADD EXTRA VERSIONS HERE.
   // Put each extra HTML file in the eaglercraft folder and name it by version,
   // for example eaglercraft/1.8.8.html, then add:
   // { version: "1.8.8", file: "1.8.8.html" }
-  // The main build is the root index.html; older builds are in eaglercraft/.
+  // The main index.html above stays unchanged.
   const EXTRA_VERSIONS = [
-    { version: "26.2", file: "index.html", folder: "eaglercraft" },
     { version: "1.8.8", file: "1.8.8.html" },
     { version: "1.5.2", file: "1.5.2.html" },
     { version: "Beta 1.7.3", file: "b1.7.3.html" },
@@ -42,7 +41,7 @@
   const otherVersionsGrid = document.getElementById("other-versions-grid");
   let gameLoaded = false;
   let activeGameUrl = GAME_URL;
-  let activeGameTitle = "Eaglercraft 26.3";
+  let activeGameTitle = "Eaglercraft 26.2";
 
   if (gameVersionEl) gameVersionEl.textContent = GAME_VERSION;
 
@@ -109,7 +108,7 @@
       window.open(entry.externalUrl, "_blank", "noopener,noreferrer");
       return;
     }
-    window.open((entry.folder ? entry.folder + "/" : "eaglercraft/") + entry.file, "_blank", "noopener,noreferrer");
+    window.open("eaglercraft/" + entry.file, "_blank", "noopener,noreferrer");
   }
 
   renderExtraVersions();
@@ -179,10 +178,10 @@
   setupLiveVisitors();
 
   function showDefaultGame() {
-    showGame(GAME_URL, "Eaglercraft 26.3");
+    showGame(GAME_URL, "Eaglercraft 26.2");
   }
 
-  function showGame(url = GAME_URL, title = "Eaglercraft 26.3") {
+  function showGame(url = GAME_URL, title = "Eaglercraft 26.2") {
     activeGameUrl = url;
     activeGameTitle = title;
     gameFrame.title = title;
@@ -265,7 +264,4 @@
       toggleFullscreen();
     }
   });
-
-  // Automatically boot Eaglercraft 26.3 when the arcade opens.
-  showDefaultGame();
 })();
