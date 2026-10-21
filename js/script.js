@@ -15,7 +15,7 @@
   // { version: "1.8.8", file: "1.8.8.html" }
   // The main build is the root index.html; older builds are in eaglercraft/.
   const EXTRA_VERSIONS = [
-    { version: "26.2", file: "index.html" },
+    { version: "26.2", file: "index.html", folder: "eaglercraft" },
     { version: "1.8.8", file: "1.8.8.html" },
     { version: "1.5.2", file: "1.5.2.html" },
     { version: "Beta 1.7.3", file: "b1.7.3.html" },
@@ -109,7 +109,7 @@
       window.open(entry.externalUrl, "_blank", "noopener,noreferrer");
       return;
     }
-    window.open("eaglercraft/" + entry.file, "_blank", "noopener,noreferrer");
+    window.open((entry.folder ? entry.folder + "/" : "eaglercraft/") + entry.file, "_blank", "noopener,noreferrer");
   }
 
   renderExtraVersions();
@@ -265,4 +265,7 @@
       toggleFullscreen();
     }
   });
+
+  // Automatically boot Eaglercraft 26.3 when the arcade opens.
+  showDefaultGame();
 })();
