@@ -28,13 +28,10 @@
   const gameView = document.getElementById("game-view");
   const playBtn = document.getElementById("play-btn");
   const versionCurrent = document.getElementById("version-current");
-  const backBtn = document.getElementById("back-btn");
-  const fullscreenBtn = document.getElementById("fullscreen-btn");
   const gameFrame = document.getElementById("game-frame");
   const gameLoader = document.getElementById("game-loader");
   const statusText = document.getElementById("status-text");
   const gameVersionEl = document.getElementById("game-version");
-  const fsLabel = document.getElementById("fs-label");
   const liveVisitorsEl = document.getElementById("live-visitors");
   const visitorStatusEl = document.getElementById("visitor-status");
   const otherVersionsSection = document.getElementById("other-versions-section");
@@ -190,13 +187,6 @@
     document.body.style.overflow = "hidden";
     loadGame();
   }
-  function showHome() {
-    if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(() => {});
-    gameView.classList.remove("active");
-    homeView.classList.add("active");
-    document.body.style.overflow = "";
-    if (statusText) statusText.textContent = "SYSTEM READY";
-  }
   function loadGame() {
     if (gameLoaded && gameFrame.src.endsWith(activeGameUrl)) {
       gameLoader.classList.add("hidden");
@@ -217,51 +207,9 @@
     };
     gameFrame.src = activeGameUrl;
   }
-  function toggleFullscreen() {
-    if (document.fullscreenElement) {
-      if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
-      return;
-    }
-
-    // Fullscreen the game iframe itself so the browser gives keyboard and
-    // pointer-lock input to the game rather than to the surrounding launcher.
-    const target = gameFrame && gameFrame.requestFullscreen
-      ? gameFrame
-      : gameView;
-
-    if (target && target.requestFullscreen) {
-      target.requestFullscreen().then(() => {
-        // Focus the game after the fullscreen transition; pointer lock still
-        // requires a click inside the game, as required by the browser.
-        try { gameFrame.focus({ preventScroll: true }); }
-        catch (_) { gameFrame.focus(); }
-      }).catch(() => {
-        // Some browsers only permit the containing element to go fullscreen.
-        if (target !== gameView && gameView.requestFullscreen) {
-          gameView.requestFullscreen().then(() => {
-            try { gameFrame.focus({ preventScroll: true }); }
-            catch (_) { gameFrame.focus(); }
-          }).catch(() => {});
-        }
-      });
-    }
-  }
-  function updateFullscreenLabel() {
-    if (fsLabel) fsLabel.textContent = document.fullscreenElement ? "⛶ EXIT FULLSCREEN" : "⛶ FULLSCREEN";
-  }
 
   playBtn.addEventListener("click", showDefaultGame);
   if (versionCurrent) versionCurrent.addEventListener("click", showDefaultGame);
   const neonRunButton = document.getElementById("launch-neon-run");
   if (neonRunButton) neonRunButton.addEventListener("click", () => showGame("neon-run/GoodLookinggGm.html", "Neon Run"));
-  backBtn.addEventListener("click", showHome);
-  fullscreenBtn.addEventListener("click", toggleFullscreen);
-  document.addEventListener("fullscreenchange", updateFullscreenLabel);
-  document.addEventListener("keydown", event => {
-    if (!gameView.classList.contains("active")) return;
-    if (event.key.toLowerCase() === "f" && !["INPUT", "TEXTAREA"].includes(event.target.tagName)) {
-      event.preventDefault();
-      toggleFullscreen();
-    }
-  });
 })();
