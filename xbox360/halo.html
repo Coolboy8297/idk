@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VEYΛORA Arcade — Halo CE</title>
+<style>
+:root{color-scheme:dark;--bg:#070b11;--panel:#101925;--line:#26394d;--accent:#75f5c4;--muted:#9aadc1}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:#edf5ff;font:15px/1.5 system-ui, sans-serif}
+header{display:flex;gap:16px;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid var(--line);background:#0b121c;flex-wrap:wrap}
+a{color:var(--accent)}.brand{font-weight:800;letter-spacing:.12em}.actions{display:flex;gap:8px;flex-wrap:wrap}
+.actions a,.actions button{background:#172536;color:#edf5ff;border:1px solid #344a60;border-radius:8px;padding:9px 12px;text-decoration:none;font:inherit;cursor:pointer}
+main{padding:16px;max-width:1500px;margin:auto}.notice{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 15px;margin-bottom:12px;color:#c7d6e6}
+.player{height:calc(100vh - 190px);min-height:420px;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#000}
+iframe{width:100%;height:100%;border:0;background:#000}
+.small{font-size:13px;color:var(--muted);margin-top:10px}
+@media(max-width:600px){header{padding:12px}main{padding:10px}.player{height:calc(100vh - 240px);min-height:360px}}
+</style>
+</head>
+<body>
+<header><div class="brand">VEYΛORA <span style="color:var(--accent)">ARCADE / HALO CE</span></div><nav class="actions"><a href="./">← Xbox Lab</a><a href="https://halo.fractumseraph.net/" target="_blank" rel="noopener noreferrer">Open game in new tab ↗</a><button id="fullscreen" type="button">Fullscreen</button></nav></header>
+<main>
+<div class="notice"><strong>Browser game port:</strong> This is Halo: Combat Evolved, not a general-purpose Xbox or Xbox 360 emulator. If the embedded player is blocked by its host, use “Open game in new tab.” The game host provides the WebAssembly game; no ISO is sent to VEYAORA.</div>
+<div class="player" id="player"><iframe id="game" src="https://halo.fractumseraph.net/" title="Halo Combat Evolved browser game" allow="fullscreen; gamepad; autoplay; clipboard-read; clipboard-write" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+<p class="small">Use the game’s own controls and menus. If it does not load in this frame, that is usually the remote site’s embedding/security policy; the new-tab link bypasses that limitation.</p>
+</main>
+<script>
+document.getElementById("fullscreen").addEventListener("click",async()=>{const p=document.getElementById("player");try{if(!document.fullscreenElement)await p.requestFullscreen();else await document.exitFullscreen()}catch(e){window.open("https://halo.fractumseraph.net/","_blank","noopener,noreferrer")}});
+</script>
+</body>
+</html>
