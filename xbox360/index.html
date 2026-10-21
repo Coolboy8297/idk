@@ -28,6 +28,21 @@
 <div id="mappingGrid" class="controls"></div>
 <div class="controls" style="margin-top:12px"><button id="resetMapping">Reset default keys</button></div>
 <div class="console" id="inputLog" style="margin-top:12px">Input system ready. WASD = left stick; mouse = right stick.</div>
+</section>
+<section class="panel" id="isoPanel" style="margin-top:16px">
+<h2>Disc image loader</h2>
+<p style="margin-top:-6px">Choose an ISO/XISO file from your device. The browser inspects a few header locations locally; the file is not uploaded.</p>
+<div class="controls" style="align-items:center">
+<input id="isoFile" type="file" accept=".iso,.xiso,application/octet-stream" style="max-width:100%;border:1px solid #34465a;background:#0a1019;color:var(--text);padding:10px;border-radius:9px">
+<button id="inspectIso" class="primary" disabled>Inspect image</button>
+<button id="clearIso">Clear</button>
+</div>
+<div class="metrics">
+<div class="metric"><small>Selected file</small><strong id="isoName" style="font-size:14px">None</strong></div>
+<div class="metric"><small>File size</small><strong id="isoSize">—</strong></div>
+<div class="metric"><small>Image check</small><strong id="isoResult" style="font-size:14px">Waiting</strong></div>
+</div>
+<div class="console" id="isoConsole" style="margin-top:12px">Select a disc image to begin. This prototype only checks for a known Xbox disc filesystem signature; it does not boot the game.</div>
 </section><footer>VEYAORA 360 · Experimental prototype · No streaming · No game files are uploaded anywhere.</footer></main>
 <script>
 const $=id=>document.getElementById(id),regRoot=$("registers");for(let i=0;i<32;i++){const n=document.createElement("div");n.className="reg";n.innerHTML="<span>R"+i+"</span><b id='r"+i+"'>00000000</b>";regRoot.appendChild(n)}
@@ -91,5 +106,62 @@ document.addEventListener("mousedown",e=>{if(document.pointerLockElement===input
 document.addEventListener("mouseup",e=>{held.delete(e.button===0?"mouse0":"mouse2");updateInput();});
 $("resetMapping").addEventListener("click",()=>{inputMap={...inputDefaults};remapping=null;renderMappings();updateInput();$("inputLog").textContent="Default keyboard mappings restored.";});
 renderMappings();updateInput();
+
+let selectedIso=null;
+const isoMagic=new TextEncoder().encode("MICROSOFT*XBOX*MEDIA");
+function formatBytes(n){
+ if(n<1024)return n+" B";
+ const units=["KB","MB","GB","TB"];let v=n/1024,i=0;
+ while(v>=1024&&i<units.length-1){v/=1024;i++}
+ return v.toFixed(v>=100?0:v>=10?1:2)+" "+units[i];
+}
+$("isoFile").addEventListener("change",()=>{
+ selectedIso=$("isoFile").files&&$("isoFile").files[0]||null;
+ $("inspectIso").disabled=!selectedIso;
+ $("isoName").textContent=selectedIso?selectedIso.name:"None";
+ $("isoSize").textContent=selectedIso?formatBytes(selectedIso.size):"—";
+ $("isoResult").textContent="Not checked";
+ $("isoConsole").textContent=selectedIso?"Ready to inspect locally: "+selectedIso.name:"Select a disc image to begin.";
+});
+function bytesMatch(bytes,offset){
+ if(offset<0||offset+isoMagic.length>bytes.length)return false;
+ for(let i=0;i<isoMagic.length;i++)if(bytes[offset+i]!==isoMagic[i])return false;
+ return true;
+}
+$("inspectIso").addEventListener("click",async()=>{
+ if(!selectedIso)return;
+ $("inspectIso").disabled=true;
+ $("isoResult").textContent="Checking…";
+ $("isoConsole").textContent="Reading small header samples from the selected file. The full image is not loaded into memory.";
+ try{
+  const candidates=[
+   {offset:0x10000,label:"XISO / raw game partition"},
+   {offset:0x0FD90000+0x10000,label:"Xbox 360 XGD2 partition candidate"},
+   {offset:0x02080000+0x10000,label:"Xbox 360 XGD3 partition candidate"},
+   {offset:0x18300000+0x10000,label:"Xbox original XGD1 partition candidate"}
+  ];
+  let found=null;
+  for(const candidate of candidates){
+   if(candidate.offset+0x800>selectedIso.size)continue;
+   const sample=new Uint8Array(await selectedIso.slice(candidate.offset,candidate.offset+0x800).arrayBuffer());
+   if(bytesMatch(sample,0)&&bytesMatch(sample,0x7EC)){found=candidate;break;}
+  }
+  if(found){
+   $("isoResult").textContent="Signature found";
+   $("isoConsole").textContent="Recognized Xbox disc filesystem signature.\nCandidate: "+found.label+"\nHeader offset: 0x"+found.offset.toString(16).toUpperCase()+"\n\nThis is only a basic signature check, not a full ISO validation. The CPU prototype cannot boot or execute the game yet.";
+  }else{
+   $("isoResult").textContent="Not recognized";
+   $("isoConsole").textContent="No known Xbox disc filesystem signature was found at the tested offsets.\n\nThe file may use a different layout, be incomplete, or not be an Xbox disc image. This quick check is not definitive.";
+  }
+ }catch(err){
+  $("isoResult").textContent="Read failed";
+  $("isoConsole").textContent="Could not inspect this file: "+(err&&err.message?err.message:String(err));
+ }finally{$("inspectIso").disabled=!selectedIso}
+});
+$("clearIso").addEventListener("click",()=>{
+ $("isoFile").value="";selectedIso=null;$("inspectIso").disabled=true;
+ $("isoName").textContent="None";$("isoSize").textContent="—";$("isoResult").textContent="Waiting";
+ $("isoConsole").textContent="Select a disc image to begin. The file stays on your device.";
+});
 </script><script src="./cpu.js" onerror="document.getElementById('buildStatus').textContent='Build pending: cpu.js has not been generated yet';document.getElementById('console').textContent='The C++ source is here, but the WebAssembly build must finish before the prototype can run.'"></script>
 </body></html>
