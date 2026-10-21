@@ -33,6 +33,10 @@ jobs:
             -s EXPORTED_RUNTIME_METHODS='["UTF8ToString"]' \
             -s ALLOW_MEMORY_GROWTH=1 \
             -o xbox360/cpu.js
+      - name: Rebase generated output onto latest main
+        run: |
+          git fetch origin main
+          git rebase origin/main
       - name: Commit generated WebAssembly files
         run: |
           git config user.name "github-actions[bot]"
