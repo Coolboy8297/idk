@@ -222,5 +222,5 @@
   playBtn.addEventListener("click", showDefaultGame);
   if (versionCurrent) versionCurrent.addEventListener("click", showDefaultGame);
   const neonRunButton = document.getElementById("launch-neon-run");
-  if (neonRunButton) neonRunButton.addEventListener("click", () => showGame("neon-run/GoodLookinggGm.html", "Neon Run"));
+  if (neonRunButton) neonRunButton.addEventListener("click", () => showGame("neon-runner/Neon-Runner.html", "Neon Runner"));
 })();
