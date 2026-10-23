@@ -1,188 +1,113 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>VEYAORA Browser</title>
-  <style>
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      background: #101318;
-      color: #f4f6fa;
-      font-family: Arial, sans-serif;
-    }
-
-    header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 14px;
-      background: #191e27;
-      border-bottom: 1px solid #303744;
-    }
-
-    .logo {
-      font-weight: bold;
-      color: #64caff;
-      white-space: nowrap;
-    }
-
-    form {
-      display: flex;
-      flex: 1;
-      gap: 8px;
-    }
-
-    input {
-      width: 100%;
-      min-width: 0;
-      padding: 11px;
-      color: white;
-      background: #252c37;
-      border: 1px solid #414b5c;
-      border-radius: 7px;
-      font-size: 15px;
-    }
-
-    button {
-      padding: 10px 15px;
-      background: #147fbd;
-      color: white;
-      border: 0;
-      border-radius: 7px;
-      cursor: pointer;
-    }
-
-    nav {
-      display: flex;
-      gap: 8px;
-      padding: 10px 14px;
-      flex-wrap: wrap;
-    }
-
-    nav button {
-      background: #252c37;
-    }
-
-    #status {
-      padding: 0 14px 10px;
-      color: #b7c3d3;
-      font-size: 13px;
-    }
-
-    iframe {
-      display: block;
-      width: 100%;
-      height: calc(100vh - 145px);
-      min-height: 350px;
-      border: 0;
-      background: white;
-    }
-  </style>
+  <meta name="theme-color" content="#090b0f">
+  <meta name="description" content="VEYAORA Arcade — play beyond what's next. Launch Eaglercraft 26.2 in your browser.">
+  <title>VEYAORA ARCADE — Play Beyond What's Next</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/idk/css/style.css?v=game-frame-visible-20261021">
 </head>
 <body>
-  <header>
-    <div class="logo">VEYΛORA</div>
+  <div class="ambient ambient-one" aria-hidden="true"></div><div class="ambient ambient-two" aria-hidden="true"></div>
+  <div id="home-view" class="view active">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="VEYAORA home"><span class="brand-symbol">V<span>.</span></span><span class="brand-name">VEYAORA<span>ARCADE</span></span></a>
+      <div class="side-label">YOUR SPACE</div>
+      <a class="nav-item nav-active" href="#featured"><span class="nav-icon">▦</span> Discover <span class="nav-line"></span></a>
+      <a class="nav-item" href="#library"><span class="nav-icon">◫</span> Game library</a>
+      <div class="side-divider"></div>
+      <div class="side-label">COLLECTION</div>
+      <a class="nav-item" href="#available"><span class="nav-icon nav-green">●</span> Available now</a>
+      <div class="sidebar-bottom">
+        <div class="sidebar-promo"><div class="promo-orbit">✳</div><span class="side-label">THE NEXT LEVEL</span><strong>Play beyond<br>what’s next.</strong><span class="promo-line"></span><small>VEYAORA · GAME PORTAL</small></div>
+        <div class="side-footer"><span class="tiny-status"></span> SYSTEM OPERATIONAL <span>v1.0</span></div>
+      </div>
+    </aside>
 
-    <form id="addressForm">
-      <input
-        id="address"
-        type="text"
-        value="https://example.com"
-        placeholder="Enter a website address"
-        autocomplete="url"
-        aria-label="Website address"
-      >
-      <button type="submit">Go</button>
-    </form>
-  </header>
+    <main class="main-shell">
+      <header class="topbar">
+        <div class="breadcrumb"><span>ARCADE</span><b>/</b><strong>DISCOVER</strong></div>
+        <div class="topbar-right">
+          <div class="online-pill"><span class="pulse-dot"></span><span id="status-text">SYSTEM READY</span></div>
+          <div class="visitor-pill"><span class="visitor-icon">↗</span><span>PLAYERS ONLINE</span><strong id="live-visitors">—</strong><i id="visitor-status">COUNTER NOT CONFIGURED</i></div>
+        </div>
+      </header>
 
-  <nav aria-label="Bookmarks">
-    <button data-url="https://example.com">Example</button>
-    <button data-url="https://www.wikipedia.org">Wikipedia</button>
-    <button id="openTab">Open in new tab</button>
-  </nav>
+      <section class="welcome-row">
+        <div><p class="overline"><span class="overline-mark"></span> YOUR NEXT WORLD STARTS HERE</p><h1>Find your <span>next</span> game.</h1><p class="welcome-copy">One portal. New worlds. Zero installs.</p></div>
+        <div class="date-stamp"><span class="stamp-square">V</span><span>VEYAORA<br><b>ARCADE NETWORK</b></span></div>
+      </section>
 
-  <div id="status" role="status">
-    Ready. Some websites do not allow iframe embedding.
+      <section id="featured" class="featured-card">
+        <div class="feature-backdrop" aria-hidden="true"><div class="feature-sun"></div><div class="pixel-moon"></div><div class="mountain mountain-back"></div><div class="mountain mountain-front"></div><div class="feature-platform"></div><div class="pixel-cube cube-one"></div><div class="pixel-cube cube-two"></div><div class="pixel-cube cube-three"></div><div class="feature-scan"></div></div>
+        <div class="feature-content">
+          <div class="feature-kicker"><span class="live-tag"><span></span> FEATURED GAME</span><span class="feature-index">01 / 04</span></div>
+          <div class="feature-title-line"><div><p class="game-franchise">THE BLOCK-BUILDING CLASSIC</p><h2>EAGLER<span>CRAFT</span></h2></div><div class="version-stamp"><small>CURRENT BUILD</small><strong>26.2</strong><span>WEB EDITION</span></div></div>
+          <p class="feature-description">Your world, your rules. Jump into Eaglercraft right in your browser — no installer, no waiting around.</p>
+          <div class="feature-actions"><button id="play-btn" class="primary-button" type="button"><span class="button-play">▶</span> PLAY EAGLERCRAFT <span class="button-arrow">↗</span></button><a class="secondary-button" href="#library">EXPLORE LIBRARY <span>↓</span></a></div>
+          <div class="feature-foot"><span><i class="mini-square"></i> VERSION <b id="game-version">26.2</b></span><span><i class="mini-square"></i> PLATFORM <b>BROWSER</b></span><span><i class="mini-square"></i> ACCESS <b class="green-text">AVAILABLE</b></span></div>
+        </div>
+        <div class="feature-watermark" aria-hidden="true">26</div>
+        <div class="corner-mark corner-top"></div><div class="corner-mark corner-bottom"></div>
+      </section>
+
+      <section class="quick-stats" aria-label="Portal status">
+        <div class="quick-stat"><span class="stat-symbol">◈</span><div><small>LIVE GAME</small><strong>Eaglercraft 26.2</strong></div><span class="stat-status">READY</span></div>
+        <div class="quick-stat"><span class="stat-symbol">⌘</span><div><small>INSTALLATION</small><strong>Nothing to install</strong></div><span class="stat-status stat-neutral">BROWSER</span></div>
+      </section>
+
+      <section id="library" class="library-section">
+        <div class="section-heading"><div><p class="overline">THE COLLECTION <span class="heading-slash">/ 001</span></p><h2>Game library<span class="heading-period">.</span></h2><p class="section-copy">Pick a build. Your next session is one click away.</p></div><div class="library-count"><strong>02</strong><span>AVAILABLE<br>RIGHT NOW</span></div></div>
+        <div class="library-grid">
+          <article id="available" class="game-card game-card-featured">
+            <div class="card-art art-262"><span class="art-label">VEYAORA SELECT</span><div class="art-grid"></div><div class="art-block block-a"></div><div class="art-block block-b"></div><div class="art-block block-c"></div><div class="art-block block-d"></div><div class="art-number">26<span>.</span>2</div><span class="art-bottom-label">WEB BUILD / CURRENT</span></div>
+            <div class="card-body"><div class="card-tags"><span class="tag-available"><i></i> AVAILABLE NOW</span><span class="card-code">EG / 026</span></div><h3>Eaglercraft <b>26.2</b></h3><p>The current build. Open your world directly in the browser.</p><button class="card-launch" id="version-current" type="button">LAUNCH GAME <span>↗</span></button></div>
+          </article>
+          <article class="game-card game-card-featured">
+            <div class="card-art art-262"><span class="art-label">VEYAORA ARCADE</span><div class="art-grid"></div><div class="art-block block-a"></div><div class="art-block block-c"></div><div class="art-number">NEON<span>.</span>RUN</div><span class="art-bottom-label">GODOT / WEB EDITION</span></div>
+            <div class="card-body"><div class="card-tags"><span class="tag-available"><i></i> AVAILABLE NOW</span><span class="card-code">NR / 001</span></div><h3>Neon Run</h3><p>Jump into Neon Run, playable right inside VEYAORA ARCADE.</p><button class="card-launch" id="launch-neon-run" type="button">PLAY NEON RUN <span>↗</span></button></div>
+          </article>
+          <article class="game-card game-card-featured">
+            <div class="card-art art-262"><span class="art-label">VEYAORA LAB</span><div class="art-grid"></div><div class="art-block block-a"></div><div class="art-block block-b"></div><div class="art-block block-d"></div><div class="art-number">ANDROID<span>.</span>LAB</div><span class="art-bottom-label">AFTERBURNER / WASM</span></div>
+            <div class="card-body"><div class="card-tags"><span class="tag-available"><i></i> EXPERIMENTAL</span><span class="card-code">AB / 001</span></div><h3>Android Lab</h3><p>Explore Afterburner, an experimental Android-x86 emulator for browsers. The live emulator still needs a compatible proxy server before it can run here.</p><a class="card-launch" href="https://github.com/Z3BOS/afterburner" target="_blank" rel="noopener noreferrer">VIEW AFTERBURNER <span>↗</span></a></div>
+          </article>
+          <article class="game-card game-card-featured">
+            <div class="card-art art-262"><span class="art-label">VEYAORA LAB</span><div class="art-grid"></div><div class="art-block block-a"></div><div class="art-block block-b"></div><div class="art-block block-c"></div><div class="art-number">360<span>.</span>LAB</div><span class="art-bottom-label">POWERPC / WEBASSEMBLY</span></div>
+            <div class="card-body"><div class="card-tags"><span class="tag-available"><i></i> EXPERIMENTAL</span><span class="card-code">VX / 360</span></div><h3>VEYAORA <b>Xbox Lab</b></h3><p>Original Xbox and Xbox 360 experiments, local disc inspection, input mapping, and a browser-playable Halo CE route.</p><a class="card-launch" href="/idk/xbox360/">OPEN XBOX LAB <span>↗</span></a></div>
+          </article>
+        </div>
+        <section id="other-versions-section" class="other-versions-section" hidden>
+          <div class="section-heading">
+            <div><p class="overline">YOUR BUILDS <span class="heading-slash">/ EXTRA</span></p><h2>Other versions<span class="heading-period">.</span></h2><p class="section-copy">Extra Eaglercraft builds added to the version list.</p></div>
+          </div>
+          <div id="other-versions-grid" class="library-grid"></div>
+        </section>
+      </section>
+
+      <footer class="footer"><a class="footer-brand" href="#"><span>V.</span> VEYAORA</a><span>PLAY BEYOND WHAT’S NEXT.</span><span>UNOFFICIAL BROWSER GAME PORTAL <b>© 2026</b></span></footer>
+    </main>
   </div>
 
-  <iframe
-    id="browserFrame"
-    title="Website viewer"
-    src="https://example.com"
-    referrerpolicy="no-referrer"
-    allowfullscreen
-  ></iframe>
+  <div id="game-view" class="view game-view">
+    <div id="game-container" class="game-container">
+      <div id="game-loader" class="game-loader" role="status" aria-live="polite">
+        <div class="loader-mark">V<span>.</span></div>
+        <div class="loader-track"><span></span></div>
+        <p id="loader-text" class="loader-text">INITIALIZING GAME</p>
+        <p class="loader-sub">PLEASE WAIT WHILE YOUR WORLD STARTS</p>
+      </div>
+      <iframe id="game-frame" class="game-frame" title="Eaglercraft 26.2" allow="fullscreen; autoplay; gamepad; clipboard-write; cross-origin-isolated" allowfullscreen></iframe>
+    </div>
+  </div>
 
-  <script>
-    const form = document.getElementById("addressForm");
-    const address = document.getElementById("address");
-    const frame = document.getElementById("browserFrame");
-    const status = document.getElementById("status");
-
-    function normalizeAddress(value) {
-      let input = value.trim();
-
-      if (!input) {
-        throw new Error("Enter a website address.");
-      }
-
-      if (!/^https?:\/\//i.test(input)) {
-        input = "https://" + input;
-      }
-
-      const url = new URL(input);
-
-      if (!["http:", "https:"].includes(url.protocol)) {
-        throw new Error("Only HTTP and HTTPS addresses are supported.");
-      }
-
-      if (!url.hostname.includes(".") &&
-          url.hostname !== "localhost") {
-        throw new Error("Enter a complete website address.");
-      }
-
-      return url.href;
-    }
-
-    function navigate(value) {
-      try {
-        const url = normalizeAddress(value);
-        address.value = url;
-        frame.src = url;
-        status.textContent =
-          "Loading " + new URL(url).hostname +
-          ". If it stays blank, the site may block embedding.";
-      } catch (error) {
-        status.textContent = error.message;
-      }
-    }
-
-    form.addEventListener("submit", function (event) {
-      event.preventDefault();
-      navigate(address.value);
-    });
-
-    document.querySelectorAll("[data-url]").forEach(function (button) {
-      button.addEventListener("click", function () {
-        navigate(button.dataset.url);
-      });
-    });
-
-    document.getElementById("openTab").addEventListener("click",
-      function () {
-        try {
-          const url = normalizeAddress(address.value);
-          window.open(url, "_blank", "noopener,noreferrer");
-        } catch (error) {
-          status.textContent = error.message;
-        }
-      }
-    );
-  </script>
+  <script src="/idk/js/firebase-config.js?v=livecounter20261012"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+  <script src="/idk/js/script.js?v=loading-screen-restored-20261021"></script>
 </body>
 </html>
