@@ -1,239 +1,188 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>VEYAORA Xbox Lab — Original Xbox + Xbox 360</title>
-<style>
-:root{color-scheme:dark;--bg:#080b12;--panel:#101722;--line:#263446;--text:#edf4ff;--muted:#8da0b8;--accent:#65e6d3;--bad:#ffb16b}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#132238 0,#080b12 56%);color:var(--text);font:15px/1.5 system-ui,sans-serif;min-height:100vh}main{max-width:1120px;margin:auto;padding:28px 20px 60px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:20px}.brand{letter-spacing:.17em;font-weight:800}.brand span{color:var(--accent)}.tag{color:var(--muted);font-size:12px;letter-spacing:.12em;text-transform:uppercase}h1{font-size:clamp(28px,5vw,44px);line-height:1.1;margin:28px 0 10px}p{color:var(--muted);max-width:780px}.status{border:1px solid var(--line);border-radius:999px;padding:6px 11px;font-size:12px;color:var(--accent);display:inline-block}.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;margin-top:24px}.panel{background:linear-gradient(145deg,#121b29,#0c121c);border:1px solid var(--line);border-radius:16px;padding:18px;min-width:0}.panel h2{font-size:14px;text-transform:uppercase;letter-spacing:.12em;color:#b8c8dc;margin:0 0 16px}.controls{display:flex;gap:8px;flex-wrap:wrap}button{border:1px solid #34465a;background:#172335;color:var(--text);padding:10px 14px;border-radius:9px;font:inherit;cursor:pointer}button.primary{background:var(--accent);color:#071411;border-color:var(--accent);font-weight:750}button:disabled{opacity:.4;cursor:not-allowed}.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:16px}.metric{background:#0a1019;border:1px solid #1e2a39;border-radius:10px;padding:12px}.metric small{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em}.metric strong{display:block;font:700 20px ui-monospace,monospace;margin-top:4px;overflow-wrap:anywhere}.regs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.reg{background:#0a1019;border:1px solid #1e2a39;padding:8px;border-radius:8px;font:12px ui-monospace,monospace;min-width:0}.reg span{display:block;color:var(--muted)}.reg b{display:block;overflow-wrap:anywhere;color:var(--accent);font-weight:600}.console{background:#060a10;border:1px solid #1c2938;border-radius:10px;padding:12px;min-height:112px;color:#a9f7dd;font:12px/1.6 ui-monospace,monospace;white-space:pre-wrap;overflow-wrap:anywhere}.note{border-left:3px solid var(--bad);padding:10px 13px;background:#20180f;border-radius:0 8px 8px 0;color:#e6c9a8;font-size:13px;margin-top:18px}footer{color:#71839a;font-size:12px;margin-top:24px}.back{color:var(--muted);text-decoration:none}.back:hover{color:var(--accent)}@media(max-width:760px){.grid{grid-template-columns:1fr}}@media(max-width:430px){main{padding:20px 12px}.panel{padding:13px}.regs{grid-template-columns:repeat(2,minmax(0,1fr))}.metric strong{font-size:16px}}
-</style></head><body><main>
-<header class="top"><div><div class="brand">VEY<span>Λ</span>ORA <span>360</span></div><div class="tag">Xbox + Xbox 360 browser project</div></div><a class="back" href="../">← Back to VEYAORA Arcade</a></header>
-<h1>VEYAORA Xbox Emulator Lab</h1><p>One launcher for original Xbox and Xbox 360 experiments. The ISO inspector and input mapper below work locally in your browser; playable emulation requires a real console core.</p><div class="status" id="buildStatus">Checking local diagnostic module…</div>
-<section class="panel" style="margin-top:18px">
-<h2>Launch Halo CE inside VEYAORA Arcade</h2>
-<p style="margin-top:-6px">This opens the actual browser-based Halo: Combat Evolved port. It is a specific Halo game port, not a universal Xbox emulator. The game runs from its host; your ISO is not uploaded here.</p>
-<div class="controls">
-<a href="./halo.html" style="display:inline-block;border:1px solid var(--accent);background:var(--accent);color:#071411;padding:10px 14px;border-radius:9px;text-decoration:none;font-weight:750">Launch embedded Halo CE</a>
-</div>
-</section>
-<section class="panel" style="margin-top:18px">
-<h2>Playable browser route</h2>
-<p style="margin-top:-6px">A community project has a real WebAssembly browser port of Halo: Combat Evolved. It is a game port, not a general-purpose Xbox emulator, but it is the most direct browser-based route for trying your own Halo CE disc image.</p>
-<div class="controls">
-<a href="https://halo.fractumseraph.net/" target="_blank" rel="noopener noreferrer" style="display:inline-block;border:1px solid var(--accent);background:var(--accent);color:#071411;padding:10px 14px;border-radius:9px;text-decoration:none;font-weight:750">Open Halo CE in browser ↗</a>
-<a href="https://github.com/FractumSeraph/OpenCE" target="_blank" rel="noopener noreferrer" style="display:inline-block;border:1px solid #34465a;background:#172335;color:var(--text);padding:10px 14px;border-radius:9px;text-decoration:none">Browser port source ↗</a>
-</div>
-<div class="metrics">
-<div class="metric"><small>Original Xbox</small><strong style="font-size:15px">Halo CE port</strong></div>
-<div class="metric"><small>General Xbox ISO boot</small><strong style="font-size:15px">Not integrated</strong></div>
-<div class="metric"><small>Xbox 360 browser core</small><strong style="font-size:15px">Not available yet</strong></div>
-</div>
-<div class="note"><strong>Honest status:</strong> the PowerPC panel is only a diagnostic interpreter. Xenia and xemu are desktop emulators, not drop-in browser modules. This page does not pretend that the CPU demo can boot commercial games.</div>
-</section>
-<div class="grid"><section class="panel"><h2>PowerPC diagnostic core (not a game emulator)</h2><div class="controls"><button class="primary" id="load">Load test program</button><button id="step" disabled>Step 1</button><button id="run" disabled>Run 100</button><button id="reset" disabled>Reset</button></div>
-<div class="metrics"><div class="metric"><small>Program counter</small><strong id="pc">00000000</strong></div><div class="metric"><small>Instructions</small><strong id="steps">0</strong></div><div class="metric"><small>Last opcode</small><strong id="opcode">--------</strong></div></div>
-<h2 style="margin-top:22px">CPU status</h2><div class="console" id="console" role="status">Waiting for WebAssembly module…</div><h2 style="margin-top:22px">Memory check</h2><div class="console" id="memory">Address 0x0100: not read yet</div></section>
-<section class="panel"><h2>General-purpose registers</h2><div class="regs" id="registers"></div><div class="note"><strong>Important:</strong> this is not yet a playable Xbox 360 emulator. It is a CPU-core proof of concept, not a complete Xenon CPU, GPU, or Xbox system implementation. Commercial games will not run at this stage.</div></section></div>
 
-<section class="panel" id="inputPanel" style="margin-top:16px">
-<h2>Keyboard + mouse input prototype</h2>
-<p style="margin-top:-6px">Click the input area to capture the mouse. Press Escape to release it. This tests input mapping only; it does not control Xbox games yet.</p>
-<div id="inputViewport" tabindex="0" aria-label="Input test area" style="height:210px;border:1px solid #31506a;border-radius:12px;background:radial-gradient(ellipse at center,#152a3a,#070c13 70%);display:grid;place-items:center;position:relative;overflow:hidden;cursor:crosshair;user-select:none">
-<div id="reticle" style="font-size:28px;color:var(--accent);pointer-events:none">+</div>
-<div style="position:absolute;left:12px;bottom:10px;color:var(--muted);font:12px ui-monospace,monospace">CLICK TO CAPTURE MOUSE</div>
-<div id="lockStatus" style="position:absolute;right:12px;top:10px;color:var(--accent);font-size:12px">MOUSE RELEASED</div>
-</div>
-<div class="metrics">
-<div class="metric"><small>Left stick X / Y</small><strong id="leftAxes">0.00 / 0.00</strong></div>
-<div class="metric"><small>Right stick X / Y</small><strong id="rightAxes">0.00 / 0.00</strong></div>
-<div class="metric"><small>Buttons held</small><strong id="heldButtons">None</strong></div>
-</div>
-<h2 style="margin-top:20px">Remap controls</h2>
-<p style="margin-top:-8px">Select a button, then press the key you want to assign. Mouse buttons are fixed for now.</p>
-<div id="mappingGrid" class="controls"></div>
-<div class="controls" style="margin-top:12px"><button id="resetMapping">Reset default keys</button></div>
-<div class="console" id="inputLog" style="margin-top:12px">Input system ready. WASD = left stick; mouse = right stick.</div>
-</section>
-<section class="panel" id="isoPanel" style="margin-top:16px">
-<h2>Disc image loader</h2>
-<p style="margin-top:-6px">Choose an ISO/XISO file from your device. The browser inspects a few header locations locally; the file is not uploaded.</p>
-<div class="controls" style="align-items:center">
-<input id="isoFile" type="file" accept=".iso,.xiso,application/octet-stream" style="max-width:100%;border:1px solid #34465a;background:#0a1019;color:var(--text);padding:10px;border-radius:9px">
-<button id="inspectIso" class="primary" disabled>Inspect image</button>
-<button id="readIsoDir" disabled>Read disc directory</button>
-<button id="clearIso">Clear</button>
-</div>
-<div class="metrics">
-<div class="metric"><small>Selected file</small><strong id="isoName" style="font-size:14px">None</strong></div>
-<div class="metric"><small>File size</small><strong id="isoSize">—</strong></div>
-<div class="metric"><small>Image check</small><strong id="isoResult" style="font-size:14px">Waiting</strong></div>
-</div>
-<div class="console" id="isoConsole" style="margin-top:12px">Select a disc image to begin. This prototype only checks for a known Xbox disc filesystem signature; it does not boot the game.</div>
-<h2 style="margin-top:20px">Disc contents</h2><div class="console" id="isoDirectory" style="max-height:360px;overflow:auto">No directory loaded.</div>
-</section><footer>VEYAORA Xbox Lab · Experimental browser project · Local ISO inspection only · No game files are uploaded by this page.</footer></main>
-<script>
-const $=id=>document.getElementById(id),regRoot=$("registers");for(let i=0;i<32;i++){const n=document.createElement("div");n.className="reg";n.innerHTML="<span>R"+i+"</span><b id='r"+i+"'>00000000</b>";regRoot.appendChild(n)}
-let ready=false,loaded=false;function hex(v){return(Number(v)>>>0).toString(16).toUpperCase().padStart(8,"0")}
-function update(){if(!ready)return;$("pc").textContent=hex(Module._cpu_get_pc());$("steps").textContent=String(Module._cpu_get_steps());$("opcode").textContent=hex(Module._cpu_get_last_opcode());for(let i=0;i<32;i++)$("r"+i).textContent=hex(Module._cpu_get_reg(i));$("console").textContent=Module.UTF8ToString(Module._cpu_get_status());$("memory").textContent="Address 0x0100: 0x"+hex(Module._cpu_get_memory_word(0x100))+" (big-endian word)";$("step").disabled=!loaded||Module._cpu_is_halted();$("run").disabled=!loaded||Module._cpu_is_halted();$("reset").disabled=!loaded}
-var Module={onRuntimeInitialized(){ready=true;$("buildStatus").textContent="WebAssembly loaded · CPU core ready";$("console").textContent="Module initialized. Load the built-in test program to begin.";$("load").disabled=false;update()},onAbort(reason){$("buildStatus").textContent="WebAssembly failed to start";$("console").textContent="Startup error: "+reason+". Check that cpu.js and cpu.wasm were built and deployed."},print(t){$("console").textContent=String(t)},printErr(t){console.error(t)}};window.Module=Module;$("load").disabled=true;
-$("load").addEventListener("click",()=>{if(!ready)return;Module._cpu_load_demo();loaded=true;update()});$("step").addEventListener("click",()=>{if(ready&&loaded){Module._cpu_step();update()}});$("run").addEventListener("click",()=>{if(ready&&loaded){Module._cpu_run(100);update()}});$("reset").addEventListener("click",()=>{if(ready){Module._cpu_reset();loaded=false;update()}});
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VEYAORA Browser</title>
+  <style>
+    * { box-sizing: border-box; }
 
-const inputDefaults={"Left stick up":"w","Left stick down":"s","Left stick left":"a","Left stick right":"d","A":" ","B":"f","X":"e","Y":"q","LB":"Shift","RB":"r","Start":"Enter","Back":"Tab"};
-let inputMap={...inputDefaults}, held=new Set(), remapping=null, rx=0, ry=0, mouseSens=0.004;
-const inputViewport=$("inputViewport");
-function keyLabel(k){return k===" "?"Space":k.length===1?k.toUpperCase():k}
-function renderMappings(){
- const root=$("mappingGrid");root.innerHTML="";
- for(const [action,key] of Object.entries(inputMap)){
-  const b=document.createElement("button");b.textContent=action+": "+keyLabel(key)+(remapping===action?" · press key…":"");
-  b.addEventListener("click",()=>{remapping=action;renderMappings();$("inputLog").textContent="Press a key to assign "+action+". Press Escape to cancel.";});
-  root.appendChild(b);
- }
-}
-function activeButtons(){
- const b=[];
- for(const [action,key] of Object.entries(inputMap)) if(held.has(key.toLowerCase())) b.push(action);
- if(held.has("mouse0"))b.push("RT");
- if(held.has("mouse2"))b.push("LT");
- return b;
-}
-function updateInput(){
- let x=0,y=0;
- if(held.has(inputMap["Left stick left"].toLowerCase()))x-=1;
- if(held.has(inputMap["Left stick right"].toLowerCase()))x+=1;
- if(held.has(inputMap["Left stick up"].toLowerCase()))y-=1;
- if(held.has(inputMap["Left stick down"].toLowerCase()))y+=1;
- $("leftAxes").textContent=x.toFixed(2)+" / "+y.toFixed(2);
- $("rightAxes").textContent=rx.toFixed(2)+" / "+ry.toFixed(2);
- $("heldButtons").textContent=activeButtons().join(", ")||"None";
-}
-inputViewport.addEventListener("click",()=>{if(!remapping&&inputViewport.requestPointerLock)inputViewport.requestPointerLock();});
-document.addEventListener("pointerlockchange",()=>{$("lockStatus").textContent=document.pointerLockElement===inputViewport?"MOUSE CAPTURED":"MOUSE RELEASED";$("inputLog").textContent=document.pointerLockElement===inputViewport?"Mouse captured. Move to test the right stick; Escape releases it.":"Mouse released.";});
-document.addEventListener("mousemove",e=>{
- if(document.pointerLockElement!==inputViewport)return;
- rx=Math.max(-1,Math.min(1,rx+e.movementX*mouseSens));
- ry=Math.max(-1,Math.min(1,ry+e.movementY*mouseSens));
- $("reticle").style.transform="translate("+Math.round(rx*55)+"px,"+Math.round(ry*45)+"px)";
- updateInput();
-});
-document.addEventListener("keydown",e=>{
- const k=e.key.toLowerCase();
- if(remapping){
-  e.preventDefault();
-  if(k!=="escape")inputMap[remapping]=e.key===" "?" ":k;
-  remapping=null;renderMappings();updateInput();$("inputLog").textContent="Control mapping updated.";
-  return;
- }
- if([" ","tab"].includes(k))e.preventDefault();
- held.add(k);updateInput();
-});
-document.addEventListener("keyup",e=>{held.delete(e.key.toLowerCase());updateInput();});
-inputViewport.addEventListener("contextmenu",e=>e.preventDefault());
-document.addEventListener("mousedown",e=>{if(document.pointerLockElement===inputViewport){held.add(e.button===0?"mouse0":"mouse2");updateInput();}});
-document.addEventListener("mouseup",e=>{held.delete(e.button===0?"mouse0":"mouse2");updateInput();});
-$("resetMapping").addEventListener("click",()=>{inputMap={...inputDefaults};remapping=null;renderMappings();updateInput();$("inputLog").textContent="Default keyboard mappings restored.";});
-renderMappings();updateInput();
+    body {
+      margin: 0;
+      background: #101318;
+      color: #f4f6fa;
+      font-family: Arial, sans-serif;
+    }
 
-let selectedIso=null, isoVolumeOffset=0x10000, isoRoot=null;
-const isoMagic=new TextEncoder().encode("MICROSOFT*XBOX*MEDIA");
-function formatBytes(n){
- if(n<1024)return n+" B";
- const units=["KB","MB","GB","TB"];let v=n/1024,i=0;
- while(v>=1024&&i<units.length-1){v/=1024;i++}
- return v.toFixed(v>=100?0:v>=10?1:2)+" "+units[i];
-}
-$("isoFile").addEventListener("change",()=>{
- selectedIso=$("isoFile").files&&$("isoFile").files[0]||null;
- $("inspectIso").disabled=!selectedIso;$("readIsoDir").disabled=!selectedIso;
- $("isoName").textContent=selectedIso?selectedIso.name:"None";
- $("isoSize").textContent=selectedIso?formatBytes(selectedIso.size):"—";
- $("isoResult").textContent="Not checked";$("isoDirectory").textContent="No directory loaded.";
- $("isoConsole").textContent=selectedIso?"Ready to inspect locally: "+selectedIso.name:"Select a disc image to begin.";
-});
-function bytesMatch(bytes,offset){
- if(offset<0||offset+isoMagic.length>bytes.length)return false;
- for(let i=0;i<isoMagic.length;i++)if(bytes[offset+i]!==isoMagic[i])return false;
- return true;
-}
-$("inspectIso").addEventListener("click",async()=>{
- if(!selectedIso)return;
- $("inspectIso").disabled=true;
- $("isoResult").textContent="Checking…";
- $("isoConsole").textContent="Reading small header samples from the selected file. The full image is not loaded into memory.";
- try{
-  const candidates=[
-   {offset:0x10000,label:"XISO / raw game partition"},
-   {offset:0x0FD90000+0x10000,label:"Xbox 360 XGD2 partition candidate"},
-   {offset:0x02080000+0x10000,label:"Xbox 360 XGD3 partition candidate"},
-   {offset:0x18300000+0x10000,label:"Xbox original XGD1 partition candidate"}
-  ];
-  let found=null;
-  for(const candidate of candidates){
-   if(candidate.offset+0x800>selectedIso.size)continue;
-   const sample=new Uint8Array(await selectedIso.slice(candidate.offset,candidate.offset+0x800).arrayBuffer());
-   if(bytesMatch(sample,0)&&bytesMatch(sample,0x7EC)){found=candidate;break;}
-  }
-  if(found){
-   isoVolumeOffset=found.offset;
-   $("isoResult").textContent="Signature found";
-   $("isoConsole").textContent="Recognized Xbox disc filesystem signature.\nCandidate: "+found.label+"\nHeader offset: 0x"+found.offset.toString(16).toUpperCase()+"\n\nThis is only a basic signature check, not a full ISO validation. The CPU prototype cannot boot or execute the game yet.";
-  }else{
-   $("isoResult").textContent="Not recognized";
-   $("isoConsole").textContent="No known Xbox disc filesystem signature was found at the tested offsets.\n\nThe file may use a different layout, be incomplete, or not be an Xbox disc image. This quick check is not definitive.";
-  }
- }catch(err){
-  $("isoResult").textContent="Read failed";
-  $("isoConsole").textContent="Could not inspect this file: "+(err&&err.message?err.message:String(err));
- }finally{$("inspectIso").disabled=!selectedIso}
-});
-$("clearIso").addEventListener("click",()=>{
- $("isoFile").value="";selectedIso=null;isoRoot=null;$("inspectIso").disabled=true;$("readIsoDir").disabled=true;$("isoDirectory").textContent="No directory loaded.";
- $("isoName").textContent="None";$("isoSize").textContent="—";$("isoResult").textContent="Waiting";
- $("isoConsole").textContent="Select a disc image to begin. The file stays on your device.";
-});
+    header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px;
+      background: #191e27;
+      border-bottom: 1px solid #303744;
+    }
 
-function readU16LE(v,o){return v.getUint16(o,true)}
-function readU32LE(v,o){return v.getUint32(o,true)}
-async function readIsoRange(offset,length){
- if(!selectedIso||offset<0||length<0||offset+length>selectedIso.size)throw new Error("Disc image read would go beyond the selected file.");
- return new Uint8Array(await selectedIso.slice(offset,offset+length).arrayBuffer());
-}
-function parseXdvdfsEntries(bytes){
- const view=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength), nodes=[];
- function walk(pos,seen){
-  if(pos===0xffff||pos+14>bytes.length||seen.has(pos)||nodes.length>10000)return;
-  seen.add(pos);
-  const left=readU16LE(view,pos),right=readU16LE(view,pos+2),sector=readU32LE(view,pos+4),size=readU32LE(view,pos+8),attrs=view.getUint8(pos+12),nameLen=view.getUint8(pos+13);
-  if(pos+14+nameLen>bytes.length)return;
-  const name=new TextDecoder("ascii").decode(bytes.slice(pos+14,pos+14+nameLen));
-  if(name&&name!=="."&&name!=="..")nodes.push({name,sector,size,dir:!!(attrs&0x10),depth:0});
-  if(left!==0xffff)walk(left,seen);
-  if(right!==0xffff)walk(right,seen);
- }
- walk(0,new Set());
- return nodes;
-}
-$("readIsoDir").addEventListener("click",async()=>{
- if(!selectedIso)return;
- $("readIsoDir").disabled=true;$("isoDirectory").textContent="Reading XDVDFS volume descriptor and root directory…";
- try{
-  const vd=await readIsoRange(isoVolumeOffset,0x800);
-  if(!bytesMatch(vd,0))throw new Error("Xbox filesystem signature not found at the selected volume offset. Click Inspect image first.");
-  const vv=new DataView(vd.buffer,vd.byteOffset,vd.byteLength);
-  const rootSector=readU32LE(vv,0x14),rootSize=readU32LE(vv,0x18);
-  const rootOffset=rootSector*2048;
-  if(!rootSize||rootSize>64*1024*1024||rootOffset+rootSize>selectedIso.size)throw new Error("Root directory location or size looks invalid (sector "+rootSector+", size "+rootSize+").");
-  const rootBytes=await readIsoRange(rootOffset,rootSize);
-  const entries=parseXdvdfsEntries(rootBytes);
-  if(!entries.length)throw new Error("No directory entries could be parsed. This image may use a different layout or the directory format may need more work.");
-  isoRoot={sector:rootSector,size:rootSize};
-  let lines=["Root directory sector: "+rootSector,"Root directory size: "+formatBytes(rootSize),"", "Entries found: "+entries.length,""];
-  for(const e of entries.slice(0,500)){
-   lines.push((e.dir?"[DIR] ":"[FILE] ")+e.name+(e.dir?"": "  ("+formatBytes(e.size)+")")+"  @ sector "+e.sector);
-  }
-  if(entries.length>500)lines.push("… showing first 500 entries.");
-  lines.push("","Note: this first pass lists the root directory only. Nested folders are not expanded yet; no game files are executed.");
-  $("isoDirectory").textContent=lines.join("\n");
-  $("isoConsole").textContent+="\n\nRoot directory parsed successfully. Found "+entries.length+" root entries.";
- }catch(err){
-  $("isoDirectory").textContent="Directory read failed: "+(err&&err.message?err.message:String(err));
- }finally{$("readIsoDir").disabled=!selectedIso}
-});
-</script><script src="./cpu.js" onerror="document.getElementById('buildStatus').textContent='Build pending: cpu.js has not been generated yet';document.getElementById('console').textContent='The C++ source is here, but the WebAssembly build must finish before the prototype can run.'"></script>
-</body></html>
+    .logo {
+      font-weight: bold;
+      color: #64caff;
+      white-space: nowrap;
+    }
+
+    form {
+      display: flex;
+      flex: 1;
+      gap: 8px;
+    }
+
+    input {
+      width: 100%;
+      min-width: 0;
+      padding: 11px;
+      color: white;
+      background: #252c37;
+      border: 1px solid #414b5c;
+      border-radius: 7px;
+      font-size: 15px;
+    }
+
+    button {
+      padding: 10px 15px;
+      background: #147fbd;
+      color: white;
+      border: 0;
+      border-radius: 7px;
+      cursor: pointer;
+    }
+
+    nav {
+      display: flex;
+      gap: 8px;
+      padding: 10px 14px;
+      flex-wrap: wrap;
+    }
+
+    nav button {
+      background: #252c37;
+    }
+
+    #status {
+      padding: 0 14px 10px;
+      color: #b7c3d3;
+      font-size: 13px;
+    }
+
+    iframe {
+      display: block;
+      width: 100%;
+      height: calc(100vh - 145px);
+      min-height: 350px;
+      border: 0;
+      background: white;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">VEYΛORA</div>
+
+    <form id="addressForm">
+      <input
+        id="address"
+        type="text"
+        value="https://example.com"
+        placeholder="Enter a website address"
+        autocomplete="url"
+        aria-label="Website address"
+      >
+      <button type="submit">Go</button>
+    </form>
+  </header>
+
+  <nav aria-label="Bookmarks">
+    <button data-url="https://example.com">Example</button>
+    <button data-url="https://www.wikipedia.org">Wikipedia</button>
+    <button id="openTab">Open in new tab</button>
+  </nav>
+
+  <div id="status" role="status">
+    Ready. Some websites do not allow iframe embedding.
+  </div>
+
+  <iframe
+    id="browserFrame"
+    title="Website viewer"
+    src="https://example.com"
+    referrerpolicy="no-referrer"
+    allowfullscreen
+  ></iframe>
+
+  <script>
+    const form = document.getElementById("addressForm");
+    const address = document.getElementById("address");
+    const frame = document.getElementById("browserFrame");
+    const status = document.getElementById("status");
+
+    function normalizeAddress(value) {
+      let input = value.trim();
+
+      if (!input) {
+        throw new Error("Enter a website address.");
+      }
+
+      if (!/^https?:\/\//i.test(input)) {
+        input = "https://" + input;
+      }
+
+      const url = new URL(input);
+
+      if (!["http:", "https:"].includes(url.protocol)) {
+        throw new Error("Only HTTP and HTTPS addresses are supported.");
+      }
+
+      if (!url.hostname.includes(".") &&
+          url.hostname !== "localhost") {
+        throw new Error("Enter a complete website address.");
+      }
+
+      return url.href;
+    }
+
+    function navigate(value) {
+      try {
+        const url = normalizeAddress(value);
+        address.value = url;
+        frame.src = url;
+        status.textContent =
+          "Loading " + new URL(url).hostname +
+          ". If it stays blank, the site may block embedding.";
+      } catch (error) {
+        status.textContent = error.message;
+      }
+    }
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      navigate(address.value);
+    });
+
+    document.querySelectorAll("[data-url]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        navigate(button.dataset.url);
+      });
+    });
+
+    document.getElementById("openTab").addEventListener("click",
+      function () {
+        try {
+          const url = normalizeAddress(address.value);
+          window.open(url, "_blank", "noopener,noreferrer");
+        } catch (error) {
+          status.textContent = error.message;
+        }
+      }
+    );
+  </script>
+</body>
+</html>
