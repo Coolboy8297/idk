@@ -1,0 +1,188 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VEYAORA Browser</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: #101318;
+      color: #f4f6fa;
+      font-family: Arial, sans-serif;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px;
+      background: #191e27;
+      border-bottom: 1px solid #303744;
+    }
+
+    .logo {
+      font-weight: bold;
+      color: #64caff;
+      white-space: nowrap;
+    }
+
+    form {
+      display: flex;
+      flex: 1;
+      gap: 8px;
+    }
+
+    input {
+      width: 100%;
+      min-width: 0;
+      padding: 11px;
+      color: white;
+      background: #252c37;
+      border: 1px solid #414b5c;
+      border-radius: 7px;
+      font-size: 15px;
+    }
+
+    button {
+      padding: 10px 15px;
+      background: #147fbd;
+      color: white;
+      border: 0;
+      border-radius: 7px;
+      cursor: pointer;
+    }
+
+    nav {
+      display: flex;
+      gap: 8px;
+      padding: 10px 14px;
+      flex-wrap: wrap;
+    }
+
+    nav button {
+      background: #252c37;
+    }
+
+    #status {
+      padding: 0 14px 10px;
+      color: #b7c3d3;
+      font-size: 13px;
+    }
+
+    iframe {
+      display: block;
+      width: 100%;
+      height: calc(100vh - 145px);
+      min-height: 350px;
+      border: 0;
+      background: white;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">VEYΛORA</div>
+
+    <form id="addressForm">
+      <input
+        id="address"
+        type="text"
+        value="https://example.com"
+        placeholder="Enter a website address"
+        autocomplete="url"
+        aria-label="Website address"
+      >
+      <button type="submit">Go</button>
+    </form>
+  </header>
+
+  <nav aria-label="Bookmarks">
+    <button data-url="https://example.com">Example</button>
+    <button data-url="https://www.wikipedia.org">Wikipedia</button>
+    <button id="openTab">Open in new tab</button>
+  </nav>
+
+  <div id="status" role="status">
+    Ready. Some websites do not allow iframe embedding.
+  </div>
+
+  <iframe
+    id="browserFrame"
+    title="Website viewer"
+    src="https://example.com"
+    referrerpolicy="no-referrer"
+    allowfullscreen
+  ></iframe>
+
+  <script>
+    const form = document.getElementById("addressForm");
+    const address = document.getElementById("address");
+    const frame = document.getElementById("browserFrame");
+    const status = document.getElementById("status");
+
+    function normalizeAddress(value) {
+      let input = value.trim();
+
+      if (!input) {
+        throw new Error("Enter a website address.");
+      }
+
+      if (!/^https?:\/\//i.test(input)) {
+        input = "https://" + input;
+      }
+
+      const url = new URL(input);
+
+      if (!["http:", "https:"].includes(url.protocol)) {
+        throw new Error("Only HTTP and HTTPS addresses are supported.");
+      }
+
+      if (!url.hostname.includes(".") &&
+          url.hostname !== "localhost") {
+        throw new Error("Enter a complete website address.");
+      }
+
+      return url.href;
+    }
+
+    function navigate(value) {
+      try {
+        const url = normalizeAddress(value);
+        address.value = url;
+        frame.src = url;
+        status.textContent =
+          "Loading " + new URL(url).hostname +
+          ". If it stays blank, the site may block embedding.";
+      } catch (error) {
+        status.textContent = error.message;
+      }
+    }
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      navigate(address.value);
+    });
+
+    document.querySelectorAll("[data-url]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        navigate(button.dataset.url);
+      });
+    });
+
+    document.getElementById("openTab").addEventListener("click",
+      function () {
+        try {
+          const url = normalizeAddress(address.value);
+          window.open(url, "_blank", "noopener,noreferrer");
+        } catch (error) {
+          status.textContent = error.message;
+        }
+      }
+    );
+  </script>
+</body>
+</html>
