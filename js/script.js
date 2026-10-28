@@ -83,6 +83,21 @@
     $("#skip-boot").addEventListener("click", () => { window.clearTimeout(timer); finish(); });
   }
 
+  function refreshProfilePicker() {
+    $(".profile-choice").forEach(button => {
+      const player = button.dataset.player;
+      const profile = getProfile(player);
+      const avatar = $(".avatar", button);
+      const name = $("span:last-child", button);
+      if (avatar) {
+        avatar.textContent = profile.avatar;
+        avatar.className = "avatar " + profileClass(player);
+        if (AVATARS.includes(profile.avatar) && profile.avatar.length > 1) avatar.classList.add("avatar-custom");
+      }
+      if (name) name.textContent = profile.displayName;
+    });
+  }
+
   function setPlayerSelection(player) {
     loginName.value = player;
     $$(".profile-choice").forEach(button => {
@@ -428,6 +443,7 @@
     const avatar = $("[data-avatar].selected",$("#avatar-options"))?.dataset.avatar || getProfile(activePlayer).avatar;
     saveProfile(activePlayer,{displayName,avatar});
     applyProfileToUI();
+    refreshProfilePicker();
     $("#settings-feedback").textContent = "PROFILE SAVED.";
   });
 
@@ -518,6 +534,7 @@
   updateFavoriteButtons();
   renderRecents();
   applyGameFilters();
+  refreshProfilePicker();
   setPlayerSelection("Colton");
   setupLiveVisitors();
   beginBoot();
