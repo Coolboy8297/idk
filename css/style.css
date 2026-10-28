@@ -129,3 +129,23 @@ body{background:#070a0e!important;color:#f5f7f9}
 
 /* Clean gameplay view: no launcher controls or branding over the game. */
 .game-overlay-controls,.back-button,.fullscreen-button,.game-loader{display:none!important;visibility:hidden!important;pointer-events:none!important;}
+
+
+/* VEYAORA ARCADE LOGIN GATE */
+.login-view{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;padding:24px;background:radial-gradient(ellipse at 50% 0%,#1c3028 0,transparent 45%),#070a0e;overflow:auto}
+.login-panel{width:min(100%,440px);padding:clamp(26px,5vw,44px);border:1px solid #33473b;border-radius:7px;background:linear-gradient(145deg,#121a20,#0b1015);box-shadow:0 24px 90px #0009}
+.login-brand{display:flex;align-items:center;gap:12px;margin-bottom:38px;color:#f5f7f9;text-decoration:none;font-family:'DM Mono',monospace;font-size:12px;font-weight:500;letter-spacing:2px}
+.login-brand-symbol{font-size:36px;line-height:1;color:#b8ff61;letter-spacing:-3px}.login-brand-symbol span{color:#f5f7f9}
+.login-brand small{display:block;margin-top:5px;color:#82908a;font-size:8px;letter-spacing:2px}
+.login-overline{margin:0 0 13px;color:#b8ff61;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.6px}
+.login-panel h1{margin:0;font-size:clamp(30px,7vw,40px);letter-spacing:-1.8px}.login-panel h1 span{color:#b8ff61}
+.login-copy{margin:12px 0 28px;color:#9ca9b4;font-size:13px;line-height:1.7}
+.login-panel label{display:block;margin:17px 0 8px;color:#b4c0c8;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.2px}
+.login-panel input{display:block;width:100%;height:47px;padding:0 13px;border:1px solid #303d47;border-radius:4px;outline:none;background:#090e13;color:#f5f7f9;font:inherit;font-size:13px}
+.login-panel input:focus{border-color:#b8ff61;box-shadow:0 0 0 3px #b8ff6118}
+.login-submit{display:flex;justify-content:space-between;align-items:center;width:100%;height:49px;margin-top:24px;padding:0 15px;border:1px solid #b8ff61;border-radius:4px;background:#b8ff61;color:#0a1008;font-family:'DM Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1px;cursor:pointer}
+.login-submit:hover{background:#caff8a}
+.login-error{min-height:18px;margin:12px 0 0;color:#ff8790;font-size:12px}
+.login-foot{display:flex;align-items:center;gap:8px;margin-top:24px;padding-top:16px;border-top:1px solid #26313a;color:#72808a;font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.7px}
+.login-foot>span:last-child{margin-left:auto}.login-foot-dot{width:6px;height:6px;border-radius:50%;background:#b8ff61;box-shadow:0 0 8px #b8ff61}
+@media(max-width:480px){.login-view{padding:15px}.login-panel{padding:25px 21px}.login-brand{margin-bottom:29px}}
