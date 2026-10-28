@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/idk/css/style.css?v=login-20261028">
+  <link rel="stylesheet" href="/idk/css/style.css?v=console-suite-20261028">
 </head>
 <body>
 
@@ -49,6 +49,8 @@
       <header class="topbar">
         <div class="breadcrumb"><span>ARCADE</span><b>/</b><strong>DISCOVER</strong></div>
         <div class="topbar-right">
+          <button id="open-settings" class="top-action" type="button" aria-haspopup="dialog">SETTINGS <span>⚙</span></button>
+          <button id="open-friends" class="top-action" type="button" aria-haspopup="dialog">FRIENDS <span>↗</span></button>
           <div class="online-pill"><span class="pulse-dot"></span><span id="status-text">SYSTEM READY</span></div>
           <div class="visitor-pill"><span class="visitor-icon">↗</span><span>PLAYERS ONLINE</span><strong id="live-visitors">—</strong><i id="visitor-status">COUNTER NOT CONFIGURED</i></div>
         </div>
@@ -57,6 +59,28 @@
       <section class="welcome-row">
         <div><p class="overline"><span class="overline-mark"></span> YOUR NEXT WORLD STARTS HERE</p><h1>Find your <span>next</span> game.</h1><p class="welcome-copy">One portal. New worlds. Zero installs.</p></div>
         <div class="date-stamp"><span class="stamp-square">V</span><span>VEYAORA<br><b>ARCADE NETWORK</b></span></div>
+      </section>
+
+      <section id="arcade-tools" class="arcade-tools" aria-label="Arcade tools">
+        <div class="store-search-wrap">
+          <span class="store-search-icon" aria-hidden="true">⌕</span>
+          <input id="game-search" type="search" placeholder="Search your library..." aria-label="Search games">
+          <span class="search-shortcut">LIBRARY SEARCH</span>
+        </div>
+        <div class="store-filter-row" role="group" aria-label="Filter games">
+          <button class="store-filter is-selected" type="button" data-filter="all">ALL GAMES</button>
+          <button class="store-filter" type="button" data-filter="browser">BROWSER</button>
+          <button class="store-filter" type="button" data-filter="experimental">EXPERIMENTAL</button>
+          <button id="show-favorites" class="store-filter" type="button" aria-pressed="false">♥ FAVORITES</button>
+        </div>
+      </section>
+
+      <section id="continue-section" class="continue-section" aria-labelledby="continue-title">
+        <div class="mini-section-heading">
+          <div><p class="overline">YOUR SESSION <span class="heading-slash">/ RECENT</span></p><h2 id="continue-title">Continue playing<span class="heading-period">.</span></h2></div>
+          <button id="clear-recent" class="text-action" type="button">CLEAR HISTORY</button>
+        </div>
+        <div id="recent-games" class="recent-games"><p class="empty-state">Your recently played games will appear here.</p></div>
       </section>
 
       <section id="featured" class="featured-card">
@@ -70,6 +94,19 @@
         </div>
         <div class="feature-watermark" aria-hidden="true">26</div>
         <div class="corner-mark corner-top"></div><div class="corner-mark corner-bottom"></div>
+      </section>
+
+      <section class="network-strip" aria-label="Arcade social and settings">
+        <div class="network-card">
+          <div class="network-card-icon">◎</div>
+          <div class="network-card-copy"><p class="overline">ARCADE NETWORK / SOCIAL</p><h3>Friends & multiplayer</h3><p>See the friends panel and discover which games support playing together.</p></div>
+          <button id="network-friends-button" class="text-action" type="button">OPEN FRIENDS ↗</button>
+        </div>
+        <div class="network-card">
+          <div class="network-card-icon">⚙</div>
+          <div class="network-card-copy"><p class="overline">YOUR EXPERIENCE / PREFERENCES</p><h3>Make it yours</h3><p>Adjust the interface accent, motion, and local play history.</p></div>
+          <button id="network-settings-button" class="text-action" type="button">OPEN SETTINGS ↗</button>
+        </div>
       </section>
 
       <section class="quick-stats" aria-label="Portal status">
@@ -149,11 +186,34 @@
     </div>
   </div>
 
+  <div id="settings-dialog" class="arcade-dialog-backdrop" hidden>
+    <section class="arcade-dialog" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+      <div class="dialog-heading"><div><p class="overline">SYSTEM CONFIGURATION</p><h2 id="settings-title">Arcade settings<span class="heading-period">.</span></h2></div><button class="dialog-close" type="button" data-close-dialog aria-label="Close settings">×</button></div>
+      <label class="setting-row"><span><strong>Interface accent</strong><small>Change the console highlight color on this device.</small></span><select id="accent-setting"><option value="green">VEYΛORA green</option><option value="cyan">Electric cyan</option><option value="blue">Arcade blue</option></select></label>
+      <label class="setting-row"><span><strong>Reduced motion</strong><small>Reduce animated transitions in the dashboard.</small></span><input id="motion-setting" type="checkbox"></label>
+      <div class="setting-note">Settings are saved in this browser on this device.</div>
+      <button class="dialog-primary" type="button" data-close-dialog>DONE</button>
+    </section>
+  </div>
+  <div id="friends-dialog" class="arcade-dialog-backdrop" hidden>
+    <section class="arcade-dialog" role="dialog" aria-modal="true" aria-labelledby="friends-title">
+      <div class="dialog-heading"><div><p class="overline">ARCADE NETWORK / SOCIAL</p><h2 id="friends-title">Friends & multiplayer<span class="heading-period">.</span></h2></div><button class="dialog-close" type="button" data-close-dialog aria-label="Close friends">×</button></div>
+      <p class="dialog-intro">A home for your crew. This preview is ready for a shared presence service; live friend status and invites are not connected yet.</p>
+      <div class="friend-list">
+        <div class="friend-row"><span class="friend-avatar">C</span><span><strong>Colton</strong><small>Arcade owner profile</small></span><span class="friend-state">LOCAL</span></div>
+        <div class="friend-row"><span class="friend-avatar">E</span><span><strong>Ethan</strong><small>Player account</small></span><span class="friend-state">NOT CONNECTED</span></div>
+        <div class="friend-row"><span class="friend-avatar">J</span><span><strong>John</strong><small>Player account</small></span><span class="friend-state">NOT CONNECTED</span></div>
+        <div class="friend-row"><span class="friend-avatar">N</span><span><strong>Noah</strong><small>Player account</small></span><span class="friend-state">NOT CONNECTED</span></div>
+      </div>
+      <div class="setting-note">Multiplayer depends on each game's own support. Shared accounts, real-time online status, and invites need a backend.</div>
+      <button class="dialog-primary" type="button" data-close-dialog>BACK TO ARCADE</button>
+    </section>
+  </div>
   <script src="/idk/js/firebase-config.js?v=livecounter20261012"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
-  <script src="/idk/js/script.js?v=login-fix-20261028"></script>
+  <script src="/idk/js/script.js?v=console-suite-20261028"></script>
   <script>
     // Keep login separate from the arcade launcher so unrelated script errors cannot break it.
     (() => {
