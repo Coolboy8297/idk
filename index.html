@@ -153,6 +153,34 @@
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
-  <script src="/idk/js/script.js?v=login-20261028"></script>
+  <script src="/idk/js/script.js?v=login-fix-20261028"></script>
+  <script>
+    // Keep login separate from the arcade launcher so unrelated script errors cannot break it.
+    (() => {
+      const form = document.getElementById("login-form");
+      const view = document.getElementById("login-view");
+      const name = document.getElementById("login-name");
+      const password = document.getElementById("login-password");
+      const error = document.getElementById("login-error");
+      const allowed = ["colton", "ethan", "john", "noah"];
+      if (!form || !view || !name || !password || !error) return;
+      form.addEventListener("submit", event => {
+        event.preventDefault();
+        event.stopPropagation();
+        const player = name.value.trim().toLowerCase();
+        if (allowed.includes(player) && password.value === "letmein") {
+          error.textContent = "";
+          view.hidden = true;
+          view.style.display = "none";
+          try { sessionStorage.setItem("veyaoraArcadeLoggedIn", player); } catch (_) {}
+        } else {
+          error.textContent = "Access denied. Check your player name and password.";
+          password.value = "";
+          password.focus();
+        }
+      });
+    })();
+  </script>
+
 </body>
 </html>
