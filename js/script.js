@@ -25,32 +25,6 @@
   const FIREBASE_CONFIG = window.VEYAORA_FIREBASE_CONFIG || null;
 
 
-  // Simple front-end login gate for the four permitted arcade players.
-  // Note: GitHub Pages is static hosting, so this is a convenience gate, not secure authentication.
-  const loginView = document.getElementById("login-view");
-  const loginForm = document.getElementById("login-form");
-  const loginName = document.getElementById("login-name");
-  const loginPassword = document.getElementById("login-password");
-  const loginError = document.getElementById("login-error");
-  const allowedPlayers = ["colton", "ethan", "john", "noah"];
-
-  if (loginView && loginForm) {
-    loginForm.addEventListener("submit", event => {
-      event.preventDefault();
-      const player = loginName.value.trim().toLowerCase();
-      const password = loginPassword.value;
-      if (allowedPlayers.includes(player) && password === "letmein") {
-        loginError.textContent = "";
-        loginView.remove();
-        try { sessionStorage.setItem("veyaoraArcadeLoggedIn", player); } catch (_) {}
-      } else {
-        loginError.textContent = "Access denied. Check your player name and password.";
-        loginPassword.value = "";
-        loginPassword.focus();
-      }
-    });
-  }
-
   const homeView = document.getElementById("home-view");
   const gameView = document.getElementById("game-view");
   const playBtn = document.getElementById("play-btn");
