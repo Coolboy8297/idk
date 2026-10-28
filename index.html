@@ -2,245 +2,169 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#090b0f">
-  <meta name="description" content="VEYAORA Arcade — play beyond what's next. Launch Eaglercraft 26.2 in your browser.">
-  <title>VEYAORA ARCADE — Play Beyond What's Next</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#080b10">
+  <meta name="description" content="VEYΛORA Arcade — Play beyond what's next.">
+  <title>VEYΛORA ARCADE</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/idk/css/style.css?v=console-suite-20261028">
+  <link rel="stylesheet" href="/idk/css/style.css?v=console-redesign-20261028">
 </head>
 <body>
-
-  <section id="login-view" class="login-view" aria-labelledby="login-title">
-    <form id="login-form" class="login-panel" autocomplete="on">
-      <a class="login-brand" href="#" aria-label="VEYAORA Arcade"><span class="login-brand-symbol">V<span>.</span></span><span>VEYAORA<small>ARCADE NETWORK</small></span></a>
-      <p class="login-overline">RESTRICTED ACCESS / PLAYER PORTAL</p>
-      <h1 id="login-title">Welcome <span>back.</span></h1>
-      <p class="login-copy">Sign in with your player name to enter VEYAORA Arcade.</p>
-      <label for="login-name">PLAYER NAME</label>
-      <input id="login-name" name="username" type="text" placeholder="Enter your name" autocomplete="username" required>
-      <label for="login-password">PASSWORD</label>
-      <input id="login-password" name="password" type="password" placeholder="Enter password" autocomplete="current-password" required>
-      <button class="login-submit" type="submit">ENTER ARCADE <span>↗</span></button>
-      <p id="login-error" class="login-error" role="alert" aria-live="polite"></p>
-      <div class="login-foot"><span class="login-foot-dot"></span> VEYAORA ACCESS CONTROL <span>v1.0</span></div>
-    </form>
+  <section id="boot-screen" class="boot-screen" aria-label="VEYΛORA startup">
+    <div class="boot-grain"></div>
+    <div class="boot-center">
+      <div class="boot-logo">V<span>.</span></div>
+      <div class="boot-wordmark">VEYΛORA</div>
+      <div class="boot-edition">ARCADE SYSTEM · STARTUP SEQUENCE</div>
+      <div class="boot-progress"><span id="boot-progress-fill"></span></div>
+      <p id="boot-status">INITIALIZING ARCADE SERVICES</p>
+    </div>
+    <div class="boot-footer"><span>PLAY BEYOND WHAT'S NEXT</span><button id="skip-boot" type="button">SKIP INTRO ↗</button></div>
   </section>
 
-  <div class="ambient ambient-one" aria-hidden="true"></div><div class="ambient ambient-two" aria-hidden="true"></div>
-  <div id="home-view" class="view active">
-    <aside class="sidebar">
-      <a class="brand" href="#" aria-label="VEYAORA home"><span class="brand-symbol">V<span>.</span></span><span class="brand-name">VEYAORA<span>ARCADE</span></span></a>
-      <div class="side-label">YOUR SPACE</div>
-      <a class="nav-item nav-active" href="#featured"><span class="nav-icon">▦</span> Discover <span class="nav-line"></span></a>
-      <a class="nav-item" href="#library"><span class="nav-icon">◫</span> Game library</a>
-      <div class="side-divider"></div>
-      <div class="side-label">COLLECTION</div>
-      <a class="nav-item" href="#available"><span class="nav-icon nav-green">●</span> Available now</a>
-      <div class="sidebar-bottom">
-        <div class="sidebar-promo"><div class="promo-orbit">✳</div><span class="side-label">THE NEXT LEVEL</span><strong>Play beyond<br>what’s next.</strong><span class="promo-line"></span><small>VEYAORA · GAME PORTAL</small></div>
-        <div class="side-footer"><span class="tiny-status"></span> SYSTEM OPERATIONAL <span>v1.0</span></div>
+  <section id="login-view" class="login-screen" hidden aria-labelledby="login-title">
+    <div class="login-orbit orbit-one"></div><div class="login-orbit orbit-two"></div>
+    <div class="login-layout">
+      <div class="login-promo">
+        <div class="brand-lockup"><span class="brand-glyph">V<span>.</span></span><span>VEYΛORA<small>ARCADE SYSTEM</small></span></div>
+        <p class="eyebrow">PLAYER AUTHENTICATION / 01</p>
+        <h1>Your worlds.<br><span>Your rules.</span></h1>
+        <p class="muted-copy">Choose your player profile and jump back into the action.</p>
+        <div class="login-system-status"><span class="status-light"></span> LOCAL SYSTEM READY <span>BUILD 1.1</span></div>
       </div>
+      <form id="login-form" class="login-panel" autocomplete="on">
+        <div class="panel-topline"><span>PLAYER ACCESS</span><span>01 / 01</span></div>
+        <h2 id="login-title">Select player</h2>
+        <p class="muted-copy">Choose your profile, then sign in.</p>
+        <div id="profile-picker" class="profile-picker" aria-label="Player profiles">
+          <button type="button" class="profile-choice selected" data-player="Colton"><span class="avatar avatar-v">C</span><span>Colton</span></button>
+          <button type="button" class="profile-choice" data-player="Ethan"><span class="avatar avatar-e">E</span><span>Ethan</span></button>
+          <button type="button" class="profile-choice" data-player="John"><span class="avatar avatar-j">J</span><span>John</span></button>
+          <button type="button" class="profile-choice" data-player="Noah"><span class="avatar avatar-n">N</span><span>Noah</span></button>
+        </div>
+        <label for="login-name">PLAYER USERNAME</label>
+        <input id="login-name" name="username" type="text" placeholder="Choose a player" autocomplete="username" required>
+        <label for="login-password">ACCESS PASSWORD</label>
+        <input id="login-password" name="password" type="password" placeholder="Enter password" autocomplete="current-password" required>
+        <button class="button button-primary full-width" type="submit">START SESSION <span>↗</span></button>
+        <p id="login-error" class="login-error" role="alert" aria-live="polite"></p>
+        <p class="login-footnote">PROFILE CUSTOMIZATION IS SAVED ON THIS DEVICE.</p>
+      </form>
+    </div>
+  </section>
+
+  <div id="home-view" class="console-shell" hidden>
+    <aside class="sidebar">
+      <button class="brand-lockup sidebar-brand" type="button" data-view="discover" aria-label="VEYΛORA home"><span class="brand-glyph">V<span>.</span></span><span>VEYΛORA<small>ARCADE SYSTEM</small></span></button>
+      <div class="side-label">MAIN MENU</div>
+      <button class="nav-item active" type="button" data-view="discover"><span class="nav-symbol">⌂</span><span>Home</span><kbd>01</kbd></button>
+      <button class="nav-item" type="button" data-view="library"><span class="nav-symbol">▦</span><span>Game library</span><kbd>02</kbd></button>
+      <button class="nav-item" type="button" data-view="favorites"><span class="nav-symbol">♡</span><span>Favorites</span><kbd>03</kbd></button>
+      <div class="sidebar-rule"></div>
+      <div class="side-label">NETWORK</div>
+      <button class="nav-item" id="nav-friends" type="button"><span class="nav-symbol">◎</span><span>Friends</span><span class="nav-count">4</span></button>
+      <button class="nav-item" id="nav-settings" type="button"><span class="nav-symbol">⚙</span><span>Settings</span></button>
+      <div class="sidebar-spacer"></div>
+      <div class="sidebar-device"><span class="device-light"></span><div><strong>VEYΛORA SYSTEM</strong><small>ALL SYSTEMS READY</small></div><span class="device-dots">•••</span></div>
+      <button id="sidebar-profile" class="sidebar-profile" type="button">
+        <span id="sidebar-avatar" class="avatar avatar-v">C</span><span class="profile-copy"><strong id="sidebar-username">Colton</strong><small>LOCAL PLAYER</small></span><span class="profile-more">⌄</span>
+      </button>
     </aside>
 
     <main class="main-shell">
       <header class="topbar">
-        <div class="breadcrumb"><span>ARCADE</span><b>/</b><strong>DISCOVER</strong></div>
-        <div class="topbar-right">
-          <button id="open-settings" class="top-action" type="button" aria-haspopup="dialog">SETTINGS <span>⚙</span></button>
-          <button id="open-friends" class="top-action" type="button" aria-haspopup="dialog">FRIENDS <span>↗</span></button>
-          <div class="online-pill"><span class="pulse-dot"></span><span id="status-text">SYSTEM READY</span></div>
-          <div class="visitor-pill"><span class="visitor-icon">↗</span><span>PLAYERS ONLINE</span><strong id="live-visitors">—</strong><i id="visitor-status">COUNTER NOT CONFIGURED</i></div>
+        <div class="breadcrumb"><span>VEYΛORA</span><span class="crumb-slash">/</span><strong id="breadcrumb-current">HOME</strong></div>
+        <div class="topbar-actions">
+          <div class="connection-status"><span class="status-light"></span><span id="status-text">SYSTEM READY</span></div>
+          <button id="top-friends" class="icon-button" type="button" aria-label="Open friends" title="Friends">◎</button>
+          <button id="top-settings" class="icon-button" type="button" aria-label="Open settings" title="Settings">⚙</button>
+          <button id="top-profile" class="top-profile" type="button"><span id="top-avatar" class="avatar avatar-v">C</span><span id="top-username">Colton</span><span>⌄</span></button>
         </div>
       </header>
 
       <section class="welcome-row">
-        <div><p class="overline"><span class="overline-mark"></span> YOUR NEXT WORLD STARTS HERE</p><h1>Find your <span>next</span> game.</h1><p class="welcome-copy">One portal. New worlds. Zero installs.</p></div>
-        <div class="date-stamp"><span class="stamp-square">V</span><span>VEYAORA<br><b>ARCADE NETWORK</b></span></div>
+        <div><p class="eyebrow"><span class="status-light"></span> YOUR ARCADE IS READY</p><h1>Good to have you back, <span id="welcome-username">Player</span><span class="accent-dot">.</span></h1><p class="muted-copy">Your next session starts here. Pick up where you left off.</p></div>
+        <div class="welcome-meta"><span class="meta-label">SYSTEM TIME</span><strong id="clock-label">--:--</strong><span class="meta-label">ARCADE NETWORK</span><strong class="green-text">CONNECTED LOCALLY</strong></div>
       </section>
 
-      <section id="arcade-tools" class="arcade-tools" aria-label="Arcade tools">
-        <div class="store-search-wrap">
-          <span class="store-search-icon" aria-hidden="true">⌕</span>
-          <input id="game-search" type="search" placeholder="Search your library..." aria-label="Search games">
-          <span class="search-shortcut">LIBRARY SEARCH</span>
-        </div>
-        <div class="store-filter-row" role="group" aria-label="Filter games">
-          <button class="store-filter is-selected" type="button" data-filter="all">ALL GAMES</button>
-          <button class="store-filter" type="button" data-filter="browser">BROWSER</button>
-          <button class="store-filter" type="button" data-filter="experimental">EXPERIMENTAL</button>
-          <button id="show-favorites" class="store-filter" type="button" aria-pressed="false">♥ FAVORITES</button>
+      <section class="hero-card" aria-label="Featured game">
+        <div class="hero-art"><div class="hero-grid"></div><div class="hero-glow"></div><div class="hero-moon"></div><div class="hero-terrain terrain-back"></div><div class="hero-terrain terrain-front"></div><div class="hero-cube cube-a"></div><div class="hero-cube cube-b"></div><div class="hero-cube cube-c"></div><div class="hero-vertical">VΛ / 026</div></div>
+        <div class="hero-copy">
+          <div class="hero-badges"><span class="pill pill-live"><span></span> FEATURED</span><span class="pill">BROWSER EDITION</span></div>
+          <p class="hero-kicker">THE BLOCK-BUILDING CLASSIC</p>
+          <h2>EAGLER<span>CRAFT</span></h2>
+          <p class="hero-description">Build your world. Explore the unknown. Jump into Eaglercraft 26.2 directly from your arcade.</p>
+          <div class="hero-actions"><button id="play-btn" class="button button-primary" type="button"><span class="play-triangle">▶</span> PLAY NOW <span>↗</span></button><button id="hero-library" class="button button-secondary" type="button">VIEW LIBRARY <span>→</span></button></div>
+          <div class="hero-specs"><span><small>BUILD</small><strong>26.2</strong></span><span><small>PLATFORM</small><strong>BROWSER</strong></span><span><small>STATUS</small><strong class="green-text">AVAILABLE</strong></span></div>
         </div>
       </section>
 
-      <section id="continue-section" class="continue-section" aria-labelledby="continue-title">
-        <div class="mini-section-heading">
-          <div><p class="overline">YOUR SESSION <span class="heading-slash">/ RECENT</span></p><h2 id="continue-title">Continue playing<span class="heading-period">.</span></h2></div>
-          <button id="clear-recent" class="text-action" type="button">CLEAR HISTORY</button>
-        </div>
-        <div id="recent-games" class="recent-games"><p class="empty-state">Your recently played games will appear here.</p></div>
+      <section class="continue-section">
+        <div class="section-head"><div><p class="eyebrow">YOUR SESSION / RECENT</p><h2>Continue playing<span class="accent-dot">.</span></h2></div><button id="clear-recent" class="text-button" type="button">CLEAR HISTORY ↗</button></div>
+        <div id="recent-games" class="recent-grid"><p class="empty-state">Your recent games will appear here.</p></div>
       </section>
 
-      <section id="featured" class="featured-card">
-        <div class="feature-backdrop" aria-hidden="true"><div class="feature-sun"></div><div class="pixel-moon"></div><div class="mountain mountain-back"></div><div class="mountain mountain-front"></div><div class="feature-platform"></div><div class="pixel-cube cube-one"></div><div class="pixel-cube cube-two"></div><div class="pixel-cube cube-three"></div><div class="feature-scan"></div></div>
-        <div class="feature-content">
-          <div class="feature-kicker"><span class="live-tag"><span></span> FEATURED GAME</span><span class="feature-index">01 / 04</span></div>
-          <div class="feature-title-line"><div><p class="game-franchise">THE BLOCK-BUILDING CLASSIC</p><h2>EAGLER<span>CRAFT</span></h2></div><div class="version-stamp"><small>CURRENT BUILD</small><strong>26.2</strong><span>WEB EDITION</span></div></div>
-          <p class="feature-description">Your world, your rules. Jump into Eaglercraft right in your browser — no installer, no waiting around.</p>
-          <div class="feature-actions"><button id="play-btn" class="primary-button" type="button"><span class="button-play">▶</span> PLAY EAGLERCRAFT <span class="button-arrow">↗</span></button><a class="secondary-button" href="#library">EXPLORE LIBRARY <span>↓</span></a></div>
-          <div class="feature-foot"><span><i class="mini-square"></i> VERSION <b id="game-version">26.2</b></span><span><i class="mini-square"></i> PLATFORM <b>BROWSER</b></span><span><i class="mini-square"></i> ACCESS <b class="green-text">AVAILABLE</b></span></div>
-        </div>
-        <div class="feature-watermark" aria-hidden="true">26</div>
-        <div class="corner-mark corner-top"></div><div class="corner-mark corner-bottom"></div>
-      </section>
-
-      <section class="network-strip" aria-label="Arcade social and settings">
-        <div class="network-card">
-          <div class="network-card-icon">◎</div>
-          <div class="network-card-copy"><p class="overline">ARCADE NETWORK / SOCIAL</p><h3>Friends & multiplayer</h3><p>See the friends panel and discover which games support playing together.</p></div>
-          <button id="network-friends-button" class="text-action" type="button">OPEN FRIENDS ↗</button>
-        </div>
-        <div class="network-card">
-          <div class="network-card-icon">⚙</div>
-          <div class="network-card-copy"><p class="overline">YOUR EXPERIENCE / PREFERENCES</p><h3>Make it yours</h3><p>Adjust the interface accent, motion, and local play history.</p></div>
-          <button id="network-settings-button" class="text-action" type="button">OPEN SETTINGS ↗</button>
-        </div>
-      </section>
-
-      <section class="quick-stats" aria-label="Portal status">
-        <div class="quick-stat"><span class="stat-symbol">◈</span><div><small>LIVE GAME</small><strong>Eaglercraft 26.2</strong></div><span class="stat-status">READY</span></div>
-        <div class="quick-stat"><span class="stat-symbol">⌘</span><div><small>INSTALLATION</small><strong>Nothing to install</strong></div><span class="stat-status stat-neutral">BROWSER</span></div>
-      </section>
-
-      <section id="library" class="library-section">
-        <div class="section-heading"><div><p class="overline">THE COLLECTION <span class="heading-slash">/ 001</span></p><h2>Game library<span class="heading-period">.</span></h2><p class="section-copy">Pick a build. Your next session is one click away.</p></div><div class="library-count"><strong>02</strong><span>AVAILABLE<br>RIGHT NOW</span></div></div>
-        <div class="library-grid">
-          <article id="available" class="game-card game-card-featured">
-            <div class="card-art art-262"><span class="art-label">VEYAORA SELECT</span><div class="art-grid"></div><div class="art-block block-a"></div><div class="art-block block-b"></div><div class="art-block block-c"></div><div class="art-block block-d"></div><div class="art-number">26<span>.</span>2</div><span class="art-bottom-label">WEB BUILD / CURRENT</span></div>
-            <div class="card-body"><div class="card-tags"><span class="tag-available"><i></i> AVAILABLE NOW</span><span class="card-code">EG / 026</span></div><h3>Eaglercraft <b>26.2</b></h3><p>The current build. Open your world directly in the browser.</p><button class="card-launch" id="version-current" type="button">LAUNCH GAME <span>↗</span></button></div>
+      <section id="library-section" class="library-section">
+        <div class="section-head library-head"><div><p class="eyebrow">YOUR COLLECTION / LIBRARY</p><h2 id="library-heading">Game library<span class="accent-dot">.</span></h2><p class="muted-copy">Your installed, browser, and experimental games in one place.</p></div><div class="library-counter"><strong id="library-count">04</strong><span>GAMES<br>IN LIBRARY</span></div></div>
+        <div class="store-toolbar"><label class="search-field"><span>⌕</span><input id="game-search" type="search" placeholder="Search games..." aria-label="Search games"><kbd>SEARCH</kbd></label><div class="filter-group"><button type="button" class="filter-button active" data-filter="all">ALL</button><button type="button" class="filter-button" data-filter="browser">BROWSER</button><button type="button" class="filter-button" data-filter="experimental">LABS</button></div></div>
+        <div id="library-grid" class="library-grid">
+          <article id="game-eaglercraft" class="game-card" data-category="browser" data-game="Eaglercraft 26.2">
+            <div class="game-art art-eagler"><span class="art-chip">VEYΛORA SELECT</span><div class="voxel voxel-a"></div><div class="voxel voxel-b"></div><div class="voxel voxel-c"></div><div class="art-title">26<span>.</span>2</div><span class="art-foot">WEB BUILD / CURRENT</span></div>
+            <div class="game-info"><div class="game-meta"><span class="available-dot">● AVAILABLE NOW</span><button class="favorite-toggle" type="button" aria-label="Toggle Eaglercraft favorite" data-favorite="eaglercraft">♡</button></div><h3>Eaglercraft 26.2</h3><p>The current browser build. Start a new world or continue exploring.</p><button class="button button-card" type="button" data-launch="eaglercraft">LAUNCH GAME <span>↗</span></button></div>
           </article>
-          <article class="game-card game-card-featured">
-            <div class="card-art art-262"><span class="art-label">VEYAORA ARCADE</span><div class="art-grid"></div><div class="art-block block-a"></div><div class="art-block block-c"></div><div class="art-number">NEON<span>.</span>RUN</div><span class="art-bottom-label">GODOT / WEB EDITION</span></div>
-            <div class="card-body"><div class="card-tags"><span class="tag-available"><i></i> AVAILABLE NOW</span><span class="card-code">NR / 001</span></div><h3>Neon Run</h3><p>Jump into Neon Run, playable right inside VEYAORA ARCADE.</p><button class="card-launch" id="launch-neon-run" type="button">PLAY NEON RUN <span>↗</span></button></div>
+          <article id="game-neon" class="game-card" data-category="browser" data-game="Neon Run">
+            <div class="game-art art-neon"><span class="art-chip">VEYΛORA ORIGINAL</span><div class="neon-ring"></div><div class="art-title neon-title">NEON<br>RUN</div><span class="art-foot">ARCADE / WEB EDITION</span></div>
+            <div class="game-info"><div class="game-meta"><span class="available-dot">● AVAILABLE NOW</span><button class="favorite-toggle" type="button" aria-label="Toggle Neon Run favorite" data-favorite="neon">♡</button></div><h3>Neon Run</h3><p>Fast arcade action in a neon world. Launch it from the VEYΛORA library.</p><button class="button button-card" type="button" data-launch="neon">PLAY NEON RUN <span>↗</span></button></div>
           </article>
-          <article class="game-card game-card-featured">
-            <div class="card-art art-262"><span class="art-label">VEYAORA LAB</span><div class="art-grid"></div><div class="art-block block-a"></div><div class="art-block block-b"></div><div class="art-block block-d"></div><div class="art-number">ANDROID<span>.</span>LAB</div><span class="art-bottom-label">AFTERBURNER / WASM</span></div>
-            <div class="card-body"><div class="card-tags"><span class="tag-available"><i></i> EXPERIMENTAL</span><span class="card-code">AB / 001</span></div><h3>Android Lab</h3><p>Explore Afterburner, an experimental Android-x86 emulator for browsers. The live emulator still needs a compatible proxy server before it can run here.</p><a class="card-launch" href="https://github.com/Z3BOS/afterburner" target="_blank" rel="noopener noreferrer">VIEW AFTERBURNER <span>↗</span></a></div>
+          <article id="game-android" class="game-card" data-category="experimental" data-game="Android Lab">
+            <div class="game-art art-android"><span class="art-chip">EXPERIMENTAL</span><div class="android-orbit"></div><div class="art-title lab-title">ANDROID<br>LAB</div><span class="art-foot">AFTERBURNER / WASM</span></div>
+            <div class="game-info"><div class="game-meta"><span class="lab-dot">◇ EXPERIMENTAL</span><button class="favorite-toggle" type="button" aria-label="Toggle Android Lab favorite" data-favorite="android">♡</button></div><h3>Android Lab</h3><p>Explore the Afterburner project. The browser emulator requires a compatible proxy server.</p><button class="button button-card" type="button" data-launch="android">VIEW PROJECT <span>↗</span></button></div>
           </article>
-          <article class="game-card game-card-featured">
-            <div class="card-art art-262"><span class="art-label">VEYAORA LAB</span><div class="art-grid"></div><div class="art-block block-a"></div><div class="art-block block-b"></div><div class="art-block block-c"></div><div class="art-number">360<span>.</span>LAB</div><span class="art-bottom-label">POWERPC / WEBASSEMBLY</span></div>
-            <div class="card-body"><div class="card-tags"><span class="tag-available"><i></i> EXPERIMENTAL</span><span class="card-code">VX / 360</span></div><h3>VEYAORA <b>Xbox Lab</b></h3><p>Original Xbox and Xbox 360 experiments, local disc inspection, input mapping, and a browser-playable Halo CE route.</p><a class="card-launch" href="/idk/xbox360/">OPEN XBOX LAB <span>↗</span></a></div>
+          <article id="game-xbox" class="game-card" data-category="experimental" data-game="VEYΛORA Xbox Lab">
+            <div class="game-art art-xbox"><span class="art-chip">EXPERIMENTAL</span><div class="xbox-ring">X</div><div class="art-title lab-title">360 LAB</div><span class="art-foot">CONSOLE EXPERIMENTS</span></div>
+            <div class="game-info"><div class="game-meta"><span class="lab-dot">◇ EXPERIMENTAL</span><button class="favorite-toggle" type="button" aria-label="Toggle Xbox Lab favorite" data-favorite="xbox">♡</button></div><h3>VEYΛORA Xbox Lab</h3><p>Open the console experiments hub and its browser-playable routes.</p><button class="button button-card" type="button" data-launch="xbox">OPEN XBOX LAB <span>↗</span></button></div>
           </article>
         </div>
-        <section id="other-versions-section" class="other-versions-section" hidden>
-          <div class="section-heading">
-            <div><p class="overline">YOUR BUILDS <span class="heading-slash">/ EXTRA</span></p><h2>Other versions<span class="heading-period">.</span></h2><p class="section-copy">Extra Eaglercraft builds added to the version list.</p></div>
-          </div>
-          <div id="other-versions-grid" class="library-grid"></div>
-        </section>
+        <section id="other-versions-section" class="extra-versions" hidden><div class="section-head"><div><p class="eyebrow">EAGLERCRAFT / EXTRA BUILDS</p><h2>Other versions<span class="accent-dot">.</span></h2></div></div><div id="other-versions-grid" class="library-grid"></div></section>
+        <div id="no-games" class="no-games" hidden><strong>Nothing found.</strong><span>Try another search or category.</span><button id="reset-search" class="text-button" type="button">RESET FILTERS ↗</button></div>
       </section>
-
-      <section class="extra-sites" aria-labelledby="extra-sites-title" style="margin: 36px 0 24px; padding: 26px; border: 1px solid rgba(130,160,190,.18); border-radius: 14px; background: rgba(12,16,23,.72);">
-        <p class="overline">ARCADE NETWORK <span class="heading-slash">/ EXTERNAL</span></p>
-        <h2 id="extra-sites-title" style="margin: 8px 0 6px;">More websites<span class="heading-period">.</span></h2>
-        <p class="section-copy" style="margin-bottom: 20px;">External links. These sites are not operated by VEYAORA.</p>
-        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr)); gap:10px;">
-          <a href="http://math.campus.programming.science.classroom.mapasynegocios.cl" target="_blank" rel="noopener noreferrer" style="display:block; min-width:0; padding:12px 14px; border:1px solid rgba(130,160,190,.15); border-radius:8px; color:inherit; text-decoration:none; overflow-wrap:anywhere; background:rgba(255,255,255,.02);"><span style="color:#62d9ff; font-family:'DM Mono',monospace; font-size:11px; margin-right:8px;">01</span><span aria-label="online" title="Online" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#35df78;box-shadow:0 0 7px #35df78;margin-right:9px;vertical-align:middle;"></span>math.campus.programming.science.classroom.mapasynegocios.cl</a>
-          <a href="http://math.science.programming.english.grammar.oc.com.ar" target="_blank" rel="noopener noreferrer" style="display:block; min-width:0; padding:12px 14px; border:1px solid rgba(130,160,190,.15); border-radius:8px; color:inherit; text-decoration:none; overflow-wrap:anywhere; background:rgba(255,255,255,.02);"><span style="color:#62d9ff; font-family:'DM Mono',monospace; font-size:11px; margin-right:8px;">02</span><span aria-label="offline" title="Offline" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff4d5e;box-shadow:0 0 7px #ff4d5e;margin-right:9px;vertical-align:middle;"></span>math.science.programming.english.grammar.oc.com.ar</a>
-          <a href="http://technology.literature.homework.vocabulary.project.bsfa.info" target="_blank" rel="noopener noreferrer" style="display:block; min-width:0; padding:12px 14px; border:1px solid rgba(130,160,190,.15); border-radius:8px; color:inherit; text-decoration:none; overflow-wrap:anywhere; background:rgba(255,255,255,.02);"><span style="color:#62d9ff; font-family:'DM Mono',monospace; font-size:11px; margin-right:8px;">03</span><span aria-label="online" title="Online" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#35df78;box-shadow:0 0 7px #35df78;margin-right:9px;vertical-align:middle;"></span>technology.literature.homework.vocabulary.project.bsfa.info</a>
-          <a href="http://geometry.lecture.teacher.homework.geography.smdahal.com.np" target="_blank" rel="noopener noreferrer" style="display:block; min-width:0; padding:12px 14px; border:1px solid rgba(130,160,190,.15); border-radius:8px; color:inherit; text-decoration:none; overflow-wrap:anywhere; background:rgba(255,255,255,.02);"><span style="color:#62d9ff; font-family:'DM Mono',monospace; font-size:11px; margin-right:8px;">04</span><span aria-label="offline" title="Offline" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff4d5e;box-shadow:0 0 7px #ff4d5e;margin-right:9px;vertical-align:middle;"></span>geometry.lecture.teacher.homework.geography.smdahal.com.np</a>
-          <a href="http://biology.music.technology.computer.engineering.smg.com.np" target="_blank" rel="noopener noreferrer" style="display:block; min-width:0; padding:12px 14px; border:1px solid rgba(130,160,190,.15); border-radius:8px; color:inherit; text-decoration:none; overflow-wrap:anywhere; background:rgba(255,255,255,.02);"><span style="color:#62d9ff; font-family:'DM Mono',monospace; font-size:11px; margin-right:8px;">05</span><span aria-label="offline" title="Offline" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff4d5e;box-shadow:0 0 7px #ff4d5e;margin-right:9px;vertical-align:middle;"></span>biology.music.technology.computer.engineering.smg.com.np</a>
-          <a href="http://reading.programming.learning.homework.project.kishorpuri.com.np" target="_blank" rel="noopener noreferrer" style="display:block; min-width:0; padding:12px 14px; border:1px solid rgba(130,160,190,.15); border-radius:8px; color:inherit; text-decoration:none; overflow-wrap:anywhere; background:rgba(255,255,255,.02);"><span style="color:#62d9ff; font-family:'DM Mono',monospace; font-size:11px; margin-right:8px;">06</span><span aria-label="offline" title="Offline" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff4d5e;box-shadow:0 0 7px #ff4d5e;margin-right:9px;vertical-align:middle;"></span>reading.programming.learning.homework.project.kishorpuri.com.np</a>
-          <a href="http://geography.math.english.programming.writing.costasur.cl" target="_blank" rel="noopener noreferrer" style="display:block; min-width:0; padding:12px 14px; border:1px solid rgba(130,160,190,.15); border-radius:8px; color:inherit; text-decoration:none; overflow-wrap:anywhere; background:rgba(255,255,255,.02);"><span style="color:#62d9ff; font-family:'DM Mono',monospace; font-size:11px; margin-right:8px;">07</span><span aria-label="offline" title="Offline" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff4d5e;box-shadow:0 0 7px #ff4d5e;margin-right:9px;vertical-align:middle;"></span>geography.math.english.programming.writing.costasur.cl</a>
-          <a href="http://vocabulary.science.technology.assignment.learning.algodenada.com.ar" target="_blank" rel="noopener noreferrer" style="display:block; min-width:0; padding:12px 14px; border:1px solid rgba(130,160,190,.15); border-radius:8px; color:inherit; text-decoration:none; overflow-wrap:anywhere; background:rgba(255,255,255,.02);"><span style="color:#62d9ff; font-family:'DM Mono',monospace; font-size:11px; margin-right:8px;">08</span><span aria-label="offline" title="Offline" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff4d5e;box-shadow:0 0 7px #ff4d5e;margin-right:9px;vertical-align:middle;"></span>vocabulary.science.technology.assignment.learning.algodenada.com.ar</a>
-          <a href="http://student.physics.engineering.grammar.geometry.mrakesh.com.np" target="_blank" rel="noopener noreferrer" style="display:block; min-width:0; padding:12px 14px; border:1px solid rgba(130,160,190,.15); border-radius:8px; color:inherit; text-decoration:none; overflow-wrap:anywhere; background:rgba(255,255,255,.02);"><span style="color:#62d9ff; font-family:'DM Mono',monospace; font-size:11px; margin-right:8px;">09</span><span aria-label="offline" title="Offline" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff4d5e;box-shadow:0 0 7px #ff4d5e;margin-right:9px;vertical-align:middle;"></span>student.physics.engineering.grammar.geometry.mrakesh.com.np</a>
-          <a href="http://studying.student.vocabulary.math.drama.ashishkc.com.np" target="_blank" rel="noopener noreferrer" style="display:block; min-width:0; padding:12px 14px; border:1px solid rgba(130,160,190,.15); border-radius:8px; color:inherit; text-decoration:none; overflow-wrap:anywhere; background:rgba(255,255,255,.02);"><span style="color:#62d9ff; font-family:'DM Mono',monospace; font-size:11px; margin-right:8px;">10</span><span aria-label="offline" title="Offline" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff4d5e;box-shadow:0 0 7px #ff4d5e;margin-right:9px;vertical-align:middle;"></span>studying.student.vocabulary.math.drama.ashishkc.com.np</a>
-          <a href="http://reading.assignment.seminar.studying.chemistry.delpunta.com.ar" target="_blank" rel="noopener noreferrer" style="display:block; min-width:0; padding:12px 14px; border:1px solid rgba(130,160,190,.15); border-radius:8px; color:inherit; text-decoration:none; overflow-wrap:anywhere; background:rgba(255,255,255,.02);"><span style="color:#62d9ff; font-family:'DM Mono',monospace; font-size:11px; margin-right:8px;">11</span><span aria-label="offline" title="Offline" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff4d5e;box-shadow:0 0 7px #ff4d5e;margin-right:9px;vertical-align:middle;"></span>reading.assignment.seminar.studying.chemistry.delpunta.com.ar</a>
-          <a href="http://campus.algebra.literature.history.chemistry.verbavatz.org" target="_blank" rel="noopener noreferrer" style="display:block; min-width:0; padding:12px 14px; border:1px solid rgba(130,160,190,.15); border-radius:8px; color:inherit; text-decoration:none; overflow-wrap:anywhere; background:rgba(255,255,255,.02);"><span style="color:#62d9ff; font-family:'DM Mono',monospace; font-size:11px; margin-right:8px;">12</span><span aria-label="offline" title="Offline" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff4d5e;box-shadow:0 0 7px #ff4d5e;margin-right:9px;vertical-align:middle;"></span>campus.algebra.literature.history.chemistry.verbavatz.org</a>
-          <a href="http://reading.computer.history.homework.biology.youthpeacecenter.com.np" target="_blank" rel="noopener noreferrer" style="display:block; min-width:0; padding:12px 14px; border:1px solid rgba(130,160,190,.15); border-radius:8px; color:inherit; text-decoration:none; overflow-wrap:anywhere; background:rgba(255,255,255,.02);"><span style="color:#62d9ff; font-family:'DM Mono',monospace; font-size:11px; margin-right:8px;">13</span><span aria-label="offline" title="Offline" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff4d5e;box-shadow:0 0 7px #ff4d5e;margin-right:9px;vertical-align:middle;"></span>reading.computer.history.homework.biology.youthpeacecenter.com.np</a>
-          <a href="http://math.project.chemistry.campus.reading.giripawan.com.np" target="_blank" rel="noopener noreferrer" style="display:block; min-width:0; padding:12px 14px; border:1px solid rgba(130,160,190,.15); border-radius:8px; color:inherit; text-decoration:none; overflow-wrap:anywhere; background:rgba(255,255,255,.02);"><span style="color:#62d9ff; font-family:'DM Mono',monospace; font-size:11px; margin-right:8px;">14</span><span aria-label="offline" title="Offline" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff4d5e;box-shadow:0 0 7px #ff4d5e;margin-right:9px;vertical-align:middle;"></span>math.project.chemistry.campus.reading.giripawan.com.np</a>
-          <a href="http://library.literature.computer.studying.history.estudiolazen.com.ar" target="_blank" rel="noopener noreferrer" style="display:block; min-width:0; padding:12px 14px; border:1px solid rgba(130,160,190,.15); border-radius:8px; color:inherit; text-decoration:none; overflow-wrap:anywhere; background:rgba(255,255,255,.02);"><span style="color:#62d9ff; font-family:'DM Mono',monospace; font-size:11px; margin-right:8px;">15</span><span aria-label="offline" title="Offline" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff4d5e;box-shadow:0 0 7px #ff4d5e;margin-right:9px;vertical-align:middle;"></span>library.literature.computer.studying.history.estudiolazen.com.ar</a>
-          <a href="http://writing.biology.homework.science.vocabulary.gasparacebo.com.ar" target="_blank" rel="noopener noreferrer" style="display:block; min-width:0; padding:12px 14px; border:1px solid rgba(130,160,190,.15); border-radius:8px; color:inherit; text-decoration:none; overflow-wrap:anywhere; background:rgba(255,255,255,.02);"><span style="color:#62d9ff; font-family:'DM Mono',monospace; font-size:11px; margin-right:8px;">16</span><span aria-label="offline" title="Offline" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff4d5e;box-shadow:0 0 7px #ff4d5e;margin-right:9px;vertical-align:middle;"></span>writing.biology.homework.science.vocabulary.gasparacebo.com.ar</a>
-          <a href="http://assignment.technology.algebra.project.music.rupakhadka.com.np" target="_blank" rel="noopener noreferrer" style="display:block; min-width:0; padding:12px 14px; border:1px solid rgba(130,160,190,.15); border-radius:8px; color:inherit; text-decoration:none; overflow-wrap:anywhere; background:rgba(255,255,255,.02);"><span style="color:#62d9ff; font-family:'DM Mono',monospace; font-size:11px; margin-right:8px;">17</span><span aria-label="offline" title="Offline" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff4d5e;box-shadow:0 0 7px #ff4d5e;margin-right:9px;vertical-align:middle;"></span>assignment.technology.algebra.project.music.rupakhadka.com.np</a>
-          <a href="http://biology.writing.classroom.vocabulary.project.khanalsamir.com.np" target="_blank" rel="noopener noreferrer" style="display:block; min-width:0; padding:12px 14px; border:1px solid rgba(130,160,190,.15); border-radius:8px; color:inherit; text-decoration:none; overflow-wrap:anywhere; background:rgba(255,255,255,.02);"><span style="color:#62d9ff; font-family:'DM Mono',monospace; font-size:11px; margin-right:8px;">18</span><span aria-label="offline" title="Offline" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff4d5e;box-shadow:0 0 7px #ff4d5e;margin-right:9px;vertical-align:middle;"></span>biology.writing.classroom.vocabulary.project.khanalsamir.com.np</a>
-          <a href="http://seminar.algebra.homework.grammar.biology.grinovero.com.ar" target="_blank" rel="noopener noreferrer" style="display:block; min-width:0; padding:12px 14px; border:1px solid rgba(130,160,190,.15); border-radius:8px; color:inherit; text-decoration:none; overflow-wrap:anywhere; background:rgba(255,255,255,.02);"><span style="color:#62d9ff; font-family:'DM Mono',monospace; font-size:11px; margin-right:8px;">19</span><span aria-label="offline" title="Offline" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff4d5e;box-shadow:0 0 7px #ff4d5e;margin-right:9px;vertical-align:middle;"></span>seminar.algebra.homework.grammar.biology.grinovero.com.ar</a>
-          <a href="http://biology.programming.literature.music.homework.saagargurung.com.np" target="_blank" rel="noopener noreferrer" style="display:block; min-width:0; padding:12px 14px; border:1px solid rgba(130,160,190,.15); border-radius:8px; color:inherit; text-decoration:none; overflow-wrap:anywhere; background:rgba(255,255,255,.02);"><span style="color:#62d9ff; font-family:'DM Mono',monospace; font-size:11px; margin-right:8px;">20</span><span aria-label="offline" title="Offline" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff4d5e;box-shadow:0 0 7px #ff4d5e;margin-right:9px;vertical-align:middle;"></span>biology.programming.literature.music.homework.saagargurung.com.np</a>
-        </div>
-      </section>
-
-      <footer class="footer"><a class="footer-brand" href="#"><span>V.</span> VEYAORA</a><span>PLAY BEYOND WHAT’S NEXT.</span><span>UNOFFICIAL BROWSER GAME PORTAL <b>© 2026</b></span></footer>
+      <footer class="console-footer"><span class="footer-logo">V.</span><span>VEYΛORA ARCADE</span><span>PLAY BEYOND WHAT'S NEXT</span><span id="footer-player">PLAYER / COLTON</span></footer>
     </main>
   </div>
 
-  <div id="game-view" class="view game-view">
-    <div id="game-container" class="game-container">
-      <div id="game-loader" class="game-loader" role="status" aria-live="polite">
-        <div class="loader-mark">V<span>.</span></div>
-        <div class="loader-track"><span></span></div>
-        <p id="loader-text" class="loader-text">INITIALIZING GAME</p>
-        <p class="loader-sub">PLEASE WAIT WHILE YOUR WORLD STARTS</p>
-      </div>
-      <iframe id="game-frame" class="game-frame" title="Eaglercraft 26.2" allow="fullscreen; autoplay; gamepad; clipboard-write; cross-origin-isolated" allowfullscreen></iframe>
-    </div>
-  </div>
+  <section id="game-view" class="game-screen" hidden>
+    <header class="game-topbar"><button id="exit-game" class="game-exit" type="button">← <span>ARCADE</span></button><div class="game-now"><span class="status-light"></span><strong id="game-title">Eaglercraft 26.2</strong></div><div class="game-actions"><button id="reload-game" class="icon-button" type="button" title="Reload game" aria-label="Reload game">↻</button><button id="fullscreen-game" class="icon-button" type="button" title="Fullscreen" aria-label="Fullscreen">⛶</button></div></header>
+    <div id="game-container" class="game-container"><div id="game-loader" class="game-loader"><div class="loader-mark">V<span>.</span></div><div class="loader-track"><span></span></div><p id="loader-text">STARTING GAME</p><button id="retry-game" class="button button-secondary" type="button">RELOAD GAME ↻</button></div><iframe id="game-frame" class="game-frame" title="Game window" allow="fullscreen; autoplay; gamepad; clipboard-write; cross-origin-isolated" allowfullscreen></iframe></div>
+  </section>
 
-  <div id="settings-dialog" class="arcade-dialog-backdrop" hidden>
-    <section class="arcade-dialog" role="dialog" aria-modal="true" aria-labelledby="settings-title">
-      <div class="dialog-heading"><div><p class="overline">SYSTEM CONFIGURATION</p><h2 id="settings-title">Arcade settings<span class="heading-period">.</span></h2></div><button class="dialog-close" type="button" data-close-dialog aria-label="Close settings">×</button></div>
-      <label class="setting-row"><span><strong>Interface accent</strong><small>Change the console highlight color on this device.</small></span><select id="accent-setting"><option value="green">VEYΛORA green</option><option value="cyan">Electric cyan</option><option value="blue">Arcade blue</option></select></label>
-      <label class="setting-row"><span><strong>Reduced motion</strong><small>Reduce animated transitions in the dashboard.</small></span><input id="motion-setting" type="checkbox"></label>
-      <div class="setting-note">Settings are saved in this browser on this device.</div>
-      <button class="dialog-primary" type="button" data-close-dialog>DONE</button>
-    </section>
-  </div>
-  <div id="friends-dialog" class="arcade-dialog-backdrop" hidden>
-    <section class="arcade-dialog" role="dialog" aria-modal="true" aria-labelledby="friends-title">
-      <div class="dialog-heading"><div><p class="overline">ARCADE NETWORK / SOCIAL</p><h2 id="friends-title">Friends & multiplayer<span class="heading-period">.</span></h2></div><button class="dialog-close" type="button" data-close-dialog aria-label="Close friends">×</button></div>
-      <p class="dialog-intro">A home for your crew. This preview is ready for a shared presence service; live friend status and invites are not connected yet.</p>
-      <div class="friend-list">
-        <div class="friend-row"><span class="friend-avatar">C</span><span><strong>Colton</strong><small>Arcade owner profile</small></span><span class="friend-state">LOCAL</span></div>
-        <div class="friend-row"><span class="friend-avatar">E</span><span><strong>Ethan</strong><small>Player account</small></span><span class="friend-state">NOT CONNECTED</span></div>
-        <div class="friend-row"><span class="friend-avatar">J</span><span><strong>John</strong><small>Player account</small></span><span class="friend-state">NOT CONNECTED</span></div>
-        <div class="friend-row"><span class="friend-avatar">N</span><span><strong>Noah</strong><small>Player account</small></span><span class="friend-state">NOT CONNECTED</span></div>
-      </div>
-      <div class="setting-note">Multiplayer depends on each game's own support. Shared accounts, real-time online status, and invites need a backend.</div>
-      <button class="dialog-primary" type="button" data-close-dialog>BACK TO ARCADE</button>
-    </section>
-  </div>
-  <script src="/idk/js/firebase-config.js?v=livecounter20261012"></script>
+  <div id="settings-dialog" class="dialog-backdrop" hidden><section class="dialog-panel" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+    <div class="dialog-head"><div><p class="eyebrow">SYSTEM / PERSONALIZATION</p><h2 id="settings-title">Settings<span class="accent-dot">.</span></h2></div><button class="dialog-close" type="button" data-close-dialog aria-label="Close settings">×</button></div>
+    <div class="settings-tabs"><button class="settings-tab active" type="button" data-settings-tab="appearance">APPEARANCE</button><button class="settings-tab" type="button" data-settings-tab="profile">PROFILE</button><button class="settings-tab" type="button" data-settings-tab="system">SYSTEM</button></div>
+    <div class="settings-pane" data-settings-pane="appearance"><label class="setting-row"><span><strong>Accent color</strong><small>Choose your console highlight.</small></span><select id="accent-setting"><option value="green">VEYΛORA green</option><option value="cyan">Electric cyan</option><option value="blue">Arcade blue</option><option value="violet">Violet pulse</option></select></label><label class="setting-row"><span><strong>Reduced motion</strong><small>Reduce animated transitions.</small></span><input id="motion-setting" type="checkbox"></label></div>
+    <div class="settings-pane" data-settings-pane="profile" hidden><div class="profile-edit-preview"><span id="profile-edit-avatar" class="avatar avatar-v">C</span><div><strong id="profile-edit-name">Colton</strong><small>YOUR LOCAL PLAYER PROFILE</small></div></div><label class="field-label" for="display-name-input">DISPLAY NAME</label><input id="display-name-input" class="dialog-input" maxlength="18" placeholder="Display name"><p class="field-help">Your login name stays the same. This changes how your name appears in the arcade.</p><p class="field-label">CHOOSE AN AVATAR</p><div id="avatar-options" class="avatar-options"><button type="button" data-avatar="V." aria-label="V avatar">V.</button><button type="button" data-avatar="⚡" aria-label="Lightning avatar">⚡</button><button type="button" data-avatar="🎮" aria-label="Controller avatar">🎮</button><button type="button" data-avatar="👾" aria-label="Alien avatar">👾</button><button type="button" data-avatar="🦊" aria-label="Fox avatar">🦊</button><button type="button" data-avatar="🚀" aria-label="Rocket avatar">🚀</button><button type="button" data-avatar="🌙" aria-label="Moon avatar">🌙</button><button type="button" data-avatar="💠" aria-label="Diamond avatar">💠</button></div><button id="save-profile" class="button button-primary full-width" type="button">SAVE PROFILE <span>✓</span></button></div>
+    <div class="settings-pane" data-settings-pane="system" hidden><div class="system-info-row"><span>ARCADE VERSION</span><strong>1.1 / CONSOLE UI</strong></div><div class="system-info-row"><span>PROFILE STORAGE</span><strong>THIS BROWSER</strong></div><div class="system-info-row"><span>GAME ENGINE</span><strong>WEB / HTML5</strong></div><button id="reset-settings" class="button button-secondary full-width" type="button">RESET APPEARANCE SETTINGS</button><button id="sign-out" class="button button-danger full-width" type="button">SIGN OUT TO PLAYER SELECT</button></div>
+    <p id="settings-feedback" class="settings-feedback" aria-live="polite"></p>
+    <div class="dialog-foot"><span><span class="status-light"></span> CHANGES SAVE LOCALLY</span><button class="button button-primary" type="button" data-close-dialog>DONE <span>✓</span></button></div>
+  </section></div>
+
+  <div id="friends-dialog" class="dialog-backdrop" hidden><section class="dialog-panel" role="dialog" aria-modal="true" aria-labelledby="friends-title">
+    <div class="dialog-head"><div><p class="eyebrow">NETWORK / PLAYERS</p><h2 id="friends-title">Friends<span class="accent-dot">.</span></h2></div><button class="dialog-close" type="button" data-close-dialog aria-label="Close friends">×</button></div>
+    <p class="muted-copy">Player profiles for the VEYΛORA crew. Real-time status and invites need a shared backend.</p><div class="friends-list">
+      <div class="friend-entry"><span class="avatar avatar-v">C</span><div><strong>Colton</strong><small>Arcade owner</small></div><span class="friend-status friend-local">THIS DEVICE</span></div>
+      <div class="friend-entry"><span class="avatar avatar-e">E</span><div><strong>Ethan</strong><small>Player profile</small></div><span class="friend-status">OFFLINE</span></div>
+      <div class="friend-entry"><span class="avatar avatar-j">J</span><div><strong>John</strong><small>Player profile</small></div><span class="friend-status">OFFLINE</span></div>
+      <div class="friend-entry"><span class="avatar avatar-n">N</span><div><strong>Noah</strong><small>Player profile</small></div><span class="friend-status">OFFLINE</span></div>
+    </div><div class="friend-note">MULTIPLAYER STATUS IS A PREVIEW · GAME SUPPORT VARIES</div><div class="dialog-foot"><span>VEYΛORA NETWORK</span><button class="button button-primary" type="button" data-close-dialog>DONE <span>✓</span></button></div>
+  </section></div>
+
+  <div id="profile-menu" class="profile-menu" hidden><button id="edit-profile" type="button">EDIT PROFILE <span>↗</span></button><button id="open-profile-settings" type="button">PROFILE SETTINGS <span>⚙</span></button><button id="profile-signout" type="button">SWITCH PLAYER <span>⇥</span></button></div>
+
+  <script src="/idk/js/firebase-config.js?v=console-redesign-20261028"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
-  <script src="/idk/js/script.js?v=console-suite-20261028"></script>
-  <script>
-    // Keep login separate from the arcade launcher so unrelated script errors cannot break it.
-    (() => {
-      const form = document.getElementById("login-form");
-      const view = document.getElementById("login-view");
-      const name = document.getElementById("login-name");
-      const password = document.getElementById("login-password");
-      const error = document.getElementById("login-error");
-      const allowed = ["colton", "ethan", "john", "noah"];
-      if (!form || !view || !name || !password || !error) return;
-      form.addEventListener("submit", event => {
-        event.preventDefault();
-        event.stopPropagation();
-        const player = name.value.trim().toLowerCase();
-        if (allowed.includes(player) && password.value === "letmein") {
-          error.textContent = "";
-          view.hidden = true;
-          view.style.display = "none";
-          try { sessionStorage.setItem("veyaoraArcadeLoggedIn", player); } catch (_) {}
-        } else {
-          error.textContent = "Access denied. Check your player name and password.";
-          password.value = "";
-          password.focus();
-        }
-      });
-    })();
-  </script>
-
+  <script src="/idk/js/script.js?v=console-redesign-20261028"></script>
 </body>
 </html>
