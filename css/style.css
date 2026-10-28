@@ -149,3 +149,82 @@ body{background:#070a0e!important;color:#f5f7f9}
 .login-foot{display:flex;align-items:center;gap:8px;margin-top:24px;padding-top:16px;border-top:1px solid #26313a;color:#72808a;font-family:'DM Mono',monospace;font-size:8px;letter-spacing:.7px}
 .login-foot>span:last-child{margin-left:auto}.login-foot-dot{width:6px;height:6px;border-radius:50%;background:#b8ff61;box-shadow:0 0 8px #b8ff61}
 @media(max-width:480px){.login-view{padding:15px}.login-panel{padding:25px 21px}.login-brand{margin-bottom:29px}}
+
+
+/* VEYΛORA CONSOLE SUITE — premium store, recent games, settings and social panels */
+:root{--arcade-accent:#b8ff61;--arcade-accent-rgb:184,255,97}
+body{background:radial-gradient(ellipse at 82% 0%,#14251d 0,transparent 32%),#070a0e!important}
+.topbar-right{display:flex;align-items:center;gap:10px!important}
+.top-action{height:34px;padding:0 12px;border:1px solid #2c3944;border-radius:4px;background:#101720;color:#c8d2d9;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:.7px;cursor:pointer;transition:border-color .18s,background .18s}
+.top-action span{margin-left:7px;color:var(--arcade-accent)}
+.top-action:hover{border-color:var(--arcade-accent);background:#17221c}
+.welcome-row{border-bottom:1px solid #1c2730;margin-bottom:20px}
+.arcade-tools{display:grid;grid-template-columns:minmax(220px,1fr) auto;align-items:center;gap:18px;margin:0 0 23px}
+.store-search-wrap{display:flex;align-items:center;gap:12px;min-width:0;height:47px;padding:0 14px;border:1px solid #293640;border-radius:5px;background:linear-gradient(110deg,#111922,#0c1218);box-shadow:inset 0 1px #ffffff05}
+.store-search-icon{font-size:23px;color:var(--arcade-accent);line-height:1}
+.store-search-wrap input{width:100%;min-width:0;border:0;outline:0;background:transparent;color:#f4f7f9;font:inherit;font-size:12px}
+.store-search-wrap input::placeholder{color:#6e7b86}
+.search-shortcut{white-space:nowrap;color:#596671;font:8px 'DM Mono',monospace;letter-spacing:.7px}
+.store-filter-row{display:flex;flex-wrap:wrap;gap:6px}
+.store-filter{height:34px;padding:0 12px;border:1px solid #293640;border-radius:4px;background:#0d1319;color:#83919c;font:9px 'DM Mono',monospace;letter-spacing:.4px;cursor:pointer}
+.store-filter:hover,.store-filter.is-selected{border-color:#58754b;background:#18241a;color:var(--arcade-accent)}
+.store-filter[aria-pressed="true"]{border-color:var(--arcade-accent);color:var(--arcade-accent)}
+.continue-section{margin:26px 0 28px;padding:20px;border:1px solid #24333c;border-radius:6px;background:linear-gradient(120deg,#101820dd,#0b1117ee);box-shadow:0 18px 44px #0002}
+.mini-section-heading{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:16px}
+.mini-section-heading h2{margin:5px 0 0;font-size:clamp(21px,2.5vw,28px);letter-spacing:-.8px}
+.heading-period{color:var(--arcade-accent)}
+.text-action{border:0;background:transparent;color:var(--arcade-accent);font:9px 'DM Mono',monospace;letter-spacing:.5px;cursor:pointer}
+.text-action:hover{text-decoration:underline}
+.recent-games{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+.recent-game{display:flex;align-items:center;gap:11px;min-width:0;padding:12px;border:1px solid #27343e;border-radius:5px;background:#0b1117;color:#f4f7f9;text-align:left;cursor:pointer;transition:transform .16s,border-color .16s}
+.recent-game:hover{transform:translateY(-2px);border-color:var(--arcade-accent)}
+.recent-art{display:grid;place-items:center;flex:0 0 44px;height:44px;border:1px solid #385043;border-radius:4px;background:radial-gradient(circle at 50% 35%,#36533a,#111c20 72%);color:var(--arcade-accent);font:12px 'DM Mono',monospace}
+.recent-game-copy{display:block;min-width:0}
+.recent-game-copy strong{display:block;overflow:hidden;font-size:11px;text-overflow:ellipsis;white-space:nowrap}
+.recent-game-copy small{display:block;margin-top:5px;color:#7f8d97;font:8px 'DM Mono',monospace}
+.empty-state{grid-column:1/-1;margin:0;padding:16px;color:#788791;font-size:12px}
+.network-strip{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:24px 0 38px}
+.network-card{display:flex;align-items:center;gap:14px;min-width:0;padding:18px;border:1px solid #293640;border-radius:5px;background:linear-gradient(125deg,#121b23,#0c1218)}
+.network-card-icon{display:grid;place-items:center;flex:0 0 42px;height:42px;border:1px solid #35483a;border-radius:5px;background:#17221a;color:var(--arcade-accent);font-size:23px}
+.network-card-copy{flex:1;min-width:0}
+.network-card-copy .overline{margin:0 0 6px;color:#84958a;font-size:8px}
+.network-card-copy h3{margin:0;font-size:14px;letter-spacing:-.3px}
+.network-card-copy>p:last-child{margin:6px 0 0;color:#8d9aa4;font-size:11px;line-height:1.6}
+.network-card>.text-action{flex-shrink:0}
+.arcade-dialog-backdrop{position:fixed;inset:0;z-index:99990;display:grid;place-items:center;padding:18px;background:#020509d9;backdrop-filter:blur(12px)}
+.arcade-dialog-backdrop[hidden]{display:none!important}
+.arcade-dialog{width:min(100%,590px);max-height:min(88vh,760px);overflow:auto;padding:clamp(20px,4vw,32px);border:1px solid #35453b;border-radius:7px;background:linear-gradient(145deg,#141d24,#0a1016);box-shadow:0 28px 100px #000b}
+.dialog-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:20px}
+.dialog-heading .overline{margin:0 0 8px;color:var(--arcade-accent);font:9px 'DM Mono',monospace;letter-spacing:1px}
+.dialog-heading h2{margin:0;font-size:clamp(23px,4vw,32px);letter-spacing:-1px}
+.dialog-close{width:34px;height:34px;border:1px solid #34414a;border-radius:4px;background:#0c1218;color:#dce3e8;font-size:23px;cursor:pointer}
+.setting-row{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:17px 0;border-top:1px solid #26323b;cursor:pointer}
+.setting-row strong,.setting-row small{display:block}
+.setting-row strong{font-size:12px}
+.setting-row small{margin-top:5px;color:#83919b;font-size:10px;line-height:1.5}
+.setting-row select{max-width:160px;padding:9px;border:1px solid #34434d;border-radius:4px;background:#0a1015;color:#e9eef1;font:11px inherit}
+.setting-row input[type=checkbox]{width:18px;height:18px;accent-color:var(--arcade-accent)}
+.setting-note{margin:15px 0;padding:12px;border:1px solid #26362e;border-radius:4px;background:#101a14;color:#9aaca0;font-size:10px;line-height:1.6}
+.dialog-primary{width:100%;height:44px;margin-top:8px;border:1px solid var(--arcade-accent);border-radius:4px;background:var(--arcade-accent);color:#0a1008;font:10px 'DM Mono',monospace;font-weight:700;letter-spacing:1px;cursor:pointer}
+.dialog-intro{color:#9aa7b1;font-size:12px;line-height:1.7}
+.friend-list{margin:20px 0;border-top:1px solid #28343d}
+.friend-row{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid #28343d}
+.friend-avatar{display:grid;place-items:center;width:38px;height:38px;border:1px solid #415744;border-radius:5px;background:#18251b;color:var(--arcade-accent);font:16px 'DM Mono',monospace}
+.friend-row>span:nth-child(2){flex:1}
+.friend-row strong,.friend-row small{display:block}
+.friend-row strong{font-size:12px}
+.friend-row small{margin-top:4px;color:#7e8d97;font-size:10px}
+.friend-state{color:#819087;font:8px 'DM Mono',monospace;letter-spacing:.4px}
+.game-card{overflow:hidden}
+.card-body{position:relative}
+.card-tools-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:13px}
+.card-tools-row .card-launch{flex:1;margin-top:0}
+.favorite-toggle{flex:0 0 39px;width:39px;height:39px;border:1px solid #34414a;border-radius:4px;background:#0b1117;color:#85939d;font-size:18px;cursor:pointer}
+.favorite-toggle.is-favorite{border-color:var(--arcade-accent);color:var(--arcade-accent);background:#19251a}
+.game-card[hidden],.other-version-card[hidden]{display:none!important}
+body.reduce-motion *,body.reduce-motion *:before,body.reduce-motion *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+body.accent-cyan{--arcade-accent:#62d9ff;--arcade-accent-rgb:98,217,255}
+body.accent-blue{--arcade-accent:#7da7ff;--arcade-accent-rgb:125,167,255}
+@media(max-width:1100px){.arcade-tools{grid-template-columns:1fr}.store-filter-row{justify-content:flex-start}.network-card{align-items:flex-start;flex-wrap:wrap}.network-card-copy{min-width:calc(100% - 60px)}.network-card>.text-action{margin-left:56px}}
+@media(max-width:800px){.recent-games{grid-template-columns:repeat(2,minmax(0,1fr))}.network-strip{grid-template-columns:1fr}.top-action{padding:0 9px}.search-shortcut{display:none}}
+@media(max-width:560px){.topbar-right{gap:5px!important}.top-action{height:31px;padding:0 7px;font-size:8px}.top-action span{display:none}.arcade-tools{gap:10px}.store-filter{padding:0 9px;font-size:8px}.continue-section{padding:14px}.recent-games{grid-template-columns:1fr}.network-card{padding:14px}.network-card-copy{min-width:0}.network-card>.text-action{margin-left:0}.friend-state{font-size:7px}}
