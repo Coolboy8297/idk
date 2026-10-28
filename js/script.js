@@ -220,6 +220,178 @@
     gameFrame.src = activeGameUrl;
   }
 
+
+  // Console suite: local search, favorites, recent games, settings, and friends preview.
+  const readLocal = (key, fallback) => {
+    try { const v = localStorage.getItem(key); return v === null ? fallback : JSON.parse(v); }
+    catch (_) { return fallback; }
+  };
+  const writeLocal = (key, value) => { try { localStorage.setItem(key, JSON.stringify(value)); } catch (_) {} };
+  const searchBox = document.getElementById("game-search");
+  const filters = Array.from(document.querySelectorAll(".store-filter[data-filter]"));
+  const favoritesButton = document.getElementById("show-favorites");
+  const recentBox = document.getElementById("recent-games");
+  let currentFilter = "all";
+  let favoritesOnly = false;
+  let favorites = readLocal("veyaoraFavorites", []);
+  let recents = readLocal("veyaoraRecentGames", []);
+
+  const cards = () => Array.from(document.querySelectorAll(".library-grid .game-card"));
+  const titleOf = card => card.querySelector("h3")?.textContent.trim() || "Game";
+  const keyOf = card => (card.id || titleOf(card)).toLowerCase().replace(/[^a-z0-9]+/g, "-");
+  const categoryOf = card => /experimental|android lab|xbox lab|afterburner/i.test(card.textContent) ? "experimental" : "browser";
+
+  function filterGames() {
+    const q = (searchBox?.value || "").trim().toLowerCase();
+    cards().forEach(card => {
+      card.hidden = !(card.textContent.toLowerCase().includes(q) &&
+        (currentFilter === "all" || categoryOf(card) === currentFilter) &&
+        (!favoritesOnly || favorites.includes(keyOf(card))));
+    });
+    const extras = document.getElementById("other-versions-section");
+    if (extras) extras.hidden = !Array.from(extras.querySelectorAll(".game-card")).some(card => !card.hidden);
+  }
+
+  function addFavoriteButtons() {
+    cards().forEach(card => {
+      const body = card.querySelector(".card-body");
+      const launch = body?.querySelector(".card-launch");
+      if (!body || !launch || body.querySelector(".favorite-toggle")) return;
+      const row = document.createElement("div");
+      row.className = "card-tools-row";
+      const fav = document.createElement("button");
+      fav.type = "button";
+      fav.className = "favorite-toggle";
+      const refresh = () => {
+        const yes = favorites.includes(keyOf(card));
+        fav.textContent = yes ? "♥" : "♡";
+        fav.classList.toggle("is-favorite", yes);
+        fav.setAttribute("aria-pressed", String(yes));
+        fav.setAttribute("aria-label", (yes ? "Remove " : "Add ") + titleOf(card) + " " + (yes ? "from" : "to") + " favorites");
+      };
+      fav.addEventListener("click", () => {
+        favorites = favorites.includes(keyOf(card)) ? favorites.filter(k => k !== keyOf(card)) : [...favorites, keyOf(card)];
+        writeLocal("veyaoraFavorites", favorites);
+        refresh();
+        filterGames();
+      });
+      launch.parentNode.insertBefore(row, launch);
+      row.append(launch, fav);
+      refresh();
+    });
+  }
+
+  function drawRecents() {
+    if (!recentBox) return;
+    recentBox.replaceChildren();
+    if (!recents.length) {
+      const empty = document.createElement("p");
+      empty.className = "empty-state";
+      empty.textContent = "Your recently played games will appear here.";
+      recentBox.appendChild(empty);
+      return;
+    }
+    recents.slice(0, 4).forEach(game => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "recent-game";
+      const art = document.createElement("span");
+      art.className = "recent-art";
+      art.textContent = game.mark || "V.";
+      const copy = document.createElement("span");
+      copy.className = "recent-game-copy";
+      const title = document.createElement("strong");
+      title.textContent = game.title;
+      const hint = document.createElement("small");
+      hint.textContent = "PLAY AGAIN ↗";
+      copy.append(title, hint);
+      button.append(art, copy);
+      button.addEventListener("click", () => {
+        if (game.url.startsWith("http") || game.url.startsWith("/")) window.open(game.url, "_blank", "noopener,noreferrer");
+        else showGame(game.url, game.title);
+      });
+      recentBox.appendChild(button);
+    });
+  }
+  function rememberRecent(title, url, mark) {
+    recents = [{ key: title.toLowerCase(), title, url, mark: mark || "V." }, ...recents.filter(g => g.title !== title)].slice(0, 8);
+    writeLocal("veyaoraRecentGames", recents);
+    drawRecents();
+  }
+  filters.forEach(button => button.addEventListener("click", () => {
+    currentFilter = button.dataset.filter || "all";
+    filters.forEach(b => b.classList.toggle("is-selected", b === button));
+    filterGames();
+  }));
+  searchBox?.addEventListener("input", filterGames);
+  favoritesButton?.addEventListener("click", () => {
+    favoritesOnly = !favoritesOnly;
+    favoritesButton.setAttribute("aria-pressed", String(favoritesOnly));
+    favoritesButton.classList.toggle("is-selected", favoritesOnly);
+    filterGames();
+  });
+  document.getElementById("clear-recent")?.addEventListener("click", () => {
+    recents = [];
+    writeLocal("veyaoraRecentGames", recents);
+    drawRecents();
+  });
+
+  const settingsDialog = document.getElementById("settings-dialog");
+  const friendsDialog = document.getElementById("friends-dialog");
+  function openDialog(dialog) { if (dialog) { dialog.hidden = false; dialog.querySelector("[data-close-dialog]")?.focus(); } }
+  function closeDialogs() { [settingsDialog, friendsDialog].forEach(d => { if (d) d.hidden = true; }); }
+  document.getElementById("open-settings")?.addEventListener("click", () => openDialog(settingsDialog));
+  document.getElementById("network-settings-button")?.addEventListener("click", () => openDialog(settingsDialog));
+  document.getElementById("open-friends")?.addEventListener("click", () => openDialog(friendsDialog));
+  document.getElementById("network-friends-button")?.addEventListener("click", () => openDialog(friendsDialog));
+  document.querySelectorAll("[data-close-dialog]").forEach(b => b.addEventListener("click", closeDialogs));
+  [settingsDialog, friendsDialog].forEach(d => d?.addEventListener("click", e => { if (e.target === d) closeDialogs(); }));
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closeDialogs(); });
+
+  const accent = document.getElementById("accent-setting");
+  const motion = document.getElementById("motion-setting");
+  const savedAccent = readLocal("veyaoraAccent", "green");
+  document.body.classList.add("accent-" + (["green","cyan","blue"].includes(savedAccent) ? savedAccent : "green"));
+  if (accent) {
+    accent.value = savedAccent;
+    accent.addEventListener("change", () => {
+      document.body.classList.remove("accent-green","accent-cyan","accent-blue");
+      document.body.classList.add("accent-" + accent.value);
+      writeLocal("veyaoraAccent", accent.value);
+    });
+  }
+  if (motion) {
+    motion.checked = Boolean(readLocal("veyaoraReduceMotion", false));
+    document.body.classList.toggle("reduce-motion", motion.checked);
+    motion.addEventListener("change", () => {
+      document.body.classList.toggle("reduce-motion", motion.checked);
+      writeLocal("veyaoraReduceMotion", motion.checked);
+    });
+  }
+
+  // Remember game launches without changing the existing launch flow.
+  const showGameOriginal = showGame;
+  showGame = function(url = GAME_URL, title = "Eaglercraft 26.2") {
+    rememberRecent(title, url, title.toLowerCase().includes("neon") ? "NR" : "V.");
+    showGameOriginal(url, title);
+  };
+  cards().forEach(card => {
+    const launch = card.querySelector(".card-launch");
+    if (!launch || launch.dataset.recentTracked) return;
+    launch.dataset.recentTracked = "1";
+    launch.addEventListener("click", () => {
+      const title = titleOf(card);
+      const href = launch.getAttribute("href");
+      const url = card.id === "available" ? GAME_URL :
+        card.querySelector("#launch-neon-run") ? "neon-runner/Neon-Runner.html" :
+        (href || (title.toLowerCase().includes("neon") ? "neon-runner/Neon-Runner.html" : GAME_URL));
+      rememberRecent(title, url, title.slice(0,2).toUpperCase());
+    }, true);
+  });
+  drawRecents();
+  addFavoriteButtons();
+  filterGames();
+
   playBtn.addEventListener("click", showDefaultGame);
   if (versionCurrent) versionCurrent.addEventListener("click", showDefaultGame);
   const neonRunButton = document.getElementById("launch-neon-run");
