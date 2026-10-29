@@ -8,7 +8,8 @@
 <style>
 *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#080b10;color:#eaf1ff;font-family:system-ui,sans-serif}
 body{display:flex;flex-direction:column}.top{height:44px;flex:0 0 44px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:#101620;border-bottom:1px solid #263142;font-size:12px;letter-spacing:.12em}
-.brand{font-weight:800}.brand span{color:#51caff}.state{color:#9aa9bd;font-size:10px}#player{flex:1;min-height:0;width:100%;display:flex;align-items:center;justify-content:center}ruffle-player{display:block;width:100%;height:100%;max-width:100%;max-height:100%}
+.brand{font-weight:800}.brand span{color:#51caff}.state{color:#9aa9bd;font-size:10px;text-align:right}#player{flex:1;min-height:0;width:100%;display:flex;align-items:center;justify-content:center}ruffle-player{display:block;width:100%;height:100%;max-width:100%;max-height:100%}
+#error{display:none;max-width:620px;margin:24px;padding:22px;border:1px solid #263142;border-radius:12px;background:#101620;line-height:1.5}#error strong{display:block;margin-bottom:8px;color:#ffb4a9}#error a{color:#51caff}
 </style>
 <script>
 window.RufflePlayer = window.RufflePlayer || {};
@@ -20,30 +21,48 @@ window.RufflePlayer.config = {
   contextMenu: "off",
   backgroundColor: "#080b10",
   letterbox: "on",
-  scale: "showAll"
+  scale: "showAll",
+  logLevel: "error"
 };
 </script>
 <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
 </head>
 <body>
-<header class="top"><span class="brand">VEYΛORA <span>/</span> SSF2</span><span class="state" id="status">STARTING RUFFLE PLAYER</span></header>
-<main id="player" aria-label="Super Smash Flash 2 Ruffle player"></main>
+<header class="top"><span class="brand">VEYΛORA <span>/</span> SSF2</span><span class="state" id="status">STARTING PLAYER</span></header>
+<main id="player" aria-label="Super Smash Flash 2 Ruffle player"><div id="error"><strong>SSF2 couldn't connect to the game file.</strong><p id="error-detail">The Ruffle player started, but the official game host did not return the game file. Try reloading in a moment.</p><p><a href="https://www.supersmashflash.com/play/ssf2/" target="_blank" rel="noopener noreferrer">Open the official SSF2 page</a></p><button id="retry" type="button">Try again</button></div></main>
 <script>
 (async function(){
  const status=document.getElementById("status");
- try{
-  const ruffle=window.RufflePlayer.newest();
-  const player=ruffle.createPlayer();
-  player.style.width="100%";
-  player.style.height="100%";
-  document.getElementById("player").appendChild(player);
-  status.textContent="LOADING SUPER SMASH FLASH 2";
-  await player.ruffle().load("https://www.supersmashflash.com/flash/games/SSF2Beta_v1_4_0_1");
-  status.textContent="RUFFLE PLAYER READY";
- }catch(error){
-  status.textContent="PLAYER LOAD ERROR";
-  console.error("SSF2 Ruffle load failed:",error);
+ const errorBox=document.getElementById("error");
+ const detail=document.getElementById("error-detail");
+ const mount=document.getElementById("player");
+ const gameURL="https://www.supersmashflash.com/flash/games/SSF2Beta_v1_4_0_1";
+ let player;
+ async function start(){
+  errorBox.style.display="none";
+  status.textContent="CONNECTING TO GAME FILE";
+  try{
+   if(!window.RufflePlayer || !window.RufflePlayer.newest) throw new Error("Ruffle did not load. The player script may be blocked by the network.");
+   if(!player){
+    const ruffle=window.RufflePlayer.newest();
+    player=ruffle.createPlayer();
+    player.style.width="100%";
+    player.style.height="100%";
+    player.setAttribute("aria-label","Super Smash Flash 2");
+    mount.insertBefore(player,errorBox);
+   }
+   status.textContent="LOADING SUPER SMASH FLASH 2";
+   await player.ruffle().load({url:gameURL});
+   status.textContent="GAME FILE LOADED";
+  }catch(error){
+   console.error("SSF2 Ruffle load failed:",error);
+   status.textContent="CONNECTION FAILED";
+   detail.textContent=(error && error.message ? error.message+" " : "")+"The game file is hosted by the official SSF2 site, so a cross-site/network restriction may be preventing this embedded player from reaching it.";
+   errorBox.style.display="block";
+  }
  }
+ document.getElementById("retry").addEventListener("click",start);
+ start();
 })();
 </script>
 </body>
