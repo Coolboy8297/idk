@@ -84,7 +84,7 @@
   }
 
   function refreshProfilePicker() {
-    $(".profile-choice").forEach(button => {
+    $$(".profile-choice").forEach(button => {
       const player = button.dataset.player;
       const profile = getProfile(player);
       const avatar = $(".avatar", button);
