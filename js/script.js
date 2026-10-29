@@ -332,7 +332,8 @@
       eaglercraft: {url:GAME_URL,title:"Eaglercraft 26.2",kind:"local"},
       neon: {url:"neon-runner/Neon-Runner.html",title:"Neon Run",kind:"local"},
       android: {url:"https://github.com/Z3BOS/afterburner",title:"Android Lab",kind:"external"},
-      xbox: {url:"/idk/xbox360/",title:"VEYΛORA Xbox Lab",kind:"local"}
+      xbox: {url:"/idk/xbox360/",title:"VEYΛORA Xbox Lab",kind:"local"},
+      ssf2: {url:"https://www.supersmashflash.com/play/ssf2/",title:"Super Smash Flash 2",kind:"external"}
     };
     const route = routes[key];
     if (route) launchGame(route.url,route.title,route.kind);
