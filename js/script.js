@@ -333,7 +333,7 @@
       neon: {url:"neon-runner/Neon-Runner.html",title:"Neon Run",kind:"local"},
       android: {url:"https://github.com/Z3BOS/afterburner",title:"Android Lab",kind:"external"},
       xbox: {url:"/idk/xbox360/",title:"VEYΛORA Xbox Lab",kind:"local"},
-      ssf2: {url:"https://www.supersmashflash.com/play/ssf2/",title:"Super Smash Flash 2",kind:"external"}
+      ssf2: {url:"https://www.supersmashflash.com/play/ssf2/",title:"Super Smash Flash 2",kind:"local"}
     };
     const route = routes[key];
     if (route) launchGame(route.url,route.title,route.kind);
