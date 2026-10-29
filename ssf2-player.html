@@ -36,7 +36,7 @@ window.RufflePlayer.config = {
  const errorBox=document.getElementById("error");
  const detail=document.getElementById("error-detail");
  const mount=document.getElementById("player");
- const gameURL="https://www.supersmashflash.com/flash/games/SSF2Beta_v1_4_0_1";
+ const gameURL="https://www.supersmashflash.com/flash/?f=games/SSF2Beta_v1_4_0_1";
  let player;
  async function start(){
   errorBox.style.display="none";
@@ -57,7 +57,7 @@ window.RufflePlayer.config = {
   }catch(error){
    console.error("SSF2 Ruffle load failed:",error);
    status.textContent="CONNECTION FAILED";
-   detail.textContent=(error && error.message ? error.message+" " : "")+"The game file is hosted by the official SSF2 site, so a cross-site/network restriction may be preventing this embedded player from reaching it.";
+   detail.textContent=(error && error.message ? error.message+" " : "")+"The official SSF2 site uses a special /flash/?f=games/... endpoint. If this still fails, the host may be blocking cross-site loading; GitHub Pages cannot proxy that file itself.";
    errorBox.style.display="block";
   }
  }
