@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080b10">
+<title>Super Smash Flash 2 · VEYΛORA</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#080b10;color:#eaf1ff;font-family:system-ui,sans-serif}
+body{display:flex;flex-direction:column}.top{height:44px;flex:0 0 44px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:#101620;border-bottom:1px solid #263142;font-size:12px;letter-spacing:.12em}
+.brand{font-weight:800}.brand span{color:#51caff}.state{color:#9aa9bd;font-size:10px}#player{flex:1;min-height:0;width:100%;display:flex;align-items:center;justify-content:center}ruffle-player{display:block;width:100%;height:100%;max-width:100%;max-height:100%}
+</style>
+<script>
+window.RufflePlayer = window.RufflePlayer || {};
+window.RufflePlayer.config = {
+  autoplay: "on",
+  unmuteOverlay: "visible",
+  splashScreen: false,
+  showSwfDownload: false,
+  contextMenu: "off",
+  backgroundColor: "#080b10",
+  letterbox: "on",
+  scale: "showAll"
+};
+</script>
+<script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+</head>
+<body>
+<header class="top"><span class="brand">VEYΛORA <span>/</span> SSF2</span><span class="state" id="status">STARTING RUFFLE PLAYER</span></header>
+<main id="player" aria-label="Super Smash Flash 2 Ruffle player"></main>
+<script>
+(async function(){
+ const status=document.getElementById("status");
+ try{
+  const ruffle=window.RufflePlayer.newest();
+  const player=ruffle.createPlayer();
+  player.style.width="100%";
+  player.style.height="100%";
+  document.getElementById("player").appendChild(player);
+  status.textContent="LOADING SUPER SMASH FLASH 2";
+  await player.ruffle().load("https://www.supersmashflash.com/flash/games/SSF2Beta_v1_4_0_1");
+  status.textContent="RUFFLE PLAYER READY";
+ }catch(error){
+  status.textContent="PLAYER LOAD ERROR";
+  console.error("SSF2 Ruffle load failed:",error);
+ }
+})();
+</script>
+</body>
+</html>
