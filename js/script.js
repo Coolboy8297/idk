@@ -5,6 +5,12 @@
   const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
   const GAME_URL = "eaglercraft/index.html?v=26.2-restored-20261020";
   const EXTRA_VERSIONS = [
+    {
+      version: "Eagler26",
+      file: "Eagler26.html",
+      title: "Eagler26",
+      url: "https://media.githubusercontent.com/media/Coolboy8297/idk/main/eaglercraft/Eagler26.html"
+    },
     { version: "1.8.8", file: "1.8.8.html" },
     { version: "1.5.2", file: "1.5.2.html" },
     { version: "Beta 1.7.3", file: "b1.7.3.html" },
@@ -346,7 +352,7 @@
     EXTRA_VERSIONS.forEach((entry,index) => {
       const card = document.createElement("article");
       card.className = "game-card extra-version-card";
-      card.dataset.game = "Eaglercraft " + entry.version;
+      card.dataset.game = entry.title || ("Eaglercraft " + entry.version);
       const art = document.createElement("div");
       art.className = "game-art art-eagler";
       const chip = document.createElement("span");
@@ -368,14 +374,14 @@
       status.textContent = "● CONFIGURED BUILD";
       meta.appendChild(status);
       const title = document.createElement("h3");
-      title.textContent = "Eaglercraft " + entry.version;
+      title.textContent = entry.title || ("Eaglercraft " + entry.version);
       const description = document.createElement("p");
       description.textContent = "Launch this alternate build in its own game window.";
       const launch = document.createElement("button");
       launch.type = "button";
       launch.className = "button button-card";
       launch.innerHTML = 'LAUNCH VERSION <span>↗</span>';
-      launch.addEventListener("click", () => launchGame("eaglercraft/" + entry.file,"Eaglercraft " + entry.version));
+      launch.addEventListener("click", () => launchGame(entry.url || ("eaglercraft/" + entry.file),entry.title || ("Eaglercraft " + entry.version)));
       info.append(meta,title,description,launch);
       card.append(art,info);
       grid.appendChild(card);
