@@ -34,7 +34,6 @@
   let activeGameUrl = GAME_URL;
   let activeGameTitle = "Eaglercraft 26.2";
   let gameTimeout = null;
-  let bootTimeout = null;
 
   const profileKey = player => "veyaoraProfile_" + player.toLowerCase();
   const getProfile = player => {
@@ -47,7 +46,6 @@
   const saveProfile = (player, profile) => store.set(profileKey(player), profile);
   const profileClass = player => ({colton:"avatar-v",ethan:"avatar-e",john:"avatar-j",noah:"avatar-n"}[player.toLowerCase()] || "avatar-v");
 
-  const boot = $("#boot-screen");
   const login = $("#login-view");
   const home = $("#home-view");
   const gameScreen = $("#game-view");
@@ -60,8 +58,6 @@
   const profileMenu = $("#profile-menu");
 
   function showLogin() {
-    if (bootTimeout !== null) window.clearTimeout(bootTimeout);
-    boot.hidden = true;
     home.hidden = true;
     gameScreen.hidden = true;
     login.hidden = false;
@@ -70,8 +66,6 @@
     document.body.style.overflow = "";
   }
   function showHome() {
-    if (bootTimeout !== null) window.clearTimeout(bootTimeout);
-    boot.hidden = true;
     login.hidden = true;
     gameScreen.hidden = true;
     home.hidden = false;
@@ -537,24 +531,13 @@
   refreshProfilePicker();
   setPlayerSelection("Colton");
   setupLiveVisitors();
-  function finishBoot() {
-    if (bootTimeout !== null) window.clearTimeout(bootTimeout);
-    bootTimeout = null;
-    const storedPlayer = sessionStorage.getItem("veyaoraArcadeLoggedIn");
-    const restoredPlayer = ALLOWED_PLAYERS.find(name => name.toLowerCase() === String(storedPlayer || "").toLowerCase());
-    if (restoredPlayer) {
-      activePlayer = restoredPlayer;
-      showHome();
-    } else {
-      sessionStorage.removeItem("veyaoraArcadeLoggedIn");
-      showLogin();
-    }
+  const storedPlayer = sessionStorage.getItem("veyaoraArcadeLoggedIn");
+  const restoredPlayer = ALLOWED_PLAYERS.find(name => name.toLowerCase() === String(storedPlayer || "").toLowerCase());
+  if (restoredPlayer) {
+    activePlayer = restoredPlayer;
+    showHome();
+  } else {
+    sessionStorage.removeItem("veyaoraArcadeLoggedIn");
+    showLogin();
   }
-
-  $("#skip-boot").addEventListener("click", finishBoot);
-  boot.hidden = false;
-  login.hidden = true;
-  home.hidden = true;
-  gameScreen.hidden = true;
-  bootTimeout = window.setTimeout(finishBoot, 2400);
 })();
