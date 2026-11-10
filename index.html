@@ -9,9 +9,21 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/idk/css/style.css?v=ssf2-ruffle-embed-20261029">
+  <link rel="stylesheet" href="/idk/css/style.css?v=restored-startup-intro-20261109">
 </head>
 <body>
+  <section id="boot-screen" class="boot-screen" aria-label="VEYΛORA startup">
+    <div class="boot-grain"></div>
+    <div class="boot-center">
+      <div class="boot-logo">V<span>.</span></div>
+      <div class="boot-wordmark">VEYΛORA</div>
+      <div class="boot-edition">ARCADE SYSTEM · STARTUP SEQUENCE</div>
+      <div class="boot-progress"><span id="boot-progress-fill"></span></div>
+      <p id="boot-status">INITIALIZING ARCADE SERVICES</p>
+    </div>
+    <div class="boot-footer"><span>PLAY BEYOND WHAT'S NEXT</span><button id="skip-boot" type="button">SKIP INTRO ↗</button></div>
+  </section>
+
   <section id="login-view" class="login-screen" hidden aria-labelledby="login-title">
     <div class="login-orbit orbit-one"></div><div class="login-orbit orbit-two"></div>
     <div class="login-layout">
@@ -157,6 +169,6 @@
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
-  <script src="/idk/js/script.js?v=no-boot-intro-20261109-2"></script>
+  <script src="/idk/js/script.js?v=restored-startup-intro-20261109"></script>
 </body>
 </html>
