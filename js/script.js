@@ -74,12 +74,7 @@
     applyProfileToUI();
     setView("discover");
   }
-  function beginBoot() {
-    const storedPlayer = sessionStorage.getItem("veyaoraArcadeLoggedIn");
-    const player = ALLOWED_PLAYERS.find(name => name.toLowerCase() === String(storedPlayer || "").toLowerCase());
-    if (player) { activePlayer = player; showHome(); }
-    else showLogin();
-  }
+
 
   function refreshProfilePicker() {
     $$(".profile-choice").forEach(button => {
@@ -536,5 +531,8 @@
   refreshProfilePicker();
   setPlayerSelection("Colton");
   setupLiveVisitors();
-  beginBoot();
+  const storedPlayer = sessionStorage.getItem("veyaoraArcadeLoggedIn");
+  const restoredPlayer = ALLOWED_PLAYERS.find(name => name.toLowerCase() === String(storedPlayer || "").toLowerCase());
+  if (restoredPlayer) { activePlayer = restoredPlayer; showHome(); }
+  else showLogin();
 })();
