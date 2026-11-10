@@ -18,6 +18,8 @@
     { version: "Indev", file: "indev.html" }
   ];
   const ALLOWED_PLAYERS = ["colton", "ethan", "john", "noah"];
+  const DECEMBER_ACCESS_DATE = new Date(2026, 11, 1);
+  const getRequiredLoginKey = () => new Date() >= DECEMBER_ACCESS_DATE ? "150130056" : "letmein";
   const AVATARS = ["V.", "⚡", "🎮", "👾", "🦊", "🚀", "🌙", "💠"];
   const store = {
     get(key, fallback) { try { const value = localStorage.getItem(key); return value === null ? fallback : JSON.parse(value); } catch (_) { return fallback; } },
@@ -55,7 +57,6 @@
   const settingsDialog = $("#settings-dialog");
   const friendsDialog = $("#friends-dialog");
   const profileMenu = $("#profile-menu");
-  const overhaulAnnouncement = $("#overhaul-announcement");
 
   function showLogin() {
     boot.hidden = true;
@@ -74,7 +75,6 @@
     document.body.style.overflow = "";
     closeOverlays();
     applyProfileToUI();
-    if (overhaulAnnouncement) overhaulAnnouncement.hidden = false;
     setView("discover");
   }
   function beginBoot() {
@@ -126,7 +126,7 @@
     event.preventDefault();
     const submitted = loginName.value.trim();
     const player = ALLOWED_PLAYERS.find(name => name.toLowerCase() === submitted.toLowerCase());
-    if (!player || loginPassword.value !== "letmein") {
+    if (!player || loginPassword.value !== getRequiredLoginKey()) {
       loginError.textContent = "Access denied. Check the player name and password.";
       loginPassword.value = "";
       loginPassword.focus();
@@ -405,17 +405,10 @@
   }
   function closeProfileMenu() { if (profileMenu) profileMenu.hidden = true; }
   $("[data-close-dialog]").forEach(button => button.addEventListener("click",closeOverlays));
-  $("#close-overhaul-announcement")?.addEventListener("click", () => {
-    if (overhaulAnnouncement) overhaulAnnouncement.hidden = true;
-  });
-  overhaulAnnouncement?.addEventListener("click", event => {
-    if (event.target === overhaulAnnouncement) overhaulAnnouncement.hidden = true;
-  });
   [settingsDialog,friendsDialog].forEach(dialog => dialog.addEventListener("click",event => { if (event.target === dialog) closeOverlays(); }));
   document.addEventListener("keydown",event => {
     if (event.key === "Escape") {
       closeOverlays();
-      if (overhaulAnnouncement) overhaulAnnouncement.hidden = true;
       if (!gameScreen.hidden) exitGame();
     }
   });
