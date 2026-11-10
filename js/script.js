@@ -46,7 +46,6 @@
   const saveProfile = (player, profile) => store.set(profileKey(player), profile);
   const profileClass = player => ({colton:"avatar-v",ethan:"avatar-e",john:"avatar-j",noah:"avatar-n"}[player.toLowerCase()] || "avatar-v");
 
-  const boot = $("#boot-screen");
   const login = $("#login-view");
   const home = $("#home-view");
   const gameScreen = $("#game-view");
@@ -59,7 +58,6 @@
   const profileMenu = $("#profile-menu");
 
   function showLogin() {
-    boot.hidden = true;
     home.hidden = true;
     gameScreen.hidden = true;
     login.hidden = false;
@@ -80,15 +78,8 @@
   function beginBoot() {
     const storedPlayer = sessionStorage.getItem("veyaoraArcadeLoggedIn");
     const player = ALLOWED_PLAYERS.find(name => name.toLowerCase() === String(storedPlayer || "").toLowerCase());
-    $("#boot-status").textContent = player ? "RESTORING PLAYER SESSION" : "INITIALIZING ARCADE SERVICES";
-    const finish = () => {
-      if (boot.hidden) return;
-      boot.hidden = true;
-      if (player) { activePlayer = player; showHome(); }
-      else showLogin();
-    };
-    const timer = window.setTimeout(finish, 2450);
-    $("#skip-boot").addEventListener("click", () => { window.clearTimeout(timer); finish(); });
+    if (player) { activePlayer = player; showHome(); }
+    else showLogin();
   }
 
   function refreshProfilePicker() {
