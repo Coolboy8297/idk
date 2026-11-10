@@ -55,6 +55,7 @@
   const settingsDialog = $("#settings-dialog");
   const friendsDialog = $("#friends-dialog");
   const profileMenu = $("#profile-menu");
+  const overhaulAnnouncement = $("#overhaul-announcement");
 
   function showLogin() {
     boot.hidden = true;
@@ -73,6 +74,7 @@
     document.body.style.overflow = "";
     closeOverlays();
     applyProfileToUI();
+    if (overhaulAnnouncement) overhaulAnnouncement.hidden = false;
     setView("discover");
   }
   function beginBoot() {
@@ -402,11 +404,18 @@
     closeProfileMenu();
   }
   function closeProfileMenu() { if (profileMenu) profileMenu.hidden = true; }
-  $$("[data-close-dialog]").forEach(button => button.addEventListener("click",closeOverlays));
+  $("[data-close-dialog]").forEach(button => button.addEventListener("click",closeOverlays));
+  $("#close-overhaul-announcement")?.addEventListener("click", () => {
+    if (overhaulAnnouncement) overhaulAnnouncement.hidden = true;
+  });
+  overhaulAnnouncement?.addEventListener("click", event => {
+    if (event.target === overhaulAnnouncement) overhaulAnnouncement.hidden = true;
+  });
   [settingsDialog,friendsDialog].forEach(dialog => dialog.addEventListener("click",event => { if (event.target === dialog) closeOverlays(); }));
   document.addEventListener("keydown",event => {
     if (event.key === "Escape") {
       closeOverlays();
+      if (overhaulAnnouncement) overhaulAnnouncement.hidden = true;
       if (!gameScreen.hidden) exitGame();
     }
   });
