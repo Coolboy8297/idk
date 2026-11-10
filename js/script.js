@@ -66,7 +66,6 @@
     document.body.style.overflow = "";
   }
   function showHome() {
-    boot.hidden = true;
     login.hidden = true;
     gameScreen.hidden = true;
     home.hidden = false;
