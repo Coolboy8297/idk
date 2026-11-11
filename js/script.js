@@ -55,6 +55,7 @@
   const loginError = $("#login-error");
   const settingsDialog = $("#settings-dialog");
   const friendsDialog = $("#friends-dialog");
+  const announcementDialog = $("#december-overhaul-dialog");
   const profileMenu = $("#profile-menu");
 
   function showLogin() {
@@ -73,6 +74,10 @@
     closeOverlays();
     applyProfileToUI();
     setView("discover");
+    if (announcementDialog && sessionStorage.getItem("veyaoraDecemberOverhaulNotice") !== "shown") {
+      sessionStorage.setItem("veyaoraDecemberOverhaulNotice", "shown");
+      openDialog(announcementDialog);
+    }
   }
 
 
@@ -385,12 +390,12 @@
     }
   }
   function closeOverlays() {
-    [settingsDialog,friendsDialog].forEach(dialog => { if (dialog) dialog.hidden = true; });
+    [settingsDialog,friendsDialog,announcementDialog].forEach(dialog => { if (dialog) dialog.hidden = true; });
     closeProfileMenu();
   }
   function closeProfileMenu() { if (profileMenu) profileMenu.hidden = true; }
   $$("[data-close-dialog]").forEach(button => button.addEventListener("click",closeOverlays));
-  [settingsDialog,friendsDialog].forEach(dialog => dialog.addEventListener("click",event => { if (event.target === dialog) closeOverlays(); }));
+  [settingsDialog,friendsDialog,announcementDialog].forEach(dialog => dialog?.addEventListener("click",event => { if (event.target === dialog) closeOverlays(); }));
   document.addEventListener("keydown",event => {
     if (event.key === "Escape") {
       closeOverlays();
