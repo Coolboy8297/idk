@@ -389,7 +389,7 @@
     closeProfileMenu();
   }
   function closeProfileMenu() { if (profileMenu) profileMenu.hidden = true; }
-  $("[data-close-dialog]").forEach(button => button.addEventListener("click",closeOverlays));
+  $$("[data-close-dialog]").forEach(button => button.addEventListener("click",closeOverlays));
   [settingsDialog,friendsDialog].forEach(dialog => dialog.addEventListener("click",event => { if (event.target === dialog) closeOverlays(); }));
   document.addEventListener("keydown",event => {
     if (event.key === "Escape") {
