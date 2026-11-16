@@ -1,0 +1,70 @@
+name: Build VEYΛORA Arcade APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'css/**'
+      - 'js/**'
+      - 'games/**'
+      - 'neon-runner/**'
+      - 'eaglercraft/**'
+      - 'ssf2-player.html'
+      - 'android-app/**'
+      - '.github/workflows/build-android-apk.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out arcade files
+        uses: actions/checkout@v4
+        with:
+          lfs: false
+
+      - name: Download small game data files from Git LFS
+        run: |
+          git lfs install
+          git lfs pull --include="*.pck"
+
+      - name: Prepare offline website bundle
+        run: |
+          mkdir -p android-app/app/src/main/assets
+          rsync -a ./ android-app/app/src/main/assets/ --exclude='.git' --exclude='.github' --exclude='android-app' --exclude='eaglercraft/Eagler26.html'
+          test -f android-app/app/src/main/assets/index.html
+          test -f android-app/app/src/main/assets/neon-runner/Neon-Runner.wasm
+          test -f android-app/app/src/main/assets/games/new-game/Game.wasm
+          echo "Bundled website size:"
+          du -sh android-app/app/src/main/assets
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools platforms;android-35 build-tools;35.0.0'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: Build debug APK
+        run: gradle --no-daemon --stacktrace -p android-app :app:assembleDebug
+
+      - name: Upload installable APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: VEYAORA-Arcade-Android
+          path: android-app/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 30
