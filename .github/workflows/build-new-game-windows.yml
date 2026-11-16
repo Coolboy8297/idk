@@ -10,7 +10,7 @@ on:
       - ".github/workflows/build-new-game-windows.yml"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   build:
@@ -32,7 +32,28 @@ jobs:
       - name: Build portable Windows EXE
         run: npm run dist:win
 
-      - name: Upload EXE
+      - name: Publish portable EXE for the website
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $exe = Get-ChildItem -Path dist -Filter *.exe | Select-Object -First 1
+          if (-not $exe) { throw "No EXE was produced in dist." }
+
+          $target = Join-Path $exe.DirectoryName "New Game.exe"
+          if ($exe.FullName -ne $target) {
+            Move-Item -LiteralPath $exe.FullName -Destination $target -Force
+          }
+
+          gh release view new-game-latest *> $null
+          if ($LASTEXITCODE -eq 0) {
+            gh release upload new-game-latest "$target" --clobber
+          } else {
+            gh release create new-game-latest "$target" --title "New Game - Latest" --notes "Latest portable Windows build of New Game from VEYΛORA Arcade."
+          }
+          if ($LASTEXITCODE -ne 0) { throw "Publishing the Windows EXE failed." }
+
+      - name: Keep a workflow artifact backup
         uses: actions/upload-artifact@v4
         with:
           name: New-Game-Windows
