@@ -1,0 +1,35 @@
+{
+  "name": "veyaora-new-game",
+  "version": "1.0.0",
+  "description": "Windows desktop build of the VEYΛORA Arcade Godot game",
+  "main": "main.js",
+  "scripts": {
+    "dist:win": "electron-builder --win portable --x64"
+  },
+  "devDependencies": {
+    "electron": "^38.0.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.veyaora.newgame",
+    "productName": "New Game",
+    "asar": true,
+    "files": [
+      "main.js",
+      "games/new-game/**/*"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    }
+  }
+}
