@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#080b0b">
+  <meta name="description" content="The Last Signal — a single-player and cooperative survival horror experience.">
+  <title>The Last Signal</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <script type="module" crossorigin src="./assets/index-BT5dI_gj.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-DHrEu486.css">
+</head>
+<body>
+  <main id="app" class="app">
+    <canvas id="game-canvas" class="game-canvas" aria-label="Game view"></canvas>
+
+    <!-- Main menu. Connection labels start neutral until the server confirms a connection. -->
+    <section id="menu-screen" class="screen menu-screen" aria-labelledby="game-title">
+      <div class="environment" aria-hidden="true">
+        <div class="environment-glow"></div>
+        <div class="environment-ceiling"></div>
+        <div class="environment-wall environment-wall--left"></div>
+        <div class="environment-wall environment-wall--right"></div>
+        <div class="environment-floor"></div>
+        <div class="environment-door"><span></span></div>
+        <div class="environment-lamp"></div>
+        <div class="environment-grain"></div>
+      </div>
+      <div class="menu-shell">
+        <header class="topbar">
+          <div class="brand-lockup" aria-label="The Last Signal">
+            <span class="brand-mark" aria-hidden="true"><i></i></span>
+            <span class="brand-name">NORTHSTAR <b>RESEARCH</b></span>
+            <span class="brand-divider"></span>
+            <span class="brand-sub">INCIDENT ARCHIVE <b>№ 08</b></span>
+          </div>
+          <div id="menu-connection-status" class="connection-state" role="status"><span class="status-dot"></span><span id="menu-connection-text">NOT CONNECTED</span></div>
+        </header>
+
+        <div class="menu-layout">
+          <div class="hero-copy">
+            <div class="eyebrow"><span class="eyebrow-line"></span> A SURVIVAL HORROR EXPERIENCE <span class="eyebrow-number">01 / 04</span></div>
+            <h1 id="game-title" class="game-title"><span>THE LAST</span><strong>SIGNAL<span class="title-period">.</span></strong></h1>
+            <div class="hero-rule"><span></span><i></i><span></span></div>
+            <p class="hero-quote">Some signals are better<br><em>left unanswered.</em></p>
+            <p class="hero-description">The facility has gone silent. Restore the power, find what was left behind, and get out—alone or together.</p>
+            <div class="hero-meta"><span><i class="tiny-square"></i> 1—4 OPERATORS</span><span>FIRST-PERSON HORROR</span></div>
+          </div>
+
+          <div class="uplink-wrap">
+            <div class="card-kicker"><span>MISSION SELECT</span><span>INCIDENT / 008</span></div>
+            <div class="uplink-card">
+              <div class="card-heading">
+                <div><p class="micro-label">OPERATION CONTROL</p><h2>Enter the facility<span class="red-dot">.</span></h2></div>
+                <span class="signal-icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+              </div>
+              <p class="card-intro">Choose how you want to enter.</p>
+
+              <div class="mode-switch" role="group" aria-label="Game mode">
+                <button id="mode-solo-button" class="mode-button is-active" type="button" aria-pressed="true" aria-controls="solo-panel"><span>SINGLE PLAYER</span><small>OFFLINE / 01</small></button>
+                <button id="mode-multiplayer-button" class="mode-button" type="button" aria-pressed="false" aria-controls="multiplayer-panel"><span>MULTIPLAYER</span><small>ONLINE / 02</small></button>
+              </div>
+
+              <section id="solo-panel" class="mode-panel" aria-labelledby="solo-panel-heading">
+                <div class="mode-panel-heading"><div><p class="micro-label">OFFLINE OPERATION</p><h3 id="solo-panel-heading">Go in alone<span class="red-dot">.</span></h3></div><span class="mode-index" aria-hidden="true">01</span></div>
+                <p class="mode-description">Play alone in your browser. No game server or room code required.</p>
+                <div class="solo-actions">
+                  <button id="solo-start-button" class="button button--primary button--full" type="button"><span>START NEW GAME</span><span class="button-arrow" aria-hidden="true">↗</span></button>
+                  <button id="solo-continue-button" class="button button--secondary button--full" type="button" disabled><span>CONTINUE SAVED GAME</span><span class="button-arrow" aria-hidden="true">↗</span></button>
+                </div>
+                <p class="mode-hint">Continue is available when a saved game exists on this device.</p>
+              </section>
+
+              <section id="multiplayer-panel" class="mode-panel" aria-labelledby="multiplayer-panel-heading" hidden>
+                <div class="mode-panel-heading"><div><p class="micro-label">ONLINE OPERATION</p><h3 id="multiplayer-panel-heading">Bring your team<span class="red-dot">.</span></h3></div><span class="mode-index" aria-hidden="true">02</span></div>
+                <p class="mode-description">Create a room or join your team using their code.</p>
+                <div class="field-group">
+                  <label for="server-url">SERVER URL <span>WEBSOCKET ENDPOINT</span></label>
+                  <input id="server-url" name="server-url" type="url" inputmode="url" autocomplete="url" spellcheck="false" placeholder="wss://your-server.example/ws" aria-describedby="server-url-help">
+                  <p id="server-url-help" class="field-help">Use <strong>wss://</strong> on HTTPS. A separately hosted game server is required.</p>
+                </div>
+                <div class="field-group">
+                  <label for="player-name">YOUR CALLSIGN <span>VISIBLE TO YOUR TEAM</span></label>
+                  <input id="player-name" name="player-name" type="text" autocomplete="nickname" maxlength="24" placeholder="Enter your name">
+                </div>
+                <button id="create-room-button" class="button button--primary button--full" type="button"><span>CREATE ROOM</span><span class="button-arrow" aria-hidden="true">↗</span></button>
+                <div class="divider-label"><span></span><b>OR JOIN AN EXISTING ROOM</b><span></span></div>
+                <div class="join-row">
+                  <label class="sr-only" for="room-code-input">Room code</label>
+                  <input id="room-code-input" name="room-code" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="12" placeholder="ROOM CODE">
+                  <button id="join-room-button" class="button button--secondary" type="button">JOIN <span aria-hidden="true">→</span></button>
+                </div>
+                <button id="resume-session-button" class="button button--secondary button--full" type="button" style="margin-top:12px" hidden>RESUME LAST ROOM <span aria-hidden="true">↗</span></button>
+              </section>
+              <div id="menu-error" class="inline-error" role="alert" hidden></div>
+            </div>
+            <div class="card-footnote"><span><i></i> CHOOSE YOUR APPROACH</span><span>SOLO / CO-OP</span></div>
+          </div>
+        </div>
+
+        <footer class="menu-footer">
+          <nav aria-label="Game information" class="footer-nav">
+            <button id="menu-settings-button" type="button">SETTINGS <span>↗</span></button>
+            <button id="menu-controls-button" type="button">CONTROLS <span>↗</span></button>
+            <button id="menu-credits-button" type="button">CREDITS <span>↗</span></button>
+          </nav>
+          <div class="footer-file"><span>CLASSIFIED MATERIAL</span><b>FILE 008—LS</b></div>
+        </footer>
+      </div>
+    </section>
+
+    <!-- Lobby is displayed after a server welcome. -->
+    <section id="lobby-screen" class="screen lobby-screen" aria-labelledby="lobby-heading" hidden>
+      <div class="lobby-shell">
+        <header class="section-topbar">
+          <div class="small-brand"><span class="brand-mark" aria-hidden="true"><i></i></span><span>THE LAST <b>SIGNAL</b></span></div>
+          <div id="lobby-connection-status" class="connection-state" role="status"><span class="status-dot"></span><span id="lobby-connection-text">WAITING FOR CONNECTION</span></div>
+        </header>
+        <div class="lobby-content">
+          <div class="lobby-intro">
+            <p class="eyebrow"><span class="eyebrow-line"></span> PREPARING TRANSMISSION</p>
+            <h2 id="lobby-heading">The staging<br><em>room.</em></h2>
+            <p>Stay close. Once the host begins, there is only one way out.</p>
+            <div class="lobby-side-note"><span>01</span><div>MISSION BRIEF<br><b>RESTORE · RETRIEVE · ESCAPE</b></div></div>
+          </div>
+          <div class="lobby-panel">
+            <div class="panel-topline"><span>YOUR PRIVATE CHANNEL</span><span id="lobby-player-count">0 / 4 OPERATORS</span></div>
+            <div class="room-code-box">
+              <div><p class="micro-label">ROOM CODE</p><strong id="lobby-room-code">—— ——</strong></div>
+              <button id="copy-room-code-button" class="button button--small" type="button" aria-label="Copy room code">COPY <span aria-hidden="true">↗</span></button>
+            </div>
+            <p class="lobby-note">Share this code and the server URL with your team.</p>
+            <div class="operator-heading"><span>OPERATORS</span><span>STATUS</span></div>
+            <ul id="lobby-player-list" class="player-list" aria-label="Players in the room"><li class="player-empty">Waiting for connection…</li></ul>
+            <p id="lobby-message" class="lobby-message" role="status">Waiting for the host to start.</p>
+            <div id="lobby-error" class="inline-error" role="alert" hidden></div>
+            <button id="start-game-button" class="button button--primary button--full" type="button" disabled><span>BEGIN TRANSMISSION</span><span class="button-arrow" aria-hidden="true">↗</span></button>
+            <p class="button-hint">Only the host can begin the mission.</p>
+            <button id="leave-room-button" class="text-button" type="button">← LEAVE ROOM</button>
+          </div>
+        </div>
+        <footer class="section-footer"><span>INCIDENT ARCHIVE / THE LAST SIGNAL</span><span>TRUST THE PEOPLE BESIDE YOU.</span></footer>
+      </div>
+    </section>
+
+    <!-- The transparent HUD sits over the game canvas. -->
+    <section id="game-screen" class="screen game-screen" aria-label="Game interface" hidden>
+      <div class="hud-vignette" aria-hidden="true"></div>
+      <div class="hud-top">
+        <div class="hud-objective">
+          <div class="hud-label"><span class="hud-diamond"></span> CURRENT OBJECTIVE <span class="hud-number">/ 01</span></div>
+          <div id="hud-objective" class="objective-text">Awaiting objective</div>
+          <div id="hud-objective-detail" class="objective-detail"></div>
+        </div>
+        <div class="hud-right">
+          <div id="hud-network-status" class="hud-network" role="status"><span class="status-dot"></span><span id="hud-network-text">NOT CONNECTED</span></div>
+          <button id="hud-pause-button" class="hud-square" type="button" aria-label="Pause game">Ⅱ</button>
+        </div>
+      </div>
+      <div class="crosshair" aria-hidden="true"><span></span></div>
+      <div id="interaction-prompt" class="interaction-prompt" role="status" hidden>
+        <span class="prompt-key">E</span><span><strong id="interaction-label">INTERACT</strong><small id="interaction-detail"></small></span>
+      </div>
+      <div class="hud-bottom">
+        <button id="inventory-button" class="hud-inventory" type="button"><span class="inventory-symbol" aria-hidden="true">▦</span><span><b>INVENTORY</b><small><kbd>I</kbd> OPEN</small></span></button>
+        <div class="battery-readout"><div class="battery-heading"><span>FLASHLIGHT</span><span id="hud-battery-value">—</span></div><div class="battery-track" role="meter" aria-label="Flashlight battery" aria-valuemin="0" aria-valuemax="100" id="hud-battery-meter"><span id="hud-battery-fill"></span></div><small id="hud-flashlight-status">STATUS UNKNOWN</small></div>
+      </div>
+
+      <div id="touch-controls" class="touch-controls" aria-label="Touch controls">
+        <div id="touch-look" class="touch-look" aria-label="Drag to look"></div>
+        <div id="touch-move" class="touch-move" aria-label="Drag to move"><span id="touch-move-knob" class="touch-move-knob"></span></div>
+        <div class="touch-actions">
+          <button id="touch-interact" type="button" aria-label="Interact">USE</button>
+          <button id="touch-flashlight" type="button" aria-label="Toggle flashlight">LIGHT</button>
+          <button id="touch-crouch" type="button" aria-label="Crouch">CROUCH</button>
+          <button id="touch-sprint" type="button" aria-label="Sprint">RUN</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="end-screen" class="screen end-screen" aria-labelledby="end-title" hidden>
+      <div class="end-inner">
+        <div class="end-signal" aria-hidden="true"><i></i><i></i><i></i><span></span></div>
+        <p class="eyebrow end-eyebrow"><span class="eyebrow-line"></span> TRANSMISSION COMPLETE <span class="eyebrow-line"></span></p>
+        <h2 id="end-title">The signal<br><em>remains.</em></h2>
+        <p id="end-message">You made it out. Whatever happened here will not be forgotten.</p>
+        <button id="end-menu-button" class="button button--primary" type="button">RETURN TO MAIN MENU <span class="button-arrow" aria-hidden="true">↗</span></button>
+        <div class="end-file">NORTHSTAR RESEARCH &nbsp; / &nbsp; INCIDENT ARCHIVE 008</div>
+      </div>
+    </section>
+
+    <!-- Overlays are independently controlled using the hidden attribute. -->
+    <section id="loading-screen" class="overlay loading-overlay" aria-labelledby="loading-title" hidden>
+      <div class="loading-content"><div class="loader-mark"><span class="brand-mark" aria-hidden="true"><i></i></span></div><p class="micro-label">THE LAST SIGNAL</p><h2 id="loading-title">Establishing a signal<span class="loading-ellipsis">...</span></h2><p id="loading-message">Connecting to the server</p><div class="loading-track"><span></span></div></div>
+    </section>
+
+    <section id="settings-overlay" class="overlay dialog-overlay" role="dialog" aria-modal="true" aria-labelledby="settings-title" hidden>
+      <div class="dialog-card">
+        <div class="dialog-header"><div><p class="micro-label">SYSTEM CONFIGURATION / 01</p><h2 id="settings-title">Settings<span class="red-dot">.</span></h2></div><button id="settings-close-button" class="close-button" type="button" aria-label="Close settings">×</button></div>
+        <p class="dialog-intro">Tune your experience for the system you're on.</p>
+        <div class="settings-list">
+          <div class="setting-row"><label for="graphics-quality"><strong>Graphics quality</strong><small>Adjust visual detail</small></label><select id="graphics-quality"><option value="low">Low</option><option value="medium">Medium</option><option value="high" selected>High</option><option value="ultra">Ultra</option></select></div>
+          <div class="setting-row"><label for="resolution-scale"><strong>Render resolution</strong><small>Relative to display size</small></label><select id="resolution-scale"><option value="0.5">50%</option><option value="0.75">75%</option><option value="1" selected>100%</option></select></div>
+          <div class="setting-row"><label for="master-volume"><strong>Master volume</strong><small>All game audio</small></label><div class="range-wrap"><input id="master-volume" type="range" min="0" max="1" step="0.05" value="0.8"><output id="master-volume-value" for="master-volume">80%</output></div></div>
+          <div class="setting-row"><label for="mouse-sensitivity"><strong>Mouse sensitivity</strong><small>Look speed</small></label><div class="range-wrap"><input id="mouse-sensitivity" type="range" min="0.25" max="2.5" step="0.05" value="1"><output id="mouse-sensitivity-value" for="mouse-sensitivity">1.00×</output></div></div>
+        </div>
+        <button id="settings-done-button" class="button button--primary button--full" type="button"><span>DONE</span><span class="button-arrow" aria-hidden="true">↗</span></button>
+      </div>
+    </section>
+
+    <section id="controls-overlay" class="overlay dialog-overlay" role="dialog" aria-modal="true" aria-labelledby="controls-title" hidden>
+      <div class="dialog-card dialog-card--compact">
+        <div class="dialog-header"><div><p class="micro-label">FIELD MANUAL / 02</p><h2 id="controls-title">Controls<span class="red-dot">.</span></h2></div><button id="controls-close-button" class="close-button" type="button" aria-label="Close controls">×</button></div>
+        <p class="dialog-intro">Know your equipment. Keep your team close.</p>
+        <div class="controls-list">
+          <div><span>Move</span><b><kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd></b></div>
+          <div><span>Look</span><b>MOUSE</b></div>
+          <div><span>Interact</span><b><kbd>E</kbd></b></div>
+          <div><span>Flashlight</span><b><kbd>F</kbd></b></div>
+          <div><span>Sprint / crouch</span><b><kbd>SHIFT</kbd> / <kbd>CTRL</kbd></b></div>
+          <div><span>Inventory / pause</span><b><kbd>I</kbd> / <kbd>ESC</kbd></b></div>
+        </div>
+        <p class="mobile-note">On touch devices, drag the left pad to move and the right side to look.</p>
+        <button id="controls-done-button" class="button button--secondary button--full" type="button">BACK</button>
+      </div>
+    </section>
+
+    <section id="credits-overlay" class="overlay dialog-overlay" role="dialog" aria-modal="true" aria-labelledby="credits-title" hidden>
+      <div class="dialog-card dialog-card--compact">
+        <div class="dialog-header"><div><p class="micro-label">END OF RECORD / 03</p><h2 id="credits-title">Credits<span class="red-dot">.</span></h2></div><button id="credits-close-button" class="close-button" type="button" aria-label="Close credits">×</button></div>
+        <div class="credits-copy"><p>THE LAST SIGNAL</p><h3>A signal is only useful<br>if someone hears it.</h3><p>Built with Three.js and WebSocket. Original generated artwork and audio; CC0 models by Poly Haven contributors and Quaternius. Full asset credits are included with the project.</p></div>
+        <button id="credits-done-button" class="button button--secondary button--full" type="button">BACK</button>
+      </div>
+    </section>
+
+    <section id="pause-overlay" class="overlay dialog-overlay" role="dialog" aria-modal="true" aria-labelledby="pause-title" hidden>
+      <div class="dialog-card dialog-card--compact pause-card">
+        <div class="dialog-header"><div><p class="micro-label">TRANSMISSION INTERRUPTED</p><h2 id="pause-title">Paused<span class="red-dot">.</span></h2></div><span class="pause-mark" aria-hidden="true">Ⅱ</span></div>
+        <p class="dialog-intro">Take a moment before returning to the facility.</p>
+        <div class="pause-actions"><button id="resume-game-button" class="button button--primary button--full" type="button">RESUME <span class="button-arrow" aria-hidden="true">↗</span></button><div class="checkpoint-actions"><button id="pause-save-checkpoint-button" class="button button--secondary" type="button" disabled>SAVE CHECKPOINT</button><button id="pause-load-checkpoint-button" class="button button--secondary" type="button" disabled>LOAD CHECKPOINT</button></div><p class="checkpoint-hint">Checkpoint availability depends on the current session.</p><button id="pause-settings-button" class="button button--secondary button--full" type="button">SETTINGS</button><button id="pause-controls-button" class="button button--secondary button--full" type="button">CONTROLS</button><button id="pause-leave-button" class="text-button" type="button">← LEAVE TO MAIN MENU</button></div>
+      </div>
+    </section>
+
+    <section id="inventory-overlay" class="overlay dialog-overlay" role="dialog" aria-modal="true" aria-labelledby="inventory-title" hidden>
+      <div class="dialog-card dialog-card--compact">
+        <div class="dialog-header"><div><p class="micro-label">PERSONAL EFFECTS</p><h2 id="inventory-title">Inventory<span class="red-dot">.</span></h2></div><button id="inventory-close-button" class="close-button" type="button" aria-label="Close inventory">×</button></div>
+        <p class="dialog-intro">What you've recovered along the way.</p>
+        <ul id="inventory-list" class="inventory-list"><li class="inventory-empty">No items recovered yet.</li></ul>
+        <button id="inventory-done-button" class="button button--secondary button--full" type="button">BACK TO MISSION</button>
+      </div>
+    </section>
+
+    <section id="connection-overlay" class="overlay dialog-overlay connection-overlay" role="alertdialog" aria-modal="true" aria-labelledby="connection-title" aria-describedby="connection-message" hidden>
+      <div class="dialog-card dialog-card--compact">
+        <div class="connection-warning" aria-hidden="true">!</div>
+        <p class="micro-label">SIGNAL INTERRUPTED</p><h2 id="connection-title">Connection lost<span class="red-dot">.</span></h2>
+        <p id="connection-message" class="dialog-intro">The connection was interrupted. Try reconnecting to your room.</p>
+        <div class="pause-actions"><button id="reconnect-button" class="button button--primary button--full" type="button">RECONNECT <span class="button-arrow" aria-hidden="true">↗</span></button><button id="connection-menu-button" class="button button--secondary button--full" type="button">RETURN TO MENU</button></div>
+      </div>
+    </section>
+    <div id="live-announcement" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+  </main>
+</body>
+</html>
