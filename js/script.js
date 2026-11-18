@@ -330,6 +330,7 @@
       eaglercraft: {url:GAME_URL,title:"Eaglercraft 26.2",kind:"local"},
       neon: {url:"neon-runner/Neon-Runner.html",title:"Neon Run",kind:"local"},
       yippie: {url:"games/new-game/Game.html",title:"Yippie",kind:"local"},
+      "last-signal": {url:"the-last-signal/dist/index.html",title:"The Last Signal",kind:"local"},
       android: {url:"https://github.com/Z3BOS/afterburner",title:"Android Lab",kind:"external"},
       xbox: {url:"/idk/xbox360/",title:"VEYΛORA Xbox Lab",kind:"local"},
       ssf2: {url:"ssf2-player.html?v=1",title:"Super Smash Flash 2 · Ruffle",kind:"local"}
