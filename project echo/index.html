@@ -37,11 +37,24 @@ Source SHA-256: 38f4c5f927f746b3dfa4c3a5d7edf0b7a3e828e27438418fa54f9e1565289412
     .telemetry { display:flex; justify-content:center; gap:20px; margin-top:14px; color:var(--muted); font-size:10px; letter-spacing:.13em; }
     .telemetry span:first-child { color:#76ff58; }
     @media(max-height:500px) and (min-aspect-ratio:1/1) { #loading { gap:9px; } #game-mark { width:48px;height:48px; } .telemetry { margin-top:4px; } }
+    /* Display-layer LiDAR treatment; the actual world scan remains in the Godot build. */
+    #lidar-overlay { position:fixed; inset:0; z-index:2; pointer-events:none; overflow:hidden; opacity:.34; mix-blend-mode:screen;
+      background:repeating-linear-gradient(0deg,rgba(125,255,150,.045) 0,rgba(125,255,150,.045) 1px,transparent 1px,transparent 4px),
+      radial-gradient(ellipse at center,transparent 48%,rgba(42,255,112,.12) 100%); }
+    #lidar-overlay::before { content:""; position:absolute; left:0; right:0; top:-22%; height:18%;
+      background:linear-gradient(180deg,transparent,rgba(111,255,105,.025) 25%,rgba(128,255,112,.24) 50%,rgba(111,255,105,.045) 72%,transparent);
+      border-bottom:1px solid rgba(139,255,119,.45); box-shadow:0 5px 24px rgba(80,255,95,.13);
+      animation:lidar-sweep 7.5s linear infinite; }
+    #lidar-overlay::after { content:""; position:absolute; inset:0;
+      background:radial-gradient(ellipse at center,transparent 55%,rgba(0,10,6,.28) 100%); }
+    @keyframes lidar-sweep { from { transform:translateY(0); } to { transform:translateY(680%); } }
+    @media(prefers-reduced-motion:reduce) { #lidar-overlay::before { animation:none; top:42%; } }
     @media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.01ms !important; transition-duration:.01ms !important; } }
   </style>
 </head>
 <body>
   <canvas id="canvas" tabindex="0">Your browser does not support canvas.</canvas>
+  <div id="lidar-overlay" aria-hidden="true"></div>
   <section id="loading" role="status" aria-live="polite">
     <img id="game-mark" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAEuElEQVR42u3dwW0TURSF4dkgIUVigWiHPqgE6qCYbCmEZsyKRaRICdjvvXPv/RZnCdjj/xs7sRlfH54+3cym7nIQDAAzAMwAMAPADAAzAMwAMAPADAAzAMwAMAPADAAzAMwAMAPADAAzAOzj5y8PmWMJwIjQwQBA8EAAIHggABA9DACIHgYAhA8CAMIHAQDhgwCA8EEAQPggACB+CAAQPggACB8EAAQKwVwAwoRgJAAxgjAWQIVAvt++3TUIACgT/72xV0YBwMD4dwVfBQQAA+JPiT4VAwAN40+PPg0DAE3irxp+AgQACsefEmB1CAAUi79KYJUgAFAg/so/dFa47QA0i7/Tm27TEVxT4+/4jmz6/QOgYPzVP6sDQSEAwp9x3wE4AGBy/GnHAIDQ+Kd8hBmCMACnH+ypn+WHIACA+CEAQPxjEYwGcOoBFX3WcQNA/KMRjAQgfggSEFzit8kIWgAQfw8EIwCIH4IkBK0BCHjdMe7yG6FL/Pavx7rTh+XKAvDS5wyAbh+Zvpz9bfKV5q5uZ3/xABAHQPyWigAAA0D8NhUBAAZABQAd4v/6/ONdE34TADvO/h2CB+IcgsvZf1/4u/58yhtnAAw7+68KthKEFY9PSQCTzv67Ak2GsPoxAqBA/J3/TQAAiDobpz0bALAAQOrLn6TwUm7L6seqFIDOZ//Elx/pCJKfBQAoHn/SbQOg+cuf9F9DpgJIfhlUDoD4ayIYA6Djy59K78aevq3VXgYBcOis+uv288W6PAsAIP7jADojGPMM8NqBBACAUQA6/0C5GsBJBAAAAMBEAOLPAuANMQBiNxFA4rMAAACMfhkEAAAAALB/v2/PLwYAACPD7woBAAMAgLmv6V/bW/H/3Xv+LgAAAAAAAAAAAAAAAADAD8EANAPQ8fLnAADQ7irQ3ggDAAAfhQAAAAAAGHA1aAB8HNr3AQDgP8R4GQTA7rksCgAAAAAAAAAAAIBLIwIAAAAGgMujm/h9QYYB4CuSDAAADABfk2ri90XZBgAABkArABAAEA3As4Clx18eAAQAjADgWQCAkgA8C1hy/KUAQJD53x4BAGA0gNXHvzwACPrHv+ox2NEmAAYABDYx/rIAIOgdf0sAO58FINgbf9Wzf2kAngWc/csBgED8SfG3BwBBvePbHgAE4k+Jvw0ACHoczzEAIBB/QvxHAUAg/tPxtwQAQb3jNhbASQQgZByr0/21BQBBjWM0HgAE4h8PIAHBJAgJxyOluxgAKQg6Q0g5BknNjQEwHUHSfQfgIIJpENLua1pvcQASEVSEkHj/EluLBLALwf+Ekowh+b6kdhYLIB1BCoYKtz25sWgAOxHcG9POoKrczvT4SwDYjeARgT0quJTb0TX+MgBOIFgR4Kl1vKbnOACnEFSG0PWCtmMBnERQBUP3qzmPB5CAIA3DlEuZAxCI4ASIidfxB6AIgsq/spwWf3kAVRD4BhcAQBA+ABCIHwAIxA8ACMIHAAThAwCB+AEAQfgAgCB8AEAQPgAgCB8AEIQPAAyiBwAG0QMAhOABAELwAMyD4VgCYAaAGQBmAJgBYAaAGQBmAJgBYAaAGQBmAJgBYAaAGQBmAJgBYAaAGQA2en8AvwIV4vpFir0AAAAASUVORK5CYII=" alt="PROJECT: ECHO sonar mark">
     <h1>PROJECT: ECHO</h1>
