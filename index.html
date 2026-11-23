@@ -53,6 +53,7 @@
       <div class="sidebar-rule"></div>
       <div class="side-label">NETWORK</div>
       <button class="nav-item" id="nav-friends" type="button"><span class="nav-symbol">◎</span><span>Friends</span><span class="nav-count">4</span></button>
+      <button class="nav-item" id="nav-community" type="button"><span class="nav-symbol">▤</span><span>Community chat</span></button>
       <button class="nav-item" id="nav-settings" type="button"><span class="nav-symbol">⚙</span><span>Settings</span></button>
       <div class="sidebar-spacer"></div>
       <div class="sidebar-device"><span class="device-light"></span><div><strong>VEYΛORA SYSTEM</strong><small>ALL SYSTEMS READY</small></div><span class="device-dots">•••</span></div>
@@ -66,6 +67,8 @@
         <div class="breadcrumb"><span>VEYΛORA</span><span class="crumb-slash">/</span><strong id="breadcrumb-current">HOME</strong></div>
         <div class="topbar-actions">
           <div class="connection-status"><span class="status-light"></span><span id="status-text">SYSTEM READY</span></div>
+          <div class="live-player-count" title="Players currently connected to VEYΛORA Arcade"><span class="status-light"></span><strong id="live-visitors">—</strong><span>PLAYERS ONLINE</span></div>
+          <button id="top-chat" class="icon-button top-chat-button" type="button" aria-label="Open community chat" title="Community chat">CHAT</button>
           <button id="top-friends" class="icon-button" type="button" aria-label="Open friends" title="Friends">◎</button>
           <button id="top-settings" class="icon-button" type="button" aria-label="Open settings" title="Settings">⚙</button>
           <button id="top-profile" class="top-profile" type="button"><span id="top-avatar" class="avatar avatar-v">C</span><span id="top-username">Colton</span><span>⌄</span></button>
@@ -166,6 +169,24 @@
       <div class="friend-entry"><span class="avatar avatar-n">N</span><div><strong>Noah</strong><small>Player profile</small></div><span class="friend-status">OFFLINE</span></div>
     </div><div class="friend-note">MULTIPLAYER STATUS IS A PREVIEW · GAME SUPPORT VARIES</div><div class="dialog-foot"><span>VEYΛORA NETWORK</span><button class="button button-primary" type="button" data-close-dialog>DONE <span>✓</span></button></div>
   </section></div>
+
+  <div id="community-dialog" class="dialog-backdrop" hidden>
+    <section class="dialog-panel community-dialog-panel" role="dialog" aria-modal="true" aria-labelledby="community-title">
+      <div class="dialog-head">
+        <div><p class="eyebrow">VEYΛORA NETWORK / LIVE COMMUNITY</p><h2 id="community-title">Community chat<span class="accent-dot">.</span></h2></div>
+        <button class="dialog-close" type="button" data-close-dialog aria-label="Close community chat">×</button>
+      </div>
+      <div class="community-status-row"><span class="status-light"></span><span id="community-chat-status" role="status">CONNECTING TO COMMUNITY...</span><span class="community-online-count"><strong id="community-online-count">—</strong> ONLINE</span></div>
+      <div id="community-messages" class="community-messages" aria-live="polite" aria-label="Community messages"><p class="community-empty">Messages will appear here.</p></div>
+      <form id="community-chat-form" class="community-chat-form">
+        <label class="sr-only" for="community-chat-input">Write a message</label>
+        <input id="community-chat-input" type="text" maxlength="300" autocomplete="off" placeholder="Write a message..." disabled>
+        <button class="button button-primary" id="community-send" type="submit" disabled>SEND ↗</button>
+      </form>
+      <p class="community-footnote">Be respectful. Messages are visible to everyone using VEYΛORA Arcade.</p>
+      <div class="dialog-foot"><span>WEBSITE-WIDE CHAT · NOT PART OF ANY GAME</span><button class="button button-secondary" type="button" data-close-dialog>DONE</button></div>
+    </section>
+  </div>
 
   <div id="december-overhaul-dialog" class="dialog-backdrop" hidden>
     <section class="dialog-panel" role="dialog" aria-modal="true" aria-labelledby="december-overhaul-title">
