@@ -119,6 +119,54 @@
       button.setAttribute("aria-pressed", String(selected));
     });
   });
+  const requestPanel = $("#account-request-panel");
+  const requestStatus = $("#account-request-status");
+  $("#open-account-request").addEventListener("click", () => {
+    loginForm.hidden = true;
+    requestPanel.hidden = false;
+    requestStatus.textContent = "";
+    $("#request-name").focus();
+  });
+  $("#back-to-login").addEventListener("click", () => {
+    requestPanel.hidden = true;
+    loginForm.hidden = false;
+    loginError.textContent = "";
+    loginName.focus();
+  });
+  $("#submit-account-request").addEventListener("click", async () => {
+    const name = $("#request-name").value.trim();
+    const invitedBy = $("#request-inviter").value.trim();
+    const email = $("#request-email").value.trim().toLowerCase();
+    if (name.length < 2 || name.length > 30 || invitedBy.length < 2 || invitedBy.length > 30 ||
+        !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email) || email.length > 120) {
+      requestStatus.textContent = "PLEASE CHECK YOUR NAME, INVITER, AND EMAIL.";
+      return;
+    }
+    const submit = $("#submit-account-request");
+    submit.disabled = true;
+    requestStatus.textContent = "SENDING REQUEST...";
+    try {
+      if (!communityReady) throw new Error("Community service is not ready.");
+      await communityReady;
+      if (!communityDb || !communityUser) throw new Error("Community service is unavailable.");
+      await communityDb.ref("accountRequests").push().set({
+        name,
+        invitedBy,
+        email,
+        status: "pending",
+        createdAt: firebase.database.ServerValue.TIMESTAMP
+      });
+      requestStatus.textContent = "REQUEST RECEIVED. THE SITE OWNER WILL REVIEW IT.";
+      $("#request-name").value = "";
+      $("#request-inviter").value = "";
+      $("#request-email").value = "";
+    } catch (_) {
+      requestStatus.textContent = "COULDN’T SEND THE REQUEST. PLEASE TRY AGAIN LATER.";
+    } finally {
+      submit.disabled = false;
+    }
+  });
+
   loginForm.addEventListener("submit", event => {
     event.preventDefault();
     const submitted = loginName.value.trim();
