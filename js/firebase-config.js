@@ -1,16 +1,15 @@
 /*
- * VEYAORA Arcade live visitor counter configuration.
- *
- * Replace the placeholder values below with the Web app config from:
- * Firebase Console -> Project settings -> General -> Your apps.
- *
- * This web config is intended to be public. Do NOT put service-account keys
- * or other private credentials in this file.
+ * VEYAORA Arcade Firebase web app configuration.
+ * Firebase web config is public by design; protect data with Realtime Database
+ * Security Rules. Never place service-account credentials in this file.
  */
 window.VEYAORA_FIREBASE_CONFIG = {
-  apiKey: "PASTE_FIREBASE_API_KEY_HERE",
-  authDomain: "PASTE_PROJECT_ID_HERE.firebaseapp.com",
-  databaseURL: "PASTE_REALTIME_DATABASE_URL_HERE",
-  projectId: "PASTE_PROJECT_ID_HERE",
-  appId: "PASTE_FIREBASE_APP_ID_HERE"
+  apiKey: "AIzaSyDWCVNU6ES2HY6zvxC0glQcExJmYUBN0vA",
+  authDomain: "veyaora.firebaseapp.com",
+  databaseURL: "https://veyaora-default-rtdb.firebaseio.com",
+  projectId: "veyaora",
+  storageBucket: "veyaora.firebasestorage.app",
+  messagingSenderId: "618476510700",
+  appId: "1:618476510700:web:9c1a88a2a25e66c46ef4c9",
+  measurementId: "G-2WZN4CKGZ0"
 };
