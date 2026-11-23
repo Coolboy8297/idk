@@ -138,7 +138,7 @@
     const invitedBy = $("#request-inviter").value.trim();
     const email = $("#request-email").value.trim().toLowerCase();
     if (name.length < 2 || name.length > 30 || invitedBy.length < 2 || invitedBy.length > 30 ||
-        !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email) || email.length > 120) {
+        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 120) {
       requestStatus.textContent = "PLEASE CHECK YOUR NAME, INVITER, AND EMAIL.";
       return;
     }
