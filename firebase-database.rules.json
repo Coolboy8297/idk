@@ -1,0 +1,36 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "presence": {
+      "veyaora": {
+        ".read": "auth != null",
+        "$uid": {
+          ".write": "auth != null && auth.uid === $uid",
+          ".validate": "newData.hasChildren(['since'])",
+          "since": { ".validate": "newData.isNumber()" },
+          "player": { ".validate": "newData.isString() && newData.val().length <= 18" },
+          "name": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 18" },
+          "avatar": { ".validate": "newData.isString() && newData.val().length <= 4" },
+          "$other": { ".validate": false }
+        }
+      }
+    },
+    "community": {
+      "messages": {
+        ".read": "auth != null",
+        "$messageId": {
+          ".write": "auth != null && !data.exists() && newData.child('uid').val() === auth.uid",
+          ".validate": "newData.hasChildren(['uid', 'name', 'text', 'createdAt'])",
+          "uid": { ".validate": "newData.isString() && newData.val() === auth.uid" },
+          "name": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 18" },
+          "player": { ".validate": "newData.isString() && newData.val().length <= 18" },
+          "avatar": { ".validate": "newData.isString() && newData.val().length <= 4" },
+          "text": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 300" },
+          "createdAt": { ".validate": "newData.isNumber()" },
+          "$other": { ".validate": false }
+        }
+      }
+    }
+  }
+}
