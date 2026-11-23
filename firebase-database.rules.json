@@ -8,11 +8,21 @@
         "$uid": {
           ".write": "auth != null && auth.uid === $uid",
           ".validate": "newData.hasChildren(['since'])",
-          "since": { ".validate": "newData.isNumber()" },
-          "player": { ".validate": "newData.isString() && newData.val().length <= 18" },
-          "name": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 18" },
-          "avatar": { ".validate": "newData.isString() && newData.val().length <= 4" },
-          "$other": { ".validate": false }
+          "since": {
+            ".validate": "newData.isNumber()"
+          },
+          "player": {
+            ".validate": "newData.isString() && newData.val().length <= 18"
+          },
+          "name": {
+            ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 18"
+          },
+          "avatar": {
+            ".validate": "newData.isString() && newData.val().length <= 4"
+          },
+          "$other": {
+            ".validate": false
+          }
         }
       }
     },
@@ -22,13 +32,52 @@
         "$messageId": {
           ".write": "auth != null && !data.exists() && newData.child('uid').val() === auth.uid",
           ".validate": "newData.hasChildren(['uid', 'name', 'text', 'createdAt'])",
-          "uid": { ".validate": "newData.isString() && newData.val() === auth.uid" },
-          "name": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 18" },
-          "player": { ".validate": "newData.isString() && newData.val().length <= 18" },
-          "avatar": { ".validate": "newData.isString() && newData.val().length <= 4" },
-          "text": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 300" },
-          "createdAt": { ".validate": "newData.isNumber()" },
-          "$other": { ".validate": false }
+          "uid": {
+            ".validate": "newData.isString() && newData.val() === auth.uid"
+          },
+          "name": {
+            ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 18"
+          },
+          "player": {
+            ".validate": "newData.isString() && newData.val().length <= 18"
+          },
+          "avatar": {
+            ".validate": "newData.isString() && newData.val().length <= 4"
+          },
+          "text": {
+            ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 300"
+          },
+          "createdAt": {
+            ".validate": "newData.isNumber()"
+          },
+          "$other": {
+            ".validate": false
+          }
+        }
+      }
+    },
+    "accountRequests": {
+      ".read": false,
+      "$requestId": {
+        ".write": "auth != null && !data.exists()",
+        ".validate": "newData.hasChildren(['name', 'invitedBy', 'email', 'status', 'createdAt'])",
+        "name": {
+          ".validate": "newData.isString() && newData.val().length >= 2 && newData.val().length <= 30"
+        },
+        "invitedBy": {
+          ".validate": "newData.isString() && newData.val().length >= 2 && newData.val().length <= 30"
+        },
+        "email": {
+          ".validate": "newData.isString() && newData.val().length >= 5 && newData.val().length <= 120"
+        },
+        "status": {
+          ".validate": "newData.val() === 'pending'"
+        },
+        "createdAt": {
+          ".validate": "newData.isNumber()"
+        },
+        "$other": {
+          ".validate": false
         }
       }
     }
