@@ -56,7 +56,14 @@
   const settingsDialog = $("#settings-dialog");
   const friendsDialog = $("#friends-dialog");
   const announcementDialog = $("#december-overhaul-dialog");
+  const communityDialog = $("#community-dialog");
   const profileMenu = $("#profile-menu");
+  let communityDb = null;
+  let communityUser = null;
+  let communityPresenceRef = null;
+  let communityMessagesRef = null;
+  let communityReady = null;
+  let lastCommunitySend = 0;
 
   function showLogin() {
     home.hidden = true;
@@ -125,6 +132,7 @@
     activePlayer = player;
     sessionStorage.setItem("veyaoraArcadeLoggedIn", player);
     showHome();
+    updateCommunityPresence();
   });
 
   function applyProfileToUI() {
@@ -393,12 +401,13 @@
     }
   }
   function closeOverlays() {
-    [settingsDialog,friendsDialog,announcementDialog].forEach(dialog => { if (dialog) dialog.hidden = true; });
+    [settingsDialog,friendsDialog,announcementDialog,communityDialog].forEach(dialog => { if (dialog) dialog.hidden = true; });
+    if (communityMessagesRef) communityMessagesRef.off("value");
     closeProfileMenu();
   }
   function closeProfileMenu() { if (profileMenu) profileMenu.hidden = true; }
   $$("[data-close-dialog]").forEach(button => button.addEventListener("click",closeOverlays));
-  [settingsDialog,friendsDialog,announcementDialog].forEach(dialog => dialog?.addEventListener("click",event => { if (event.target === dialog) closeOverlays(); }));
+  [settingsDialog,friendsDialog,announcementDialog,communityDialog].forEach(dialog => dialog?.addEventListener("click",event => { if (event.target === dialog) closeOverlays(); }));
   document.addEventListener("keydown",event => {
     if (event.key === "Escape") {
       closeOverlays();
@@ -407,6 +416,8 @@
   });
   $("#nav-friends").addEventListener("click",() => openDialog(friendsDialog));
   $("#top-friends").addEventListener("click",() => openDialog(friendsDialog));
+  $("#nav-community").addEventListener("click",openCommunityChat);
+  $("#top-chat").addEventListener("click",openCommunityChat);
   $("#nav-settings").addEventListener("click",() => openDialog(settingsDialog));
   $("#top-settings").addEventListener("click",() => openDialog(settingsDialog));
   $("#network-settings-button")?.addEventListener("click",() => openDialog(settingsDialog));
@@ -417,6 +428,103 @@
   $("#open-profile-settings").addEventListener("click",() => { openDialog(settingsDialog); selectSettingsTab("profile"); });
   $("#profile-signout").addEventListener("click",signOut);
   $("#sign-out").addEventListener("click",signOut);
+  async function openCommunityChat() {
+    closeOverlays();
+    communityDialog.hidden = false;
+    const status = $("#community-chat-status");
+    const input = $("#community-chat-input");
+    const send = $("#community-send");
+    if (!communityReady) {
+      status.textContent = "COMMUNITY CHAT NEEDS FIREBASE CONFIGURATION.";
+      return;
+    }
+    status.textContent = "CONNECTING TO COMMUNITY...";
+    try {
+      await communityReady;
+      if (!communityDb || !communityUser) throw new Error("Community service is not connected.");
+      status.textContent = "CONNECTED · LIVE MESSAGES";
+      input.disabled = false;
+      send.disabled = false;
+      if (!communityMessagesRef) communityMessagesRef = communityDb.ref("community/messages").limitToLast(50);
+      communityMessagesRef.off("value");
+      communityMessagesRef.on("value", snapshot => renderCommunityMessages(snapshot));
+    } catch (error) {
+      status.textContent = error && error.message ? error.message.toUpperCase() : "COMMUNITY CONNECTION FAILED.";
+      input.disabled = true;
+      send.disabled = true;
+    }
+  }
+
+  function renderCommunityMessages(snapshot) {
+    const list = $("#community-messages");
+    if (!list) return;
+    list.replaceChildren();
+    if (!snapshot || !snapshot.exists()) {
+      const empty = document.createElement("p");
+      empty.className = "community-empty";
+      empty.textContent = "No messages yet. Start the conversation.";
+      list.appendChild(empty);
+      return;
+    }
+    snapshot.forEach(child => {
+      const message = child.val() || {};
+      const row = document.createElement("article");
+      row.className = "community-message";
+      const meta = document.createElement("div");
+      meta.className = "community-message-meta";
+      const author = document.createElement("strong");
+      author.textContent = String(message.name || "Player").slice(0,18);
+      const time = document.createElement("time");
+      const stamp = Number(message.createdAt);
+      time.textContent = Number.isFinite(stamp) && stamp > 0 ? new Date(stamp).toLocaleTimeString([], {hour:"numeric",minute:"2-digit"}) : "JUST NOW";
+      const body = document.createElement("p");
+      body.textContent = String(message.text || "").slice(0,300);
+      meta.append(author,time);
+      row.append(meta,body);
+      list.appendChild(row);
+    });
+    list.scrollTop = list.scrollHeight;
+  }
+
+  $("#community-chat-form").addEventListener("submit", async event => {
+    event.preventDefault();
+    const input = $("#community-chat-input");
+    const send = $("#community-send");
+    const message = input.value.trim();
+    if (!message || message.length > 300 || !communityDb || !communityUser) return;
+    const now = Date.now();
+    if (now - lastCommunitySend < 1800) {
+      $("#community-chat-status").textContent = "PLEASE WAIT A MOMENT BEFORE SENDING AGAIN.";
+      return;
+    }
+    lastCommunitySend = now;
+    send.disabled = true;
+    const profile = getProfile(activePlayer);
+    try {
+      await communityDb.ref("community/messages").push().set({
+        uid: communityUser.uid,
+        player: activePlayer,
+        name: profile.displayName,
+        avatar: profile.avatar,
+        text: message,
+        createdAt: firebase.database.ServerValue.TIMESTAMP
+      });
+      input.value = "";
+      $("#community-chat-status").textContent = "CONNECTED · LIVE MESSAGES";
+    } catch (_) {
+      $("#community-chat-status").textContent = "MESSAGE NOT SENT · CHECK FIREBASE DATABASE RULES.";
+    } finally {
+      send.disabled = false;
+      input.focus();
+    }
+  });
+
+  function updateCommunityPresence() {
+    if (!communityPresenceRef || !communityUser) return;
+    const profile = getProfile(activePlayer);
+    communityPresenceRef.update({player:activePlayer,name:profile.displayName,avatar:profile.avatar}).catch(() => {});
+  }
+
   function signOut() {
     closeOverlays();
     sessionStorage.removeItem("veyaoraArcadeLoggedIn");
@@ -446,6 +554,7 @@
     saveProfile(activePlayer,{displayName,avatar});
     applyProfileToUI();
     refreshProfilePicker();
+    updateCommunityPresence();
     $("#settings-feedback").textContent = "PROFILE SAVED.";
   });
 
@@ -515,21 +624,51 @@
   function setupLiveVisitors() {
     const config = window.VEYAORA_FIREBASE_CONFIG || null;
     const count = $("#live-visitors");
-    if (!config || !config.apiKey || !config.databaseURL || !config.projectId || !config.appId || !window.firebase) return;
+    const communityCount = $("#community-online-count");
+    const validConfig = config && config.apiKey && config.databaseURL && config.projectId && config.appId &&
+      !String(config.apiKey).startsWith("PASTE_") && !String(config.databaseURL).includes("PASTE_") &&
+      !String(config.projectId).startsWith("PASTE_") && !String(config.appId).startsWith("PASTE_");
+    if (!validConfig || !window.firebase) {
+      if (count) count.textContent = "—";
+      if (communityCount) communityCount.textContent = "—";
+      return;
+    }
     try {
       if (!firebase.apps.length) firebase.initializeApp(config);
       const auth = firebase.auth();
-      const presence = firebase.database().ref("presence/veyaora");
-      auth.signInAnonymously().then(() => {
-        const uid = auth.currentUser && auth.currentUser.uid;
-        if (!uid) return;
-        const mine = presence.child(uid);
-        firebase.database().ref(".info/connected").on("value",snapshot => {
-          if (snapshot.val() === true) mine.onDisconnect().remove().then(() => mine.set({since:firebase.database.ServerValue.TIMESTAMP}));
+      const db = firebase.database();
+      const presence = db.ref("presence/veyaora");
+      communityReady = auth.signInAnonymously().then(() => {
+        communityUser = auth.currentUser;
+        if (!communityUser) throw new Error("Anonymous sign-in was not available.");
+        communityDb = db;
+        const mine = presence.child(communityUser.uid);
+        communityPresenceRef = mine;
+        db.ref(".info/connected").on("value",snapshot => {
+          if (snapshot.val() === true) {
+            mine.onDisconnect().remove().then(() => mine.set({
+              since:firebase.database.ServerValue.TIMESTAMP,
+              player:activePlayer,
+              name:getProfile(activePlayer).displayName,
+              avatar:getProfile(activePlayer).avatar
+            }));
+          }
         });
-        presence.on("value",snapshot => { if (count) count.textContent = String(snapshot.numChildren()); });
-      }).catch(() => {});
-    } catch (_) {}
+        presence.on("value",snapshot => {
+          const total = snapshot.numChildren();
+          if (count) count.textContent = String(total);
+          if (communityCount) communityCount.textContent = String(total);
+        });
+        updateCommunityPresence();
+      }).catch(error => {
+        if (count) count.textContent = "—";
+        if (communityCount) communityCount.textContent = "—";
+        throw error;
+      });
+    } catch (_) {
+      communityReady = Promise.reject(new Error("Firebase community service is unavailable."));
+      communityReady.catch(() => {});
+    }
   }
 
   renderExtraVersions();
