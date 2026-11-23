@@ -39,7 +39,23 @@
         <button class="button button-primary full-width" type="submit">START SESSION <span>↗</span></button>
         <p id="login-error" class="login-error" role="alert" aria-live="polite"></p>
         <p class="login-footnote">PROFILE CUSTOMIZATION IS SAVED ON THIS DEVICE.</p>
+        <button id="open-account-request" class="account-request-link" type="button">NEW HERE? <span>REQUEST AN ACCOUNT ↗</span></button>
       </form>
+      <section id="account-request-panel" class="login-panel account-request-panel" hidden aria-labelledby="account-request-title">
+        <div class="panel-topline"><span>PLAYER REGISTRATION</span><span>REQUEST / 01</span></div>
+        <h2 id="account-request-title">Request access</h2>
+        <p class="muted-copy">New accounts are reviewed before approval. If approved, we’ll use your email to help you set up a password.</p>
+        <label for="request-name">YOUR NAME</label>
+        <input id="request-name" class="dialog-input" type="text" maxlength="30" autocomplete="name" placeholder="Your name" required>
+        <label for="request-inviter">WHO GAVE YOU THE WEBSITE?</label>
+        <input id="request-inviter" class="dialog-input" type="text" maxlength="30" placeholder="Their VEYΛORA username" required>
+        <label for="request-email">EMAIL FOR ACCOUNT SETUP</label>
+        <input id="request-email" class="dialog-input" type="email" maxlength="120" autocomplete="email" placeholder="you@example.com" required>
+        <p class="field-help">Only share an email you can access. Never enter a password here. Your request is private and only the site owner can review it in Firebase.</p>
+        <button id="submit-account-request" class="button button-primary full-width" type="button">SEND REQUEST <span>↗</span></button>
+        <p id="account-request-status" class="login-error" role="status" aria-live="polite"></p>
+        <button id="back-to-login" class="account-request-link" type="button">← BACK TO SIGN IN</button>
+      </section>
     </div>
   </section>
 
@@ -212,6 +228,6 @@
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
-  <script src="/idk/js/script.js?v=community-chat-20261123-1"></script>
+  <script src="/idk/js/script.js?v=account-requests-20261123-1"></script>
 </body>
 </html>
