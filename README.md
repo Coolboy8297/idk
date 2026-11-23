@@ -62,3 +62,16 @@ Because the game is loaded in an iframe, some browsers require a local server (n
 ---
 
 © VEYAORA
+
+
+## Website community features
+
+The website-wide player counter and Community Chat use Firebase Realtime Database. They are part of the VEYΛORA website shell, not part of any embedded game.
+
+1. Create or open the Firebase project used by the site.
+2. Enable **Anonymous** sign-in under Authentication.
+3. Create a Realtime Database.
+4. Replace the placeholder values in `js/firebase-config.js` with the Firebase web-app configuration and the Realtime Database URL.
+5. Paste the contents of `firebase-database.rules.json` into Realtime Database → Rules and publish them.
+
+The chat is visible to signed-in site visitors. Messages are limited to 300 characters and can only be created by the anonymous account that authored them. Configure the Firebase project before expecting the live count or chat to connect.
