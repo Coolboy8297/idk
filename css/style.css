@@ -293,3 +293,16 @@ body.accent-violet{--accent:#c49aff;--accent-soft:#241a31}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 @media(max-width:850px){.live-player-count{gap:5px;padding:0 7px;font-size:7px}.live-player-count strong{font-size:11px}.top-chat-button{min-width:39px;padding:0 7px}}
 @media(max-width:600px){.live-player-count{min-height:29px;padding:0 6px;font-size:6px}.live-player-count .status-light{width:5px;height:5px;flex-basis:5px}.live-player-count strong{font-size:10px}.top-chat-button{min-width:34px;height:32px;font-size:7px}.community-dialog-panel{padding:15px}.community-messages{min-height:180px;max-height:45vh}}
+
+
+/* New player account request */
+.account-request-link{display:block;width:100%;margin-top:12px;padding:10px;border:1px solid #293640;border-radius:4px;background:#0c1319;color:#87969e;font:8px 'DM Mono',monospace;letter-spacing:.5px;cursor:pointer}
+.account-request-link span{color:var(--accent);margin-left:5px}
+.account-request-link:hover{border-color:var(--accent);color:var(--text)}
+.account-request-panel{width:min(100%,430px)}
+.account-request-panel label{display:block;margin:13px 0 6px;color:#a7b5bc;font:8px 'DM Mono',monospace;letter-spacing:.7px}
+.account-request-panel .dialog-input{width:100%;height:42px;padding:0 11px;border:1px solid #34414b;border-radius:4px;outline:none;background:#0b1117;color:var(--text);font:11px Manrope,sans-serif}
+.account-request-panel .dialog-input:focus{border-color:var(--accent)}
+.account-request-panel .field-help{margin:10px 0 13px}
+.account-request-panel .login-error{min-height:16px;margin:9px 0;color:var(--accent);font-size:9px}
+.account-request-panel .button:disabled{opacity:.55;cursor:wait}
