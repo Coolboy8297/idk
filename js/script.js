@@ -586,6 +586,9 @@
   async function openCommunityChat() {
     closeOverlays();
     communityDialog.hidden = false;
+    if ("Notification" in window && Notification.permission === "default") {
+      try { await Notification.requestPermission(); } catch (_) {}
+    }
     unreadCommunityMessages = 0;
     updateChatUnreadUI();
     const status = $("#community-chat-status");
