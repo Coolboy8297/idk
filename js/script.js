@@ -64,6 +64,11 @@
   let communityMessagesRef = null;
   let communityReady = null;
   let lastCommunitySend = 0;
+  let notificationRef = null;
+  let notificationInitializing = true;
+  const knownMessageIds = new Set();
+  const pendingMessageNotifications = new Map();
+  let unreadCommunityMessages = 0;
 
   function showLogin() {
     home.hidden = true;
@@ -342,6 +347,26 @@
     renderRecents();
   });
 
+  function bindGameChatHotkey() {
+    try {
+      const frameDoc = $("#game-frame").contentDocument;
+      if (!frameDoc || frameDoc.__veyaoraChatHotkeyBound) return;
+      frameDoc.__veyaoraChatHotkeyBound = true;
+      frameDoc.addEventListener("keydown",event => {
+        if (event.key === "]" && !event.repeat) {
+          event.preventDefault();
+          event.stopPropagation();
+          toggleCommunityChat();
+        }
+      },true);
+    } catch (_) { /* Cross-origin game frames cannot expose their keyboard events. */ }
+  }
+
+  function toggleCommunityChat() {
+    if (communityDialog && !communityDialog.hidden) closeOverlays();
+    else openCommunityChat();
+  }
+
   function launchGame(url, title, kind = "local") {
     if (kind === "external") {
       window.open(url, "_blank", "noopener,noreferrer");
@@ -364,6 +389,7 @@
     $("#game-frame").onload = () => {
       $("#game-frame").classList.add("loaded");
       $("#game-loader").hidden = true;
+      bindGameChatHotkey();
       if (gameTimeout) window.clearTimeout(gameTimeout);
       $("#status-text").textContent = "GAME ACTIVE";
     };
@@ -453,10 +479,91 @@
     if (communityMessagesRef) communityMessagesRef.off("value");
     closeProfileMenu();
   }
+
+  function updateChatUnreadUI() {
+    [$("#top-chat"),$("#nav-community")].forEach(button => {
+      if (!button) return;
+      let badge = $(".chat-unread-badge",button);
+      if (!badge) {
+        badge = document.createElement("span");
+        badge.className = "chat-unread-badge";
+        button.appendChild(badge);
+      }
+      badge.textContent = unreadCommunityMessages > 99 ? "99+" : String(unreadCommunityMessages);
+      badge.hidden = unreadCommunityMessages === 0;
+      button.classList.toggle("has-unread",unreadCommunityMessages > 0);
+    });
+  }
+
+  function showChatNotification(message) {
+    if (communityDialog && !communityDialog.hidden) return;
+    unreadCommunityMessages++;
+    updateChatUnreadUI();
+    const profile = getProfile(activePlayer);
+    if (message.uid === communityUser?.uid) return;
+    const host = $("#chat-notification-stack");
+    if (host) {
+      const toast = document.createElement("button");
+      toast.type = "button";
+      toast.className = "chat-notification-toast";
+      const title = document.createElement("strong");
+      title.textContent = String(message.name || "Player").slice(0,18) + " sent a message";
+      const body = document.createElement("span");
+      body.textContent = String(message.text || "").slice(0,100);
+      toast.append(title,body);
+      toast.addEventListener("click",() => { openCommunityChat(); });
+      host.appendChild(toast);
+      window.setTimeout(() => toast.remove(),6500);
+    }
+    if ("Notification" in window && Notification.permission === "granted" && document.hidden) {
+      try {
+        const notification = new Notification("VEYΛORA · " + String(message.name || "Player").slice(0,18), {
+          body:String(message.text || "New community message").slice(0,120),
+          tag:"veyaora-community-chat",
+          silent:true
+        });
+        notification.onclick = () => { window.focus(); openCommunityChat(); notification.close(); };
+      } catch (_) {}
+    }
+  }
+
+  function watchCommunityNotifications() {
+    if (!communityDb || notificationRef) return;
+    notificationInitializing = true;
+    notificationRef = communityDb.ref("community/messages").limitToLast(50);
+    notificationRef.on("child_added",snapshot => {
+      if (notificationInitializing) {
+        pendingMessageNotifications.set(snapshot.key,snapshot.val() || {});
+        return;
+      }
+      if (knownMessageIds.has(snapshot.key)) return;
+      knownMessageIds.add(snapshot.key);
+      const message = snapshot.val() || {};
+      if (message.uid !== communityUser?.uid) showChatNotification(message);
+    });
+    notificationRef.once("value").then(snapshot => {
+      snapshot.forEach(child => knownMessageIds.add(child.key));
+      notificationInitializing = false;
+      pendingMessageNotifications.forEach((message,id) => {
+        if (!knownMessageIds.has(id)) {
+          knownMessageIds.add(id);
+          if (message.uid !== communityUser?.uid) showChatNotification(message);
+        }
+      });
+      pendingMessageNotifications.clear();
+    }).catch(() => { notificationInitializing = false; });
+  }
   function closeProfileMenu() { if (profileMenu) profileMenu.hidden = true; }
   $$("[data-close-dialog]").forEach(button => button.addEventListener("click",closeOverlays));
   [settingsDialog,friendsDialog,announcementDialog,communityDialog].forEach(dialog => dialog?.addEventListener("click",event => { if (event.target === dialog) closeOverlays(); }));
   document.addEventListener("keydown",event => {
+    const target = event.target;
+    const typing = target && (target.matches?.("input,textarea,select,[contenteditable='true']") || target.isContentEditable);
+    if (event.key === "]" && !event.repeat && !typing && !event.ctrlKey && !event.metaKey && !event.altKey) {
+      event.preventDefault();
+      toggleCommunityChat();
+      return;
+    }
     if (event.key === "Escape") {
       closeOverlays();
       if (!gameScreen.hidden) exitGame();
@@ -479,6 +586,8 @@
   async function openCommunityChat() {
     closeOverlays();
     communityDialog.hidden = false;
+    unreadCommunityMessages = 0;
+    updateChatUnreadUI();
     const status = $("#community-chat-status");
     const input = $("#community-chat-input");
     const send = $("#community-send");
@@ -702,6 +811,7 @@
             }));
           }
         });
+        watchCommunityNotifications();
         presence.on("value",snapshot => {
           const total = snapshot.numChildren();
           if (count) count.textContent = String(total);
