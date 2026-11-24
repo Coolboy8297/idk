@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/idk/css/style.css?v=account-requests-20261123-1">
+  <link rel="stylesheet" href="/idk/css/style.css?v=chat-overlay-20261124-1">
 </head>
 <body>
 <section id="login-view" class="login-screen" hidden aria-labelledby="login-title">
@@ -69,7 +69,7 @@
       <div class="sidebar-rule"></div>
       <div class="side-label">NETWORK</div>
       <button class="nav-item" id="nav-friends" type="button"><span class="nav-symbol">◎</span><span>Friends</span><span class="nav-count">4</span></button>
-      <button class="nav-item" id="nav-community" type="button"><span class="nav-symbol">▤</span><span>Community chat</span></button>
+      <button class="nav-item" id="nav-community" type="button"><span class="nav-symbol">▤</span><span>Community chat</span><span class="chat-unread-badge" hidden></span></button>
       <button class="nav-item" id="nav-settings" type="button"><span class="nav-symbol">⚙</span><span>Settings</span></button>
       <div class="sidebar-spacer"></div>
       <div class="sidebar-device"><span class="device-light"></span><div><strong>VEYΛORA SYSTEM</strong><small>ALL SYSTEMS READY</small></div><span class="device-dots">•••</span></div>
@@ -84,7 +84,7 @@
         <div class="topbar-actions">
           <div class="connection-status"><span class="status-light"></span><span id="status-text">SYSTEM READY</span></div>
           <div class="live-player-count" title="Players currently connected to VEYΛORA Arcade"><span class="status-light"></span><strong id="live-visitors">—</strong><span>PLAYERS ONLINE</span></div>
-          <button id="top-chat" class="icon-button top-chat-button" type="button" aria-label="Open community chat" title="Community chat">CHAT</button>
+          <button id="top-chat" class="icon-button top-chat-button" type="button" aria-label="Open community chat" title="Community chat">CHAT<span class="chat-unread-badge" hidden></span></button>
           <button id="top-friends" class="icon-button" type="button" aria-label="Open friends" title="Friends">◎</button>
           <button id="top-settings" class="icon-button" type="button" aria-label="Open settings" title="Settings">⚙</button>
           <button id="top-profile" class="top-profile" type="button"><span id="top-avatar" class="avatar avatar-v">C</span><span id="top-username">Colton</span><span>⌄</span></button>
@@ -204,6 +204,8 @@
     </section>
   </div>
 
+  <div id="chat-notification-stack" class="chat-notification-stack" aria-live="polite" aria-label="New chat messages"></div>
+
   <div id="december-overhaul-dialog" class="dialog-backdrop" hidden>
     <section class="dialog-panel" role="dialog" aria-modal="true" aria-labelledby="december-overhaul-title">
       <div class="dialog-head">
@@ -228,6 +230,6 @@
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
-  <script src="/idk/js/script.js?v=account-requests-20261123-1"></script>
+  <script src="/idk/js/script.js?v=chat-overlay-20261124-1"></script>
 </body>
 </html>
