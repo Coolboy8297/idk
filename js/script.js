@@ -556,11 +556,13 @@
   function closeProfileMenu() { if (profileMenu) profileMenu.hidden = true; }
   $$("[data-close-dialog]").forEach(button => button.addEventListener("click",closeOverlays));
   [settingsDialog,friendsDialog,announcementDialog,communityDialog].forEach(dialog => dialog?.addEventListener("click",event => { if (event.target === dialog) closeOverlays(); }));
-  document.addEventListener("keydown",event => {
+  window.addEventListener("keydown",event => {
     const target = event.target;
     const typing = target && (target.matches?.("input,textarea,select,[contenteditable='true']") || target.isContentEditable);
-    if (event.key === "]" && !event.repeat && !typing && !event.ctrlKey && !event.metaKey && !event.altKey) {
+    const chatKey = event.key === "]" || event.code === "BracketRight";
+    if (chatKey && !event.repeat && !typing && !event.ctrlKey && !event.metaKey && !event.altKey) {
       event.preventDefault();
+      event.stopPropagation();
       toggleCommunityChat();
       return;
     }
@@ -568,7 +570,7 @@
       closeOverlays();
       if (!gameScreen.hidden) exitGame();
     }
-  });
+  }, true);
   $("#nav-friends").addEventListener("click",() => openDialog(friendsDialog));
   $("#top-friends").addEventListener("click",() => openDialog(friendsDialog));
   $("#nav-community").addEventListener("click",openCommunityChat);
